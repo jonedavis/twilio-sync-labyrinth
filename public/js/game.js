@@ -248,7 +248,14 @@ function onResize() {
 
 
 function onMoveKey(axis) {
-    keyAxis = axis.slice(0);
+    if (axis.x) { // From Mobile phone
+        if (axis.x >= -1 && axis.x <= 1 && axis.y < 0) keyAxis = [1, 0];
+        if (axis.x >= -1 && axis.x <= 1 && axis.y >= 0) keyAxis = [-1, 0];
+        if (axis.y >= -1 && axis.y <= 1 && axis.x < 0) keyAxis = [0, -1];
+        if (axis.y >= -1 && axis.y <= 1 && axis.x >= 0) keyAxis = [0, 1];
+    } else { // From Desktop Keyboard
+        keyAxis = axis.slice(0);
+    }
 }
 
 
@@ -319,7 +326,7 @@ $(document)
                         requestAnimationFrame(gameLoop);
 
                         controllerStateDoc.on("updated", function (data) {
-                            console.log(data);
+                            onMoveKey(data);
                         });
                     });
                 });
