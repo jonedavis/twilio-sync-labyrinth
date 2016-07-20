@@ -34,8 +34,7 @@ var camera = undefined,
     controllerStateDoc = undefined;
 
 // Assets
-var $splash = $('#splash-screen')
-$splash.hide()
+var $splash = undefined
 var numberOfLevels = 6
 var currentLevel = 0
 var assets = []
@@ -45,7 +44,6 @@ for (var i = 1; i <= numberOfLevels; i++) {
     ball: THREE.ImageUtils.loadTexture('imgs/level_' + i + '/ball.png'),
     concrete: THREE.ImageUtils.loadTexture('imgs/level_' + i + '/concrete.png'),
     brick: THREE.ImageUtils.loadTexture('imgs/level_' + i + '/brick.png'),
-    splash: THREE.ImageUtils.loadTexture('imgs/level_' + i + '/splash.png'),
   }
   assets.push(tempAsset)
 }
@@ -263,11 +261,11 @@ function gameLoop() {
 
 function advanceLevelTo(levelNumber) {
   currentLevel = levelNumber
-  // $splash.css('background-image', 'url(/imgs/level_' + currentLevel + '/splash.png)');
-  // $splash.show()
-  // $splash.on('click', function() {
-    // $splash.hide()
-  // })
+  $splash.css('background', 'url(/imgs/level_' + currentLevel + '/splash.png) no-repeat center center fixed');
+  $splash.show()
+  setTimeout(function() {
+    $splash.hide()
+  }, 2000)
 }
 
 
@@ -319,7 +317,7 @@ jQuery.fn.center = function () {
 
 $(document)
     .ready(function() {
-
+        $splash = $('#splash')
         // Prepare the instructions.
         $('#desktop-instructions').center();
         $('#desktop-instructions').hide();

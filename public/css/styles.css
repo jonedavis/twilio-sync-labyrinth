@@ -59,7 +59,8 @@
   background-size: cover;
 }
 
-#splash-screen {
+#splash {
+  display: none;
   width: 100vw;
   height: 100vh;
   background: url(/imgs/mainmenu.gif) no-repeat center center fixed; 
