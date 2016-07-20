@@ -28,7 +28,12 @@
 
 // Box2D world variables 
     wWorld = undefined,
-    wBall = undefined;
+    wBall = undefined,
+
+// Sync stuff
+    syncClient = undefined,
+    gameStateDoc = undefined,
+    controllerStateDoc = undefined;
 
 
 function createPhysicsWorld() {
@@ -287,9 +292,26 @@ $(document)
 
 
         // Set the initial game state.
-        gameState = 'initialize';
+        gameState = 'waiting';
 
-        // Start the game loop.
-        requestAnimationFrame(gameLoop);
+        $('#start-game').center();
+        $('#btnStart').on('click', function() {
+            var phoneNumber = $('#txtPhoneNumber').val();
+            var url = '/token/' + phoneNumber;
+            Twilio.Sync.CreateClient(url).then(function(client) {
+                syncClient = client;
+                syncClient.document('game-state-' + phoneNumber).then(function(doc) {
+                    gameStateDoc = doc;
+                    syncClient.document('controller-state-' + phoneNumber).then(function(ctrlDoc) {
+                        controllerStateDoc = ctrlDoc;
 
+                        $('#start-game').hide();
+
+                        gameState = 'initialize';
+                        // Start the game loop.
+                        requestAnimationFrame(gameLoop);
+                    });
+                });
+            });
+        });
     });
