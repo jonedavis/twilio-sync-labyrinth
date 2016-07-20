@@ -1,4 +1,20 @@
 $(function() {
+    var syncClient, gameStateDoc, controllerStateDoc;
+
+    var url = '/token-mobile/' + phoneNumber;
+    Twilio.Sync.CreateClient(url).then(function (client) {
+        syncClient = client;
+        syncClient.document('game-state-' + phoneNumber).then(function (doc) {
+            gameStateDoc = doc;
+            syncClient.document('controller-state-' + phoneNumber).then(function (ctrlDoc) {
+                controllerStateDoc = ctrlDoc;
+                
+                // TODO: setup controller?
+            });
+        });
+    });
+
+
     var $ball = $('#ball');
     var ball = {
         width: 100, 

@@ -20,13 +20,18 @@ app.get('/', function(req, res) {
     }
 });
 
-app.get('/game', function(req, res) {
-    res.send('game');
+app.get('/game/:phoneNumber', function(request, response) {
+    response.render('mobile', { phoneNumber: request.params.phoneNumber });
 });
 
 app.get('/token/:phoneNumber', (request, response) => {
     // Serialize the token to a JWT string and include it in a JSON response
     response.send(getToken(request.params.phoneNumber));
+});
+
+app.get('/token-mobile/:phoneNumber', (request, response) => {
+    // Serialize the token to a JWT string and include it in a JSON response
+    response.send(getToken(request.params.phoneNumber + '-mobile'));
 });
 
 http.createServer(app).listen(app.get('port'), function () {

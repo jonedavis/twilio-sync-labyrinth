@@ -3,14 +3,22 @@
 <head>
     <title>Game</title>
     <meta charset="utf-8">
-    <script src="js/jquery.js"></script>
-    <script src="js/maze.js"></script>
-    <script src="js/gyro.js"></script>
-    <script src="js/mobile.js"></script>
+    <script src="//media.twiliocdn.com/sdk/js/common/v0.1/twilio-common.min.js"></script>
+    <script src="//media.twiliocdn.com/sdk/js/sync/v0.2/twilio-sync.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="/js/maze.js"></script>
+    <script src="/js/gyro.js"></script>
+    <script src="/js/sync-helper.js"></script>
+    <script src="/js/mobile.js"></script>
     
-    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
 </head>
 <body>
     <div id="ball"></div>
+
+    <script>
+            var phoneNumber = '<%= phoneNumber %>';
+
+    </script>
 </body>
 </html>
