@@ -10,17 +10,13 @@ app.set('views', path.resolve(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.get('/', function(req, res) {
-    var isMobile = mobileDetection(req);
+    var isMobile = isCallerMobile(req);
 
     if (!isMobile) {
         res.render('index');
     } else {
-        res.redirect('/mobile');
+        res.render('mobile');
     }
-});
-
-app.get('/mobile', function(req, res) {
-    res.send('mobile');
 });
 
 app.get('/game', function(req, res) {

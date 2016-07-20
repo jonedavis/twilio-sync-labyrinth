@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Game</title>
+    <meta charset="utf-8">
+    <script src="js/jquery.js"></script>
+    <script src="js/maze.js"></script>
+    <script src="js/gyro.js"></script>
+</head>
+    <div id="ball-container">
+        <div id="ball"></div>
+    </div>
+<body>
+    
+    <style>
+    body {
+    background-color: #1f1f1f;
+    color: #bfbfbf;
+}
+
+#ball {
+    background-color: red;
+    border-radius: 100px;
+    height: 100px;
+    width: 100px;
+    margin: 0 auto;
+}
+    </style>
+<script>
+    
+    $(function() {
+        var $ball = $('#ball');
+        var ball = {
+            width: 100, 
+            height: 100,
+            minX: 0,
+            maxX: function () { return $(window).width() - this.width },
+            minY: 0,
+            maxY: 250
+        };
+    
+        gyro.frequency = 100;
+        gyro.startTracking(function(o) {
+            var $offset = $ball.offset();
+            var dY = $offset.top - o.y * 10;
+            var dX = $offset.left + (o.x * 10);
+
+            $ball.offset({ top: dY, left: dX });
+        });
+    });
+</script>
+</body>
+</html>
