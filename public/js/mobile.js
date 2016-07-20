@@ -18,7 +18,10 @@ $(function() {
     gyro.startTracking(function(o) {
         // x coord = o.x
         // y coord = o.y
-    }
+        if (controllerStateDoc) {
+            controllerStateDoc.set(o);
+        }
+    });
     
   /**
    * Trigger vibration

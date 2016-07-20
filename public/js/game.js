@@ -317,6 +317,10 @@ $(document)
                         gameState = 'initialize';
                         // Start the game loop.
                         requestAnimationFrame(gameLoop);
+
+                        controllerStateDoc.on("updated", function (data) {
+                            console.log(data);
+                        });
                     });
                 });
             });
