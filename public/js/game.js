@@ -143,7 +143,8 @@ function updatePhysicsWorld() {
     wBall.SetLinearVelocity(lv);
 
     // Apply user-directed force.
-    var f = new b2Vec2(keyAxis[0] * wBall.GetMass() * 0.25, keyAxis[1] * wBall.GetMass() * 0.25);
+    var multiplier = 3;
+    var f = new b2Vec2(keyAxis[0] * wBall.GetMass() * multiplier, keyAxis[1] * wBall.GetMass() * multiplier);
     wBall.ApplyImpulse(f, wBall.GetPosition());
     keyAxis = [0, 0];
 
@@ -249,10 +250,12 @@ function onResize() {
 
 function onMoveKey(axis) {
     if (axis.x) { // From Mobile phone
-        if (axis.x >= -1 && axis.x <= 1 && axis.y < 0) keyAxis = [1, 0];
-        if (axis.x >= -1 && axis.x <= 1 && axis.y >= 0) keyAxis = [-1, 0];
-        if (axis.y >= -1 && axis.y <= 1 && axis.x < 0) keyAxis = [0, -1];
-        if (axis.y >= -1 && axis.y <= 1 && axis.x >= 0) keyAxis = [0, 1];
+        var newAxis = [0, 0];
+        if (axis.y < 0) newAxis[0] = -1;
+        if (axis.y >= 0) newAxis[0] = 1;
+        if (axis.x < 0) newAxis[1] = 1;
+        if (axis.x >= 0) newAxis[1] = -1;
+        keyAxis = newAxis;
     } else { // From Desktop Keyboard
         keyAxis = axis.slice(0);
     }

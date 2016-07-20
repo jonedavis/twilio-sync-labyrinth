@@ -7,7 +7,7 @@ var getToken = require('./syncSetup');
 var config = require('./config.js');
 var app = express();
 
-config.sendTextMessages = false;
+config.sendTextMessages = true;
 config.domain = 'https://twilio-david.ngrok.io';
 
 app.use(express.static('public'));
