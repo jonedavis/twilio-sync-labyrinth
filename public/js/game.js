@@ -1,4 +1,4 @@
-﻿var camera = undefined,
+var camera = undefined,
     scene = undefined,
     renderer = undefined,
     light = undefined,
@@ -182,7 +182,7 @@ function gameLoop() {
             light.position.set(1, 1, 1.3);
             light.intensity = 0;
             var level = Math.floor((mazeDimension - 1) / 2 - 4);
-            $('#level').html('Level ' + level);
+            $('#desktop-level').html('Level ' + level);
             gameState = 'fade in';
             break;
 
@@ -269,11 +269,11 @@ $(document)
     .ready(function() {
 
         // Prepare the instructions.
-        $('#instructions').center();
-        $('#instructions').hide();
+        $('#desktop-instructions').center();
+        $('#desktop-instructions').hide();
         KeyboardJS.bind.key('i',
-            function() { $('#instructions').show() },
-            function() { $('#instructions').hide() });
+            function() { $('#desktop-instructions').show() },
+            function() { $('#desktop-instructions').hide() });
 
         // Create the renderer.
         renderer = new THREE.WebGLRenderer();
