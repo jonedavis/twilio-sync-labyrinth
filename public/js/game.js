@@ -11,9 +11,6 @@ var camera = undefined,
     ballMesh = undefined,
     ballRadius = 0.25,
     keyAxis = [0, 0],
-    ironTexture = THREE.ImageUtils.loadTexture('imgs/ball.png'),
-    planeTexture = THREE.ImageUtils.loadTexture('imgs/concrete.png'),
-    brickTexture = THREE.ImageUtils.loadTexture('imgs/brick.png'),
     gameState = undefined,
 
 // Box2D shortcuts
@@ -36,6 +33,26 @@ var camera = undefined,
     gameStateDoc = undefined,
     controllerStateDoc = undefined;
 
+// Assets
+var $splash = $('#splash-screen')
+$splash.hide()
+var numberOfLevels = 6
+var currentLevel = 0
+var assets = []
+
+for (var i = 1; i <= numberOfLevels; i++) {
+  var tempAsset = {
+    ball: THREE.ImageUtils.loadTexture('imgs/level_' + i + '/ball.png'),
+    concrete: THREE.ImageUtils.loadTexture('imgs/level_' + i + '/concrete.png'),
+    brick: THREE.ImageUtils.loadTexture('imgs/level_' + i + '/brick.png'),
+    splash: THREE.ImageUtils.loadTexture('imgs/level_' + i + '/splash.png'),
+  }
+  assets.push(tempAsset)
+}
+
+// var ironTexture = 
+  // planeTexture =
+  // brickTexture = 
 
 function createPhysicsWorld() {
     // Create the world object.
@@ -89,7 +106,7 @@ function generate_maze_mesh(field) {
             }
         }
     }
-    var material = new THREE.MeshPhongMaterial({ map: brickTexture });
+    var material = new THREE.MeshPhongMaterial({ map: assets[currentLevel].brick });
     var mesh = new THREE.Mesh(dummy, material)
     return mesh;
 }
@@ -107,7 +124,7 @@ function createRenderWorld() {
 
     // Add the ball.
     g = new THREE.SphereGeometry(ballRadius, 32, 16);
-    m = new THREE.MeshPhongMaterial({ map: ironTexture });
+    m = new THREE.MeshPhongMaterial({ map: assets[currentLevel].ball });
     ballMesh = new THREE.Mesh(g, m);
     ballMesh.position.set(1, 1, ballRadius);
     scene.add(ballMesh);
@@ -124,6 +141,7 @@ function createRenderWorld() {
 
     // Add the ground.
     g = new THREE.PlaneGeometry(mazeDimension * 10, mazeDimension * 10, mazeDimension, mazeDimension);
+    var planeTexture = assets[currentLevel].concrete
     planeTexture.wrapS = planeTexture.wrapT = THREE.RepeatWrapping;
     planeTexture.repeat.set(mazeDimension * 5, mazeDimension * 5);
     m = new THREE.MeshPhongMaterial({ map: planeTexture });
@@ -194,6 +212,9 @@ function gameLoop() {
             light.position.set(1, 1, 1.3);
             light.intensity = 0;
             var level = Math.floor((mazeDimension - 1) / 2 - 4);
+            if (level > currentLevel) {
+              advanceLevelTo(level)
+            }
             $('#desktop-level').html('Level ' + level);
             gameState = 'fade in';
             break;
@@ -237,6 +258,15 @@ function gameLoop() {
 
     requestAnimationFrame(gameLoop);
 
+}
+
+function advanceLevelTo(levelNumber) {
+  currentLevel = levelNumber
+  // $splash.css('background-image', 'url(/imgs/level_' + currentLevel + '/splash.png)');
+  // $splash.show()
+  // $splash.on('click', function() {
+    // $splash.hide()
+  // })
 }
 
 
@@ -301,7 +331,7 @@ $(document)
         // Set the initial game state.
         gameState = 'waiting';
 
-        $('#start-game').center();
+        $('#start-game div').center();
         $('#btnStart').on('click', function() {
             var phoneNumber = $('#txtPhoneNumber').val();
             var url = '/token/' + phoneNumber;

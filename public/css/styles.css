@@ -39,3 +39,23 @@
     color: yellow;   
     font-weight: bold;
 }
+
+#start-game {
+  width: 100vw;
+  height: 100vh;
+  background: url(/imgs/mainmenu.gif) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+#splash-screen {
+  width: 100vw;
+  height: 100vh;
+  background: url(/imgs/mainmenu.gif) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
