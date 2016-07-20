@@ -1,10 +1,13 @@
+<!DOCTYPE html>
 <html>
 
     <head>
+        <title>Comsquest4</title>
+        
         <script src="//media.twiliocdn.com/sdk/js/common/v0.1/twilio-common.min.js"></script>
         <script src="//media.twiliocdn.com/sdk/js/sync/v0.2/twilio-sync.min.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-
+        
         <script src="js/Box2dWeb.min.js"></script>
         <script src="js/Three.js"></script>
         <script src="js/keyboard.js"></script>
@@ -12,54 +15,21 @@
         <script src="js/sync-helper.js"></script>
         <script src="js/game.js"></script>
 
-        <style>
-        
-            body {
-                background: black;
-                margin: 0;
-                padding: 0;
-                font-family: 'Helvetica';
-            }
-            
-            #instructions {
-                background-color: rgba(0,0,0,0.75);
-                color: white;
-                text-align: center;
-                padding: 32px;
-                margin: 0px;
-                display: inline;
-                border: 2px solid white;
-            }
-
-            #help {
-                position: absolute;
-                left: 0px;
-                bottom: 0px;
-                padding: 4px;
-                color: white;   
-            }
-
-            #level {
-                position: absolute;
-                left: 0px;
-                top: 0px;
-                padding: 4px;
-                color: yellow;   
-                font-weight: bold;
-            }
-
-        </style>
-        
+        <link rel="stylesheet" type="text/css" href="css/styles.css">
     </head>
     
-    <body>
+    <style>
+
+    </style>
+    
+    <body id="desktop-body">
     
     <div id='start-game'>
         <input id="txtPhoneNumber" type="text" placeholder="What's your phone #?"/>
         <button id="btnStart">Start</button>
     </div>
     
-    <div id='instructions'>
+    <div id="desktop-instructions">
         How to play Astray:
         <br><br>
         Use the arrow keys to move the ball and find the exit to the maze.
@@ -67,11 +37,11 @@
         Vim trainees: h, j, k, l
     </div>
     
-    <div id='help'>
+    <div id="desktop-help">
         Hold down the 'I' key for instructions.
     </div>
 
-    <div id='level'>
+    <div id="desktop-level">
         Level 1
     </div>
     

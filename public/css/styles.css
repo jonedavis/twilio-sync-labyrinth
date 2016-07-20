@@ -5,3 +5,37 @@
     width: 100px;
     margin: 0 auto;
 }
+
+#desktop-body {
+    background: black;
+    margin: 0;
+    padding: 0;
+    font-family: 'Helvetica';
+}
+
+#desktop-instructions {
+    background-color: rgba(0,0,0,0.75);
+    color: white;
+    text-align: center;
+    padding: 32px;
+    margin: 0px;
+    display: inline;
+    border: 2px solid white;
+}
+
+#desktop-help {
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    padding: 4px;
+    color: white;   
+}
+
+#desktop-level {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    padding: 4px;
+    color: yellow;   
+    font-weight: bold;
+}

@@ -17,4 +17,23 @@ $(function() {
 
         $ball.offset({ top: dY, left: dX });
     });
+
+  /**
+   * Trigger vibration
+   * Only works on Chrome
+   * @param {number|number[]} value
+   */
+  function triggerVibration(value) {
+    if ('vibrate' in window.navigator) {
+      window.navigator.vibrate(value)
+    }
+  }
+
+  /**
+   * Play a sound
+   * @param {string} path
+   */
+  function playSound(path) {
+    new Audio(path).play()
+  }
 });
