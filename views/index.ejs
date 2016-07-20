@@ -10,50 +10,14 @@
         <script src="js/keyboard.js"></script>
         <script src="js/maze.js"></script>
         <script src="js/game.js"></script>
-
-        <style>
         
-            body {
-                background: black;
-                margin: 0;
-                padding: 0;
-                font-family: 'Helvetica';
-            }
-            
-            #instructions {
-                background-color: rgba(0,0,0,0.75);
-                color: white;
-                text-align: center;
-                padding: 32px;
-                margin: 0px;
-                display: inline;
-                border: 2px solid white;
-            }
-
-            #help {
-                position: absolute;
-                left: 0px;
-                bottom: 0px;
-                padding: 4px;
-                color: white;   
-            }
-
-            #level {
-                position: absolute;
-                left: 0px;
-                top: 0px;
-                padding: 4px;
-                color: yellow;   
-                font-weight: bold;
-            }
-
-        </style>
+        <link rel="stylesheet" type="text/css" href="css/styles.css">
         
     </head>
     
-    <body>
+    <body id="desktop-body">
     
-    <div id='instructions'>
+    <div id="desktop-instructions">
         How to play Astray:
         <br><br>
         Use the arrow keys to move the ball and find the exit to the maze.
@@ -61,11 +25,11 @@
         Vim trainees: h, j, k, l
     </div>
     
-    <div id='help'>
+    <div id="desktop-help">
         Hold down the 'I' key for instructions.
     </div>
 
-    <div id='level'>
+    <div id="desktop-level">
         Level 1
     </div>
     
