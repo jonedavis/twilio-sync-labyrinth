@@ -1,9 +1,18 @@
+@font-face {
+    font-family:"PressStart2P";
+    src: url("/fonts/PressStart2P.ttf")
+}
+
 #mobile-ball {
     background-color: red;
     border-radius: 100px;
     height: 100px;
     width: 100px;
     margin: 0 auto;
+}
+
+#controller {
+  background-color: black;
 }
 
 #desktop-body {
@@ -28,7 +37,7 @@
     left: 0px;
     bottom: 0px;
     padding: 4px;
-    color: white;   
+    color: white;
 }
 
 #desktop-level {
@@ -36,6 +45,6 @@
     left: 0px;
     top: 0px;
     padding: 4px;
-    color: yellow;   
+    color: yellow;
     font-weight: bold;
 }
