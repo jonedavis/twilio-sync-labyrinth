@@ -17,4 +17,15 @@ $(function() {
 
         $ball.offset({ top: dY, left: dX });
     });
+
+  /**
+   * Trigger vibration
+   * Only works on Chrome
+   * @param {number|number[]}
+   */
+  function triggerVibration(value) {
+    if ('vibrate' in window.navigator) {
+      window.navigator.vibrate(value)
+    }
+  }
 });
