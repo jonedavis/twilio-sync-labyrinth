@@ -4,15 +4,16 @@ var path = require('path');
 var mobileDetection = require('./mobiledetection');
 var app = express();
 
+app.use(express.static('public'));
 app.set('port', process.env.PORT || 3000);
 app.set("views", path.resolve(__dirname, "views"));
 app.set("view engine", "ejs");
 
 app.get('/', function(req, res) {
-    var isMobile = mobileDetection.isCallerMobile(req);
+    var isMobile = mobileDetection(req);
     
     if (!isMobile) {
-    
+        res.render('index');
     } else {
         res.redirect('/mobile');
     }
