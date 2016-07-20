@@ -29,6 +29,7 @@ var camera = undefined,
 // Box2D world variables 
     wWorld = undefined,
     wBall = undefined,
+    wContactListener = undefined,
 
 // Sync stuff
     syncClient = undefined,
@@ -64,7 +65,13 @@ function createPhysicsWorld() {
                 wWorld.CreateBody(bodyDef).CreateFixture(fixDef);
             }
         }
-    }
+		}
+
+  wContactListener = new Box2D.Dynamics.b2ContactListener;
+  wContactListener.BeginContact = function (contact) {
+    // TODO: Write that collision should play
+  }
+  wWorld.SetContactListener(wContactListener);
 }
 
 
