@@ -34,23 +34,20 @@ var camera = undefined,
     controllerStateDoc = undefined;
 
 // Assets
-var $splash = undefined
-var numberOfLevels = 6
-var currentLevel = 0
-var assets = []
+var $splash = undefined;
+var $level = undefined;
+var numberOfLevels = 6;
+var currentLevel = 0;
+var assets = [];
 
 for (var i = 1; i <= numberOfLevels; i++) {
-  var tempAsset = {
-    ball: THREE.ImageUtils.loadTexture('imgs/level_' + i + '/ball.png'),
-    concrete: THREE.ImageUtils.loadTexture('imgs/level_' + i + '/concrete.png'),
-    brick: THREE.ImageUtils.loadTexture('imgs/level_' + i + '/brick.png'),
-  }
-  assets.push(tempAsset)
+    var tempAsset = {
+        ball: THREE.ImageUtils.loadTexture('imgs/level_' + i + '/ball.png'),
+        concrete: THREE.ImageUtils.loadTexture('imgs/level_' + i + '/concrete.png'),
+        brick: THREE.ImageUtils.loadTexture('imgs/level_' + i + '/brick.png'),
+    }
+    assets.push(tempAsset)
 }
-
-// var ironTexture = 
-  // planeTexture =
-  // brickTexture = 
 
 function createPhysicsWorld() {
     // Create the world object.
@@ -80,13 +77,13 @@ function createPhysicsWorld() {
                 wWorld.CreateBody(bodyDef).CreateFixture(fixDef);
             }
         }
-		}
+    }
 
-  wContactListener = new Box2D.Dynamics.b2ContactListener;
-  wContactListener.BeginContact = function (contact) {
-    // TODO: Write that collision should play
-  }
-  wWorld.SetContactListener(wContactListener);
+    wContactListener = new Box2D.Dynamics.b2ContactListener;
+    wContactListener.BeginContact = function (contact) {
+        // TODO: Write that collision should play
+    }
+    wWorld.SetContactListener(wContactListener);
 }
 
 
@@ -212,10 +209,9 @@ function gameLoop() {
             light.intensity = 0;
             var level = Math.floor((mazeDimension - 1) / 2 - 4);
             if (level > currentLevel) {
-              advanceLevelTo(level)
+                advanceLevelTo(level);
             }
-            $('#desktop-level').html('Level ' + level);
-            gameState = 'fade in';
+            gameState = 'advancing';
             break;
 
         case 'fade in':
@@ -223,7 +219,7 @@ function gameLoop() {
             renderer.render(scene, camera);
             if (Math.abs(light.intensity - 1.0) < 0.05) {
                 light.intensity = 1.0;
-                gameState = 'play'
+                gameState = 'play';
             }
             break;
 
@@ -249,7 +245,7 @@ function gameLoop() {
             if (Math.abs(light.intensity - 0.0) < 0.1) {
                 light.intensity = 0.0;
                 renderer.render(scene, camera);
-                gameState = 'initialize'
+                gameState = 'initialize';
             }
             break;
 
@@ -260,19 +256,23 @@ function gameLoop() {
 }
 
 function advanceLevelTo(levelNumber) {
-  currentLevel = levelNumber
-  $splash.css('background', 'url(/imgs/level_' + currentLevel + '/splash.png) no-repeat center center fixed');
-  $splash.show()
-  setTimeout(function() {
-    $splash.hide()
-  }, 2000)
+    currentLevel = levelNumber;
+    $level.html('Level ' + currentLevel).show();
+    $splash.css('background', 'url(/imgs/level_' + currentLevel + '/splash.png) no-repeat center center fixed');
+    $splash.show();
+    setTimeout(function () {
+        $splash.hide();
+        gameState = 'fade in';
+    }, 5000);
 }
 
 
 function onResize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
+    if (camera) {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+    }
 }
 
 
@@ -291,19 +291,19 @@ function onMoveKey(axis) {
 
 
 jQuery.fn.centerv = function () {
-    wh = window.innerHeight;
-    h = this.outerHeight();
-    this.css("position", "absolute");
-    this.css("top", Math.max(0, (wh - h) / 2) + "px");
+    var wh = window.innerHeight;
+    var h = this.outerHeight();
+    this.css('position', 'absolute');
+    this.css('top', Math.max(0, (wh - h) / 2) + 'px');
     return this;
 }
 
 
 jQuery.fn.centerh = function () {
-    ww = window.innerWidth;
-    w = this.outerWidth();
-    this.css("position", "absolute");
-    this.css("left", Math.max(0, (ww - w) / 2) + "px");
+    var ww = window.innerWidth;
+    var w = this.outerWidth();
+    this.css('position', 'absolute');
+    this.css('left', Math.max(0, (ww - w) / 2) + 'px');
     return this;
 }
 
@@ -316,47 +316,47 @@ jQuery.fn.center = function () {
 
 
 $(document)
-    .ready(function() {
-        $splash = $('#splash')
-        // Prepare the instructions.
-        $('#desktop-instructions').center();
-        $('#desktop-instructions').hide();
-        KeyboardJS.bind.key('i',
-            function() { $('#desktop-instructions').show() },
-            function() { $('#desktop-instructions').hide() });
-
-        // Create the renderer.
-        renderer = new THREE.WebGLRenderer();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(renderer.domElement);
-
-        // Bind keyboard and resize events.
-        KeyboardJS.bind.axis('left', 'right', 'down', 'up', onMoveKey);
-        KeyboardJS.bind.axis('h', 'l', 'j', 'k', onMoveKey);
-        $(window).resize(onResize);
-
+    .ready(function () {
+        $splash = $('#splash').hide();
+        $level = $('#desktop-level').hide();
 
         // Set the initial game state.
-        gameState = 'waiting';
+        gameState = 'waiting for sync';
 
-        $('#start-game div').center();
-        $('#btnStart').on('click', function() {
+        $('#txtPhoneNumber').bind('keypress', function (event) {
+            if (event.keyCode === 13) {
+                $('#btnStart').trigger('click');
+            }
+        });
+
+        $('#btnStart').on('click', function () {
             var phoneNumber = $('#txtPhoneNumber').val();
             var url = '/token/' + phoneNumber;
-            Twilio.Sync.CreateClient(url).then(function(client) {
+            Twilio.Sync.CreateClient(url).then(function (client) {
                 syncClient = client;
-                syncClient.document('game-state-' + phoneNumber).then(function(doc) {
+                syncClient.document('game-state-' + phoneNumber).then(function (doc) {
                     gameStateDoc = doc;
-                    syncClient.document('controller-state-' + phoneNumber).then(function(ctrlDoc) {
+                    syncClient.document('controller-state-' + phoneNumber).then(function (ctrlDoc) {
                         controllerStateDoc = ctrlDoc;
 
                         $('#start-game').hide();
 
-                        gameState = 'initialize';
+                        // Create the renderer.
+                        renderer = new THREE.WebGLRenderer();
+                        renderer.setSize(window.innerWidth, window.innerHeight);
+                        document.body.appendChild(renderer.domElement);
+
+                        // Bind keyboard and resize events.
+                        KeyboardJS.bind.axis('left', 'right', 'down', 'up', onMoveKey);
+                        KeyboardJS.bind.axis('h', 'l', 'j', 'k', onMoveKey);
+                        $(window).resize(onResize);
+
                         // Start the game loop.
+                        gameState = 'initialize';
                         requestAnimationFrame(gameLoop);
 
-                        controllerStateDoc.on("updated", function (data) {
+                        // Subscribe to changes to the controller state document
+                        controllerStateDoc.on('updated', function (data) {
                             onMoveKey(data);
                         });
                     });

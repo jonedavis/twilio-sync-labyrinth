@@ -1,43 +1,19 @@
 @font-face {
-    font-family:"PressStart2P";
+    font-family: "PressStart2P";
     src: url("/fonts/PressStart2P.ttf")
 }
 
-#mobile-ball {
-    background-color: red;
-    border-radius: 100px;
-    height: 100px;
-    width: 100px;
-    margin: 0 auto;
-}
-
 #controller {
-  background-color: black;
+    background-color: black;
+    overflow: hidden;
 }
 
 #desktop-body {
     background: black;
     margin: 0;
     padding: 0;
-    font-family: 'Helvetica';
-}
-
-#desktop-instructions {
-    background-color: rgba(0,0,0,0.75);
-    color: white;
-    text-align: center;
-    padding: 32px;
-    margin: 0px;
-    display: inline;
-    border: 2px solid white;
-}
-
-#desktop-help {
-    position: absolute;
-    left: 0px;
-    bottom: 0px;
-    padding: 4px;
-    color: white;
+    font-family: 'PressStart2P';
+    overflow: hidden;
 }
 
 #desktop-level {
@@ -50,22 +26,46 @@
 }
 
 #start-game {
-  width: 100vw;
-  height: 100vh;
-  background: url(/imgs/mainmenu.gif) no-repeat center center fixed; 
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: url(/imgs/mainmenu.gif) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+#start-game div {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100vw;
+    text-align: center;
+}
+
+#txtPhoneNumber {
+    width: 900px;
+    font-family: 'PressStart2P';
+    font-size: 36px;
+}
+
+#btnStart {
+    font-family: 'PressStart2P';
+    font-size: 36px;
 }
 
 #splash {
-  display: none;
-  width: 100vw;
-  height: 100vh;
-  background: url(/imgs/mainmenu.gif) no-repeat center center fixed; 
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: url(/imgs/mainmenu.gif) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
