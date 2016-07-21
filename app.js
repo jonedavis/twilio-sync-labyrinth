@@ -7,9 +7,6 @@ var getToken = require('./syncSetup');
 var config = require('./config.js');
 var app = express();
 
-config.sendTextMessages = true;
-config.domain = 'https://twilio-david.ngrok.io';
-
 app.use(express.static('public'));
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.resolve(__dirname, 'views'));
@@ -21,7 +18,7 @@ app.get('/', function (req, res) {
     if (!isMobile) {
         res.render('index');
     } else {
-        res.render('mobile');
+        res.render('mobile-index');
     }
 });
 
