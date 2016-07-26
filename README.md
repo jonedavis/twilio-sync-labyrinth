@@ -11,8 +11,8 @@ After you enter your phone number you will receive a text message with a link. C
 ## Getting Started
 To follow along at home you’ll need:
 1. [A free Twilio account](https://www.twilio.com/try-twilio)
-1. [Node installed](https://nodejs.org/en/download/)
-1. [Ngrok](https://ngrok.com/)
+2. [Node installed](https://nodejs.org/en/download/)
+3. [Ngrok](https://ngrok.com/)
 
 ## Twilio products used
 #### [Twilio Sync](https://www.twilio.com/sync/api) - 
@@ -25,11 +25,12 @@ Exchange text and pictures around the world from any web or mobile app with one 
 This project stemmed from an intense 4 hour hack session. With 5 minutes remaining in the session, we finally got the ball to move on the screen. I'll never forget David yelling at the top of his lungs and everyone jumping up and down when we got it to work.
 
 ## Next Steps
-There is still work to be done: 
+There is still work to be done:
+
 1. The ball movement needs to be smoothed out
-1. There is no final level or end screen
-1. Android and iPhone have inverse coordinates
-1. The controller webpage could use some visuals
+2. There is no final level or end screen
+3. Android and iPhone have inverse coordinates
+4. The controller webpage could use some visuals
 
 ## How to run it locally
 1. Clone this repo.
