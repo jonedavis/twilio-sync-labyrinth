@@ -6,6 +6,10 @@
 #controller {
     background-color: black;
     overflow: hidden;
+    color: white;
+    font-family: 'PressStart2P';
+    text-align: center;
+    font-size: 36px;
 }
 
 #desktop-body {
