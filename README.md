@@ -2,7 +2,7 @@
 A WebGL maze game built with Twilio, Three.js, and Box2dWeb. CommsQuest IV uses your mobile phone and it's accelerometer as a controller. Your mission is to escape a unique world filled with crazy passages and secret chambers!
 
 ## Play it here
-Are you ready for the challenge? Take it for a spin:
+Are you ready for the challenge? Take it for a spin in your Desktop browser:
 
 http://commsquest4.azurewebsites.net/
 
