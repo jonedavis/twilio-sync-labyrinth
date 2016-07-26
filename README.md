@@ -10,6 +10,7 @@ After you enter your phone number you will receive a text message with a link. C
 
 ## Getting Started
 To follow along at home you’ll need:
+
 1. [A free Twilio account](https://www.twilio.com/try-twilio)
 2. [Node installed](https://nodejs.org/en/download/)
 3. [Ngrok](https://ngrok.com/)
