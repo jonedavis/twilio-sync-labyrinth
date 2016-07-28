@@ -43,11 +43,12 @@ var camera = undefined,
     oldAccel = { x: 0.0, y: 0.0 },
     rawAccelX = [0, 0, 0],
     rawAccelY = [0, 0, 0];
-    
-    // Assets
+
+// Assets
 var $splash = undefined,
     $level = undefined,
     assets = [];
+
 
 // Preload textures
 for (var i = 1; i <= numberOfLevels; i++) {
@@ -388,8 +389,8 @@ $(document)
                         renderer = new THREE.WebGLRenderer();
                         renderer.setSize(window.innerWidth, window.innerHeight);
                         document.body.appendChild(renderer.domElement);
-
-                        // Bind resize event
+                        
+                        // Bind keyboard and resize events
                         $(window).resize(onResize);
 
                         // Start the game loop
