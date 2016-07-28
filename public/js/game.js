@@ -170,7 +170,6 @@ function updatePhysicsWorld() {
 
 
 function updateRenderWorld() {
-
     // Update ball position.
     var stepX = wBall.GetPosition().x - ballMesh.position.x;
     var stepY = wBall.GetPosition().y - ballMesh.position.y;
@@ -199,7 +198,6 @@ function updateRenderWorld() {
 
 
 function gameLoop() {
-
     switch (gameState) {
 
     case 'initialize':
@@ -255,7 +253,6 @@ function gameLoop() {
     }
 
     requestAnimationFrame(gameLoop);
-
 }
 
 function advanceLevelTo(levelNumber) {
@@ -278,18 +275,14 @@ function onResize() {
     }
 }
 
-
+// From mobile phone (controller)
 function onMoveKey(axis) {
-    if (axis.x) { // From Mobile phone
-        var newAxis = [0, 0];
-        if (axis.y < 0) newAxis[0] = -1;
-        if (axis.y >= 0) newAxis[0] = 1;
-        if (axis.x < 0) newAxis[1] = 1;
-        if (axis.x >= 0) newAxis[1] = -1;
-        keyAxis = newAxis;
-    } else { // From Desktop Keyboard
-        keyAxis = axis.slice(0);
-    }
+    var newAxis = [0, 0];
+    if (axis.y < 0) newAxis[0] = -1;
+    if (axis.y >= 0) newAxis[0] = 1;
+    if (axis.x < 0) newAxis[1] = 1;
+    if (axis.x >= 0) newAxis[1] = -1;
+    keyAxis = newAxis;
 }
 
 
