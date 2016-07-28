@@ -12,7 +12,9 @@ var camera = undefined,
     ballRadius = 0.25,
     keyAxis = [0, 0],
     gameState = undefined,
-
+    numberOfLevels = 6,
+    currentLevel = 0,
+    
     // Box2D shortcuts
     b2World = Box2D.Dynamics.b2World,
     b2FixtureDef = Box2D.Dynamics.b2FixtureDef,
@@ -34,11 +36,9 @@ var camera = undefined,
     controllerStateDoc = undefined;
 
 // Assets
-var $splash = undefined;
-var $level = undefined;
-var numberOfLevels = 6;
-var currentLevel = 0;
-var assets = [];
+var $splash = undefined,
+    $level = undefined,
+    assets = [];
 
 for (var i = 1; i <= numberOfLevels; i++) {
     var tempAsset = {
@@ -350,8 +350,6 @@ $(document)
                         document.body.appendChild(renderer.domElement);
 
                         // Bind keyboard and resize events.
-                        KeyboardJS.bind.axis('left', 'right', 'down', 'up', onMoveKey);
-                        KeyboardJS.bind.axis('h', 'l', 'j', 'k', onMoveKey);
                         $(window).resize(onResize);
 
                         // Start the game loop.
