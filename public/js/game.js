@@ -13,7 +13,7 @@ var camera = undefined,
     keyAxis = [0, 0],
     gameState = undefined,
 
-// Box2D shortcuts
+    // Box2D shortcuts
     b2World = Box2D.Dynamics.b2World,
     b2FixtureDef = Box2D.Dynamics.b2FixtureDef,
     b2BodyDef = Box2D.Dynamics.b2BodyDef,
@@ -23,12 +23,12 @@ var camera = undefined,
     b2Settings = Box2D.Common.b2Settings,
     b2Vec2 = Box2D.Common.Math.b2Vec2,
 
-// Box2D world variables 
+    // Box2D world variables 
     wWorld = undefined,
     wBall = undefined,
     wContactListener = undefined,
 
-// Sync stuff
+    // Sync stuff
     syncClient = undefined,
     gameStateDoc = undefined,
     controllerStateDoc = undefined;
@@ -92,23 +92,25 @@ function generate_maze_mesh(field) {
     for (var i = 0; i < field.dimension; i++) {
         for (var j = 0; j < field.dimension; j++) {
             if (field[i][j]) {
-                var geometry = new THREE.CubeGeometry(1, 1, 1, 1, 1, 1);
+                var geometry = new THREE.BoxGeometry(1, 1, 1, 1, 1, 1);
                 var mesh_ij = new THREE.Mesh(geometry);
                 mesh_ij.position.x = i;
                 mesh_ij.position.y = j;
                 mesh_ij.position.z = 0.5;
-                THREE.GeometryUtils.merge(dummy, mesh_ij);
+                mesh_ij.updateMatrix();
+                dummy.merge(mesh_ij.geometry, mesh_ij.matrix);
             }
         }
     }
-    var material = new THREE.MeshPhongMaterial({ map: assets[currentLevel].brick });
+    var material = new THREE.MeshPhongMaterial({
+        map: assets[currentLevel].brick
+    });
     var mesh = new THREE.Mesh(dummy, material)
     return mesh;
 }
 
 
 function createRenderWorld() {
-
     // Create the scene object.
     scene = new THREE.Scene();
 
@@ -119,7 +121,9 @@ function createRenderWorld() {
 
     // Add the ball.
     g = new THREE.SphereGeometry(ballRadius, 32, 16);
-    m = new THREE.MeshPhongMaterial({ map: assets[currentLevel].ball });
+    m = new THREE.MeshPhongMaterial({
+        map: assets[currentLevel].ball
+    });
     ballMesh = new THREE.Mesh(g, m);
     ballMesh.position.set(1, 1, ballRadius);
     scene.add(ballMesh);
@@ -134,22 +138,21 @@ function createRenderWorld() {
     mazeMesh = generate_maze_mesh(maze);
     scene.add(mazeMesh);
 
-    // Add the ground.
+    //  Add the ground.
     g = new THREE.PlaneGeometry(mazeDimension * 10, mazeDimension * 10, mazeDimension, mazeDimension);
     var planeTexture = assets[currentLevel].concrete
     planeTexture.wrapS = planeTexture.wrapT = THREE.RepeatWrapping;
     planeTexture.repeat.set(mazeDimension * 5, mazeDimension * 5);
-    m = new THREE.MeshPhongMaterial({ map: planeTexture });
+    m = new THREE.MeshPhongMaterial({
+        map: planeTexture
+    });
     planeMesh = new THREE.Mesh(g, m);
     planeMesh.position.set((mazeDimension - 1) / 2, (mazeDimension - 1) / 2, 0);
-    planeMesh.rotation.set(Math.PI / 2, 0, 0);
     scene.add(planeMesh);
-
 }
 
 
 function updatePhysicsWorld() {
-
     // Apply "friction". 
     var lv = wBall.GetLinearVelocity();
     lv.Multiply(0.95);
@@ -177,13 +180,13 @@ function updateRenderWorld() {
     // Update ball rotation.
     var tempMat = new THREE.Matrix4();
     tempMat.makeRotationAxis(new THREE.Vector3(0, 1, 0), stepX / ballRadius);
-    tempMat.multiplySelf(ballMesh.matrix);
+    tempMat.multiply(ballMesh.matrix);
     ballMesh.matrix = tempMat;
     tempMat = new THREE.Matrix4();
     tempMat.makeRotationAxis(new THREE.Vector3(1, 0, 0), -stepY / ballRadius);
-    tempMat.multiplySelf(ballMesh.matrix);
+    tempMat.multiply(ballMesh.matrix);
     ballMesh.matrix = tempMat;
-    ballMesh.rotation.getRotationFromMatrix(ballMesh.matrix);
+    ballMesh.rotation.setFromRotationMatrix(ballMesh.matrix);
 
     // Update camera and light positions.
     camera.position.x += (ballMesh.position.x - camera.position.x) * 0.1;
@@ -199,55 +202,55 @@ function gameLoop() {
 
     switch (gameState) {
 
-        case 'initialize':
-            maze = generateSquareMaze(mazeDimension);
-            maze[mazeDimension - 1][mazeDimension - 2] = false;
-            createPhysicsWorld();
-            createRenderWorld();
-            camera.position.set(1, 1, 5);
-            light.position.set(1, 1, 1.3);
-            light.intensity = 0;
-            var level = Math.floor((mazeDimension - 1) / 2 - 4);
-            if (level > currentLevel) {
-                advanceLevelTo(level);
-            }
-            gameState = 'advancing';
-            break;
+    case 'initialize':
+        maze = generateSquareMaze(mazeDimension);
+        maze[mazeDimension - 1][mazeDimension - 2] = false;
+        createPhysicsWorld();
+        createRenderWorld();
+        camera.position.set(1, 1, 5);
+        light.position.set(1, 1, 1.3);
+        light.intensity = 0;
+        var level = Math.floor((mazeDimension - 1) / 2 - 4);
+        if (level > currentLevel) {
+            advanceLevelTo(level);
+        }
+        gameState = 'advancing';
+        break;
 
-        case 'fade in':
-            light.intensity += 0.1 * (1.0 - light.intensity);
+    case 'fade in':
+        light.intensity += 0.1 * (1.0 - light.intensity);
+        renderer.render(scene, camera);
+        if (Math.abs(light.intensity - 1.0) < 0.05) {
+            light.intensity = 1.0;
+            gameState = 'play';
+        }
+        break;
+
+    case 'play':
+        updatePhysicsWorld();
+        updateRenderWorld();
+        renderer.render(scene, camera);
+
+        // Check for victory.
+        var mazeX = Math.floor(ballMesh.position.x + 0.5);
+        var mazeY = Math.floor(ballMesh.position.y + 0.5);
+        if (mazeX == mazeDimension && mazeY == mazeDimension - 2) {
+            mazeDimension += 2;
+            gameState = 'fade out';
+        }
+        break;
+
+    case 'fade out':
+        updatePhysicsWorld();
+        updateRenderWorld();
+        light.intensity += 0.1 * (0.0 - light.intensity);
+        renderer.render(scene, camera);
+        if (Math.abs(light.intensity - 0.0) < 0.1) {
+            light.intensity = 0.0;
             renderer.render(scene, camera);
-            if (Math.abs(light.intensity - 1.0) < 0.05) {
-                light.intensity = 1.0;
-                gameState = 'play';
-            }
-            break;
-
-        case 'play':
-            updatePhysicsWorld();
-            updateRenderWorld();
-            renderer.render(scene, camera);
-
-            // Check for victory.
-            var mazeX = Math.floor(ballMesh.position.x + 0.5);
-            var mazeY = Math.floor(ballMesh.position.y + 0.5);
-            if (mazeX == mazeDimension && mazeY == mazeDimension - 2) {
-                mazeDimension += 2;
-                gameState = 'fade out';
-            }
-            break;
-
-        case 'fade out':
-            updatePhysicsWorld();
-            updateRenderWorld();
-            light.intensity += 0.1 * (0.0 - light.intensity);
-            renderer.render(scene, camera);
-            if (Math.abs(light.intensity - 0.0) < 0.1) {
-                light.intensity = 0.0;
-                renderer.render(scene, camera);
-                gameState = 'initialize';
-            }
-            break;
+            gameState = 'initialize';
+        }
+        break;
 
     }
 
