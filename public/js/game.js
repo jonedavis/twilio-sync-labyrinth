@@ -174,7 +174,10 @@ function updatePhysicsWorld() {
     wBall.ApplyImpulse(f, wBall.GetPosition());
     controllerAxis = [0, 0];
 
-    // Take a time step
+    // Step
+    // a: time to pass in seconds
+    // b: how strong to correct velocity
+    // c: how strong to correct position
     wWorld.Step(1 / 60, 8, 3);
 }
 
