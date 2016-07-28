@@ -34,6 +34,7 @@ var camera = undefined,
     syncClient = undefined,
     gameStateDoc = undefined,
     controllerStateDoc = undefined,
+    wallCollisionList = undefined,
     
     // Controller variables
     ACCEL_FACTOR = 10,
@@ -90,9 +91,22 @@ function createPhysicsWorld() {
         }
     }
 
+    // Wall hits
     wContactListener = new Box2D.Dynamics.b2ContactListener;
-    wContactListener.BeginContact = function (contact) {
-        // TODO: Write that collision should play
+    // http://www.box2dflash.org/docs/2.1a/reference/Box2D/Dynamics/b2ContactListener.html
+    wContactListener.PostSolve = function (contact, impulse) {
+        var impulseSum = impulse.normalImpulses.reduce(function (accum, item) {
+            return accum + item
+        }, 0)
+
+        // Collision impulse threshold. Tweak as needed
+        if (impulseSum >= 0.80) {
+            console.log(impulseSum)
+            wallCollisionList.push({ impulse: impulseSum })
+                .catch(function (err) {
+                    console.log(err)
+                })
+        }
     }
     wWorld.SetContactListener(wContactListener);
 }
@@ -383,24 +397,28 @@ $(document)
                     syncClient.document('controller-state-' + phoneNumber).then(function (ctrlDoc) {
                         controllerStateDoc = ctrlDoc;
 
-                        $('#start-game').hide();
+                        syncClient.list('wall-collision-list').then(function (syncList) {
+                            wallCollisionList = syncList
 
-                        // Create the renderer
-                        renderer = new THREE.WebGLRenderer();
-                        renderer.setSize(window.innerWidth, window.innerHeight);
-                        document.body.appendChild(renderer.domElement);
-                        
-                        // Bind keyboard and resize events
-                        $(window).resize(onResize);
+                            $('#start-game').hide();
 
-                        // Start the game loop
-                        gameState = 'initialize';
-                        requestAnimationFrame(gameLoop);
+                            // Create the renderer
+                            renderer = new THREE.WebGLRenderer();
+                            renderer.setSize(window.innerWidth, window.innerHeight);
+                            document.body.appendChild(renderer.domElement);
 
-                        // Subscribe to changes to the controller state document
-                        controllerStateDoc.on('updated', function (data) {
-                            onControllerUpdated(data);
-                        });
+                            // Bind keyboard and resize events
+                            $(window).resize(onResize);
+
+                            // Start the game loop
+                            gameState = 'initialize';
+                            requestAnimationFrame(gameLoop);
+
+                            // Subscribe to changes to the controller state document
+                            controllerStateDoc.on('updated', function (data) {
+                                onControllerUpdated(data);
+                            });
+                        })
                     });
                 });
             });
