@@ -13,12 +13,18 @@
     <link rel="stylesheet" type="text/css" href="/css/styles.css">
 </head>
 <body id="controller">
-    <h2>For best results, lock your phone's rotation in portrait mode.</h2>
-
-    <div id="score"></div>
-    <div id="time"></div>
-    <div id="pause-button"></div>
+    <div id="portrait-container">
+        <h2>To Begin Your Quest</h2>
+        <h3>Hold your phone parallel to the ground and in landscape mode.</h3>
+    </div>
     
+    <div id="landscape-container">
+        <div id="score">Score</div>
+        <div id="time">Time</div>
+    </div>
+    
+    <div id="pause-button"></div>
+
     <script>
         var phoneNumber = '<%= phoneNumber %>';
     </script>
