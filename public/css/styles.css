@@ -1,6 +1,10 @@
 @font-face {
     font-family: "PressStart2P";
-    src: url("/fonts/PressStart2P.ttf")
+    src: url("/fonts/PressStart2P.ttf");
+}
+
+body {
+    line-height: 2em; /* Space out PressStart2P font */
 }
 
 #controller {
@@ -10,6 +14,12 @@
     font-family: 'PressStart2P';
     text-align: center;
     font-size: 36px;
+}
+
+#controls-container { display: none; }
+#instructions-container { display: block; }
+#controller {
+    background-color: #F44336 !important; /* temp */
 }
 
 #desktop-body {
