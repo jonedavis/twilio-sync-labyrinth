@@ -38,10 +38,11 @@ var camera = undefined,
     // Controller variables
     ACCEL_FACTOR = 10,
     ACCEL_THRESHOLD = 0.3,
-    NUM_FILTER_POINTS = 2,
+    NUM_FILTER_POINTS = 3,
+    FORCE_MULTIPLIER = 1.1,
     oldAccel = { x: 0.0, y: 0.0 },
-    rawAccelX = [0,0],
-    rawAccelY = [0,0];
+    rawAccelX = [0, 0, 0],
+    rawAccelY = [0, 0, 0];
     
     // Assets
 var $splash = undefined,
@@ -168,8 +169,8 @@ function updatePhysicsWorld() {
     wBall.SetLinearVelocity(lv);
 
     // Apply user-directed force
-    var f = new b2Vec2(controllerAxis[0] * wBall.GetMass(), 
-                       controllerAxis[1] * wBall.GetMass());
+    var f = new b2Vec2(controllerAxis[0] * FORCE_MULTIPLIER * wBall.GetMass(), 
+                       controllerAxis[1] * FORCE_MULTIPLIER * wBall.GetMass());
     wBall.ApplyImpulse(f, wBall.GetPosition());
     controllerAxis = [0, 0];
 
@@ -303,15 +304,15 @@ function onControllerUpdated(axis) {
         x: Math.abs(oldAccel.x - newAccel.x),
         y: Math.abs(oldAccel.y - newAccel.y)
     };
-
+    
     if (diff.x <= ACCEL_THRESHOLD) return;
     if (diff.y <= ACCEL_THRESHOLD) return;
-    
+
     var newAxis = [0, 0];
+    if (newAccel.x < 0) newAxis[1] = 1;
+    if (newAccel.x >= 0) newAxis[1] = -1;    
     if (newAccel.y < 0) newAxis[0] = -1;
     if (newAccel.y >= 0) newAxis[0] = 1;
-    if (newAccel.x < 0) newAxis[1] = 1;
-    if (newAccel.x >= 0) newAxis[1] = -1;
     
     controllerAxis = newAxis;
     oldAccel.x = newAccel.x;
