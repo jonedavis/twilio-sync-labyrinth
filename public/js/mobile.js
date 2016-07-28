@@ -20,10 +20,10 @@ $(function () {
             // Setup the controller state document
             syncClient.document('controller-state-' + phoneNumber).then(function (ctrlDoc) {
                 controllerStateDoc = ctrlDoc;
-
-                // Fire up the gyro tracking
+                // Set frequency of updates to 100ms
                 gyro.frequency = 100;
-                gyro.startTracking(function (o) {
+                // Fire up the gyro tracking                
+                gyro.startTracking(function(o) {
                     // Send the gyro data to Sync
                     controllerStateDoc.set(o);
                 });

@@ -10,7 +10,7 @@ var camera = undefined,
     planeMesh = undefined,
     ballMesh = undefined,
     ballRadius = 0.25,
-    keyAxis = [0, 0],
+    controllerAxis = [0, 0],
     gameState = undefined,
     numberOfLevels = 6,
     currentLevel = 0,
@@ -33,13 +33,24 @@ var camera = undefined,
     // Sync stuff
     syncClient = undefined,
     gameStateDoc = undefined,
-    controllerStateDoc = undefined;
+    controllerStateDoc = undefined,
+    
+    // Controller variables
+    ACCEL_FACTOR = 10,
+    ACCEL_THRESHOLD = 0.3,
+    NUM_FILTER_POINTS = 3,
+    FORCE_MULTIPLIER = 1.5,
+    oldAccel = { x: 0.0, y: 0.0 },
+    rawAccelX = [0, 0, 0],
+    rawAccelY = [0, 0, 0];
 
 // Assets
 var $splash = undefined,
     $level = undefined,
     assets = [];
 
+
+// Preload textures
 for (var i = 1; i <= numberOfLevels; i++) {
     var tempAsset = {
         ball: THREE.ImageUtils.loadTexture('imgs/level_' + i + '/ball.png'),
@@ -50,10 +61,10 @@ for (var i = 1; i <= numberOfLevels; i++) {
 }
 
 function createPhysicsWorld() {
-    // Create the world object.
+    // Create the world object
     wWorld = new b2World(new b2Vec2(0, 0), true);
 
-    // Create the ball.
+    // Create the ball
     var bodyDef = new b2BodyDef();
     bodyDef.type = b2Body.b2_dynamicBody;
     bodyDef.position.Set(1, 1);
@@ -65,7 +76,7 @@ function createPhysicsWorld() {
     fixDef.shape = new b2CircleShape(ballRadius);
     wBall.CreateFixture(fixDef);
 
-    // Create the maze.
+    // Create the maze
     bodyDef.type = b2Body.b2_staticBody;
     fixDef.shape = new b2PolygonShape();
     fixDef.shape.SetAsBox(0.5, 0.5);
@@ -111,15 +122,15 @@ function generate_maze_mesh(field) {
 
 
 function createRenderWorld() {
-    // Create the scene object.
+    // Create the scene object
     scene = new THREE.Scene();
 
-    // Add the light.
+    // Add the light
     light = new THREE.PointLight(0xffffff, 1);
     light.position.set(1, 1, 1.3);
     scene.add(light);
 
-    // Add the ball.
+    // Add the ball
     g = new THREE.SphereGeometry(ballRadius, 32, 16);
     m = new THREE.MeshPhongMaterial({
         map: assets[currentLevel].ball
@@ -128,17 +139,17 @@ function createRenderWorld() {
     ballMesh.position.set(1, 1, ballRadius);
     scene.add(ballMesh);
 
-    // Add the camera.
+    // Add the camera
     var aspect = window.innerWidth / window.innerHeight;
     camera = new THREE.PerspectiveCamera(60, aspect, 1, 1000);
     camera.position.set(1, 1, 5);
     scene.add(camera);
 
-    // Add the maze.
+    // Add the maze
     mazeMesh = generate_maze_mesh(maze);
     scene.add(mazeMesh);
 
-    //  Add the ground.
+    //  Add the ground
     g = new THREE.PlaneGeometry(mazeDimension * 10, mazeDimension * 10, mazeDimension, mazeDimension);
     var planeTexture = assets[currentLevel].concrete
     planeTexture.wrapS = planeTexture.wrapT = THREE.RepeatWrapping;
@@ -153,31 +164,33 @@ function createRenderWorld() {
 
 
 function updatePhysicsWorld() {
-    // Apply "friction". 
+    // Apply "friction"
     var lv = wBall.GetLinearVelocity();
-    lv.Multiply(0.95);
+    lv.Multiply(.95);
     wBall.SetLinearVelocity(lv);
 
-    // Apply user-directed force.
-    var multiplier = 3;
-    var f = new b2Vec2(keyAxis[0] * wBall.GetMass() * multiplier, keyAxis[1] * wBall.GetMass() * multiplier);
+    // Apply user-directed force
+    var f = new b2Vec2(controllerAxis[0] * FORCE_MULTIPLIER * wBall.GetMass(), 
+                       controllerAxis[1] * FORCE_MULTIPLIER * wBall.GetMass());
     wBall.ApplyImpulse(f, wBall.GetPosition());
-    keyAxis = [0, 0];
+    controllerAxis = [0, 0];
 
-    // Take a time step.
+    // Step
+    // a: time to pass in seconds
+    // b: how strong to correct velocity
+    // c: how strong to correct position
     wWorld.Step(1 / 60, 8, 3);
 }
 
 
 function updateRenderWorld() {
-
-    // Update ball position.
+    // Update ball position
     var stepX = wBall.GetPosition().x - ballMesh.position.x;
     var stepY = wBall.GetPosition().y - ballMesh.position.y;
     ballMesh.position.x += stepX;
     ballMesh.position.y += stepY;
 
-    // Update ball rotation.
+    // Update ball rotation
     var tempMat = new THREE.Matrix4();
     tempMat.makeRotationAxis(new THREE.Vector3(0, 1, 0), stepX / ballRadius);
     tempMat.multiply(ballMesh.matrix);
@@ -188,7 +201,7 @@ function updateRenderWorld() {
     ballMesh.matrix = tempMat;
     ballMesh.rotation.setFromRotationMatrix(ballMesh.matrix);
 
-    // Update camera and light positions.
+    // Update camera and light positions
     camera.position.x += (ballMesh.position.x - camera.position.x) * 0.1;
     camera.position.y += (ballMesh.position.y - camera.position.y) * 0.1;
     camera.position.z += (5 - camera.position.z) * 0.1;
@@ -199,7 +212,6 @@ function updateRenderWorld() {
 
 
 function gameLoop() {
-
     switch (gameState) {
 
     case 'initialize':
@@ -255,7 +267,6 @@ function gameLoop() {
     }
 
     requestAnimationFrame(gameLoop);
-
 }
 
 function advanceLevelTo(levelNumber) {
@@ -279,17 +290,47 @@ function onResize() {
 }
 
 
-function onMoveKey(axis) {
-    if (axis.x) { // From Mobile phone
-        var newAxis = [0, 0];
-        if (axis.y < 0) newAxis[0] = -1;
-        if (axis.y >= 0) newAxis[0] = 1;
-        if (axis.x < 0) newAxis[1] = 1;
-        if (axis.x >= 0) newAxis[1] = -1;
-        keyAxis = newAxis;
-    } else { // From Desktop Keyboard
-        keyAxis = axis.slice(0);
+// From mobile phone (controller)
+function onControllerUpdated(axis) {
+    // Push raw data to front of arrays
+    // each coordinate gets it's own array
+    rawAccelX.unshift(axis.x);
+    rawAccelY.unshift(axis.y);
+    // Remove oldest data from back of arrays
+    rawAccelX.pop();
+    rawAccelY.pop();
+    // Get new x & y acceleration average
+    var newAccel = {
+        x: getAvgAcceleration(rawAccelX),
+        y: getAvgAcceleration(rawAccelY)
+    };
+    var diff = {
+        x: Math.abs(oldAccel.x - newAccel.x),
+        y: Math.abs(oldAccel.y - newAccel.y)
+    };
+    
+    if (diff.x <= ACCEL_THRESHOLD) return;
+    if (diff.y <= ACCEL_THRESHOLD) return;
+
+    var newAxis = [0, 0];
+    if (newAccel.x < 0) newAxis[1] = 1;
+    if (newAccel.x >= 0) newAxis[1] = -1;    
+    if (newAccel.y < 0) newAxis[0] = -1;
+    if (newAccel.y >= 0) newAxis[0] = 1;
+    
+    controllerAxis = newAxis;
+    oldAccel.x = newAccel.x;
+    oldAccel.y = newAccel.y;
+}
+
+
+function getAvgAcceleration(rawAccel) {
+    var accel = 0.0;
+    for (var i = 0; i < rawAccel.length; i++) {
+        accel += rawAccel[i];
     }
+    accel *= ACCEL_FACTOR / NUM_FILTER_POINTS;
+    return accel;
 }
 
 
@@ -323,7 +364,7 @@ $(document)
         $splash = $('#splash').hide();
         $level = $('#desktop-level').hide();
 
-        // Set the initial game state.
+        // Set the initial game state
         gameState = 'waiting for sync';
 
         $('#txtPhoneNumber').bind('keypress', function (event) {
@@ -344,21 +385,21 @@ $(document)
 
                         $('#start-game').hide();
 
-                        // Create the renderer.
+                        // Create the renderer
                         renderer = new THREE.WebGLRenderer();
                         renderer.setSize(window.innerWidth, window.innerHeight);
                         document.body.appendChild(renderer.domElement);
-
-                        // Bind keyboard and resize events.
+                        
+                        // Bind keyboard and resize events
                         $(window).resize(onResize);
 
-                        // Start the game loop.
+                        // Start the game loop
                         gameState = 'initialize';
                         requestAnimationFrame(gameLoop);
 
                         // Subscribe to changes to the controller state document
                         controllerStateDoc.on('updated', function (data) {
-                            onMoveKey(data);
+                            onControllerUpdated(data);
                         });
                     });
                 });
