@@ -28,6 +28,27 @@ $(function () {
                     controllerStateDoc.set(o);
                 });
             });
+
+            // Wall collisions from game
+            // TODO: Catch errors
+            syncClient.list('wall-collision-list').then(function (wallCollisionList) {
+                wallCollisionList.on('itemAdded', function (collisionItem) {
+                    var collisionImpulse = collisionItem.value.impulse
+
+                    // These ranges can be tweaked
+                    if (collisionImpulse >= 0.80 && collisionImpulse < 1.0) {
+                        triggerVibration(200)
+                    } else if (collisionImpulse >= 1.0 && collisionImpulse < 1.5) {
+                        triggerVibration(500)
+                    } else if (collisionImpulse >= 1.5) {
+                        triggerVibration(900)
+                    }
+
+                    // TODO: Play sound
+
+                    wallCollisionList.remove(collisionItem.index)
+                })
+            })
         });
     });
     
