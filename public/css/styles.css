@@ -16,17 +16,10 @@ body {
     font-size: 36px;
 }
 
-@media only screen and (orientation: portrait) {
-    #landscape-container { display: none; }
-    #portrait-container { display: block; }
-    #controller {
-        background-color: #F44336 !important; /* temp */
-    }
-}
-
-@media only screen and (orientation: landscape) {
-    #landscape-container { display: block; }
-    #portrait-container { display: none; }
+#controls-container { display: none; }
+#instructions-container { display: block; }
+#controller {
+    background-color: #F44336 !important; /* temp */
 }
 
 #desktop-body {

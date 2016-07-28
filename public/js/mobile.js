@@ -30,7 +30,7 @@ $(function () {
             });
         });
     });
-
+    
     /**
      * Trigger vibration
      * Only works on Chrome
