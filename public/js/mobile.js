@@ -4,6 +4,19 @@ $(function () {
     // Server url to request for an auth token
     var url = '/token-mobile/' + phoneNumber;
 
+    // Grab the crash sound
+    var audioContext = new AudioContext()
+    var crashSound = undefined
+    var getSound = new XMLHttpRequest()
+    getSound.open('GET', '/audio/Hammering-Collision_TTX024702.wav', true)
+    getSound.responseType = 'arraybuffer';
+    getSound.onload = function() {
+        audioContext.decodeAudioData(getSound.response, function(buffer) {
+            crashSound = buffer;
+        });
+    }
+    getSound.send();
+
     // Get a Sync client (with auth token from provided url)
     Twilio.Sync.CreateClient(url).then(function (client) {
         syncClient = client;
@@ -30,7 +43,6 @@ $(function () {
             });
 
             // Wall collisions from game
-            // TODO: Catch errors
             syncClient.list('wall-collision-list').then(function (wallCollisionList) {
                 wallCollisionList.on('itemAdded', function (collisionItem) {
                     var collisionImpulse = collisionItem.value.impulse
@@ -44,10 +56,13 @@ $(function () {
                         triggerVibration(900)
                     }
 
-                    // TODO: Play sound
+                    // Trigger the sound
+                    playSound(crashSound, audioContext)
 
                     wallCollisionList.remove(collisionItem.index)
                 })
+            }).catch(function (err) {
+                console.log(err)
             })
         });
     });
@@ -65,9 +80,13 @@ $(function () {
 
     /**
      * Play a sound
-     * @param {string} path
+     * @param {arraybuffer} sound decoded sound
+     * @param {AudioContext} context
      */
-    function playSound(path) {
-        new Audio(path).play();
+    function playSound(sound, context) {
+        var playSound = context.createBufferSource(); // Declare a New Sound
+        playSound.buffer = sound; // Attatch our Audio Data as it's Buffer
+        playSound.connect(context.destination);  // Link the Sound to the Output
+        playSound.start(0); 
     }
 });
