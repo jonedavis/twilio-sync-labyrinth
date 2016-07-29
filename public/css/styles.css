@@ -4,7 +4,7 @@
 }
 
 body {
-    line-height: 1.8em; /* Space out PressStart2P font */
+  line-height: 1.8em; /* Space out PressStart2P font */
 }
 
 #controller {
@@ -61,19 +61,39 @@ i#tip-flat-to-ground {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: url(/imgs/mainmenu.gif) no-repeat center center fixed; 
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+    background-image: radial-gradient(ellipse farthest-corner at 20% 20% , #828282 0%, rgba(0, 0, 255, 0) 75%, #000000 95%);
 }
 
 #start-game div {
     position: absolute;
     left: 0;
-    bottom: 0;
+    top: 0;
     width: 100vw;
     text-align: center;
+}
+
+#start-game div img {
+    width: 700px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#start-game div h2 {
+    font-family: 'PressStart2P';
+    font-size: 36px;
+    color: white;
+}
+
+#start-game div h2.copyright {
+    font-family: 'PressStart2P';
+    font-size: 36px;
+    color: #21A4C9;
+}
+
+#start-game div h3 {
+    font-family: 'PressStart2P';
+    color: white;
 }
 
 #txtPhoneNumber {

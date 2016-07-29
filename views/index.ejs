@@ -20,9 +20,17 @@
     
     <div id='start-game'>
         <div>
-            <input id="txtPhoneNumber" type="text" placeholder="(Enter your phone number)"/>
-            <br/>
-            <button id="btnStart">Start</button>
+			<img src="/imgs/mainmenu.gif" alt="CommsQuest IV" />
+			<% if (kiosk) { %>
+				<h2>KIOSK MODE!</h2>
+			<% } else { %>
+				<input id="txtPhoneNumber" type="text" placeholder="(Enter your phone number)"/>
+				<br/>
+				<button id="btnStart">Start</button>
+			<% } %>
+			<h2 class="copyright">&copy; 2016 TWILIO</h2>
+			<h3>Special thanks to <a target="_blank" href="https://github.com/wwwtyro">Rye Terrell</a> for creating 
+			<a target="_blank" href="https://github.com/wwwtyro/Astray">Astray</a> on which this game is based.</h3>
          </div>
     </div>
 
