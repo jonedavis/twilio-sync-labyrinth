@@ -48,12 +48,12 @@ $(function () {
                     var collisionImpulse = collisionItem.value.impulse
 
                     // These ranges can be tweaked
-                    if (collisionImpulse >= 0.80 && collisionImpulse < 1.0) {
+                    if (collisionImpulse >= 1.20 && collisionImpulse < 1.5) {
+                        triggerVibration(100)
+                    } else if (collisionImpulse >= 1.5 && collisionImpulse < 1.9) {
                         triggerVibration(200)
-                    } else if (collisionImpulse >= 1.0 && collisionImpulse < 1.5) {
-                        triggerVibration(500)
-                    } else if (collisionImpulse >= 1.5) {
-                        triggerVibration(900)
+                    } else if (collisionImpulse >= 2.0) {
+                        triggerVibration(300)
                     }
 
                     // Trigger the sound

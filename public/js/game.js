@@ -100,7 +100,7 @@ function createPhysicsWorld() {
         }, 0)
 
         // Collision impulse threshold. Tweak as needed
-        if (impulseSum >= 0.80) {
+        if (impulseSum >= 1.20) {
             wallCollisionList.push({ impulse: impulseSum })
                 .catch(function (err) {
                     console.log(err)
