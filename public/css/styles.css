@@ -17,7 +17,34 @@ body {
 }
 
 #controls-container { display: none; }
+
 #tips-container { display: block; }
+
+#game-over-container { display: none; }
+
+#game-over-container__buttons {
+    margin-top: 150px;
+}
+
+.game-over-container__button {
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    display: inline-block;
+    padding: 12px 20px;
+    border: 5px solid white;
+    font-family: 'PressStart2P';
+    font-size: 36px; 
+    text-align: center;
+    text-shadow: none;
+    margin-bottom: 36px;
+    min-width: 100%;
+}
+
+.game-over-container__button a {
+    color: inherit;
+    text-decoration: inherit;
+}
+
 #controller {
     background-color: #F44336 !important; /* temp */
 }
