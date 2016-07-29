@@ -39,11 +39,11 @@ var camera = undefined,
     // Controller variables
     ACCEL_FACTOR = 10,
     ACCEL_THRESHOLD = 0.3,
-    NUM_FILTER_POINTS = 3,
-    FORCE_MULTIPLIER = 1.5,
+    NUM_FILTER_POINTS = 4,
+    FORCE_MULTIPLIER = 3.5,
     oldAccel = { x: 0.0, y: 0.0 },
-    rawAccelX = [0, 0, 0],
-    rawAccelY = [0, 0, 0];
+    rawAccelX = [0, 0, 0, 0],
+    rawAccelY = [0, 0, 0, 0];
 
 // Assets
 var $splash = undefined,
@@ -73,7 +73,7 @@ function createPhysicsWorld() {
     var fixDef = new b2FixtureDef();
     fixDef.density = 1.0;
     fixDef.friction = 0.0;
-    fixDef.restitution = 0.25;
+    fixDef.restitution = 0.05;
     fixDef.shape = new b2CircleShape(ballRadius);
     wBall.CreateFixture(fixDef);
 
@@ -193,7 +193,7 @@ function updatePhysicsWorld() {
     // a: time to pass in seconds
     // b: how strong to correct velocity
     // c: how strong to correct position
-    wWorld.Step(1 / 60, 8, 3);
+    wWorld.Step(1 / 120, 3, 3);
 }
 
 
