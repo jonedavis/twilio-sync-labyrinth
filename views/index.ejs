@@ -24,7 +24,7 @@
 			<% if (kiosk) { %>
 				<h2>KIOSK MODE!</h2>
 			<% } else { %>
-				<input id="txtPhoneNumber" type="text" placeholder="(Enter your phone number)"/>
+				<input id="txtPhoneNumber" type="number" pattern="^\d+$" placeholder="(Enter your phone number)"/>
 				<br/>
 				<button id="btnStart">Start</button>
 			<% } %>
