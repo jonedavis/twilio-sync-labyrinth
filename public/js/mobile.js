@@ -1,21 +1,19 @@
+// Audio player for Android & iOS
+var audioPlayer = new simpleWebAudioPlayer();
+audioPlayer.load({
+    name: 'collision',
+    src: '/audio/Hammering-Collision_TTX024702.wav'
+});
+    
+function startGame() {
+    audioPlayer.play('collision');
+}
+
 $(function () {
     var syncClient, gameStateDoc, controllerStateDoc;
 
     // Server url to request for an auth token
     var url = '/token-mobile/' + phoneNumber;
-
-    // Grab the crash sound
-    var audioContext = new AudioContext()
-    var crashSound = undefined
-    var getSound = new XMLHttpRequest()
-    getSound.open('GET', '/audio/Hammering-Collision_TTX024702.wav', true)
-    getSound.responseType = 'arraybuffer';
-    getSound.onload = function() {
-        audioContext.decodeAudioData(getSound.response, function(buffer) {
-            crashSound = buffer;
-        });
-    }
-    getSound.send();
 
     // Get a Sync client (with auth token from provided url)
     Twilio.Sync.CreateClient(url).then(function (client) {
@@ -45,28 +43,28 @@ $(function () {
             // Wall collisions from game
             syncClient.list('wall-collision-list').then(function (wallCollisionList) {
                 wallCollisionList.on('itemAdded', function (collisionItem) {
-                    var collisionImpulse = collisionItem.value.impulse
+                    var collisionImpulse = collisionItem.value.impulse;
 
                     // These ranges can be tweaked
                     if (collisionImpulse >= 1.20 && collisionImpulse < 1.5) {
-                        triggerVibration(100)
+                        triggerVibration(100);
                     } else if (collisionImpulse >= 1.5 && collisionImpulse < 1.9) {
-                        triggerVibration(200)
+                        triggerVibration(200);
                     } else if (collisionImpulse >= 2.0) {
-                        triggerVibration(300)
+                        triggerVibration(300);
                     }
 
                     // Trigger the sound
-                    playSound(crashSound, audioContext)
+                    audioPlayer.play('collision');
 
-                    wallCollisionList.remove(collisionItem.index)
+                    wallCollisionList.remove(collisionItem.index);
                 })
             }).catch(function (err) {
-                console.log(err)
+                console.log(err);
             })
         });
     });
-    
+
     /**
      * Trigger vibration
      * Only works on Chrome
@@ -76,17 +74,5 @@ $(function () {
         if ('vibrate' in window.navigator) {
             window.navigator.vibrate(value);
         }
-    }
-
-    /**
-     * Play a sound
-     * @param {arraybuffer} sound decoded sound
-     * @param {AudioContext} context
-     */
-    function playSound(sound, context) {
-        var playSound = context.createBufferSource(); // Declare a New Sound
-        playSound.buffer = sound; // Attatch our Audio Data as it's Buffer
-        playSound.connect(context.destination);  // Link the Sound to the Output
-        playSound.start(0); 
     }
 });
