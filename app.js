@@ -10,6 +10,7 @@ var config = require('./config.js');
 var app = express();
 
 app.use(express.static('public'));
+app.use('/.well-known', express.static('.well-known')); // For Let's Encrypt
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.resolve(__dirname, 'views'));
 app.set('view engine', 'ejs');
