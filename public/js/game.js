@@ -396,7 +396,7 @@ $(document)
                     syncClient.document('controller-state-' + phoneNumber).then(function (ctrlDoc) {
                         controllerStateDoc = ctrlDoc;
 
-                        syncClient.list('wall-collision-list').then(function (syncList) {
+                        syncClient.list('wall-collision-list-' + phoneNumber).then(function (syncList) {
                             wallCollisionList = syncList
 
                             $('#start-game').hide();

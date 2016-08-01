@@ -41,7 +41,7 @@ $(function () {
             });
 
             // Wall collisions from game
-            syncClient.list('wall-collision-list').then(function (wallCollisionList) {
+            syncClient.list('wall-collision-list-' + phoneNumber).then(function (wallCollisionList) {
                 wallCollisionList.on('itemAdded', function (collisionItem) {
                     var collisionImpulse = collisionItem.value.impulse;
 
