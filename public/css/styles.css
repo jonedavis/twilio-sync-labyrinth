@@ -108,7 +108,7 @@ a:visited {
     margin: 0 auto;
     margin-bottom: 1.8em;
     flex-shrink: 0;
-    width: 54em;
+    max-width: 54em;
     color: rgb(148, 151, 155);
     text-align: center;
 }
