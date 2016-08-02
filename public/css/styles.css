@@ -1,3 +1,5 @@
+/* Global CSS */
+
 @font-face {
     font-family: "PressStart2P";
     src: url(/fonts/PressStart2P.ttf);
@@ -17,14 +19,28 @@ body {
     background: black;
 }
 
+a:link,
+a:visited {
+    color: rgb(148, 151, 155);
+}
+
 /* Desktop - Main Menu - Queries */
+
+@media all and (max-width: 1920px) and (min-width: 1281px) {
+    #logo {
+        height: auto; 
+        width: auto;
+        max-width: 811px;
+        max-height: 256px;
+    }
+}
 
 @media all and (max-width: 1280px) and (min-width: 767px) {
     #logo {
         height: auto; 
         width: auto;
-        max-width: 800px;
-        max-height: 250px;
+        max-width: 640px;
+        max-height: 200px;
     }
 }
 
@@ -102,10 +118,11 @@ body {
 #footer { 
     margin: 0 auto;
     margin-bottom: 1.8em;
-    color: white;
+    flex-shrink: 0;
+    width: 54em;
+    color: rgb(148, 151, 155);
     text-align: center;
 }
-
 
 /* Phone number input field styles */
 
