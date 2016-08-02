@@ -84,13 +84,15 @@ a:visited {
 
 /* Desktop - Main Menu - Styles */
 
-#main-menu {
+#main-menu,
+#splash-screen {
     display: flex;
     flex-direction: column;
     min-height: 100%;
 }
 
-#start-game {
+#start-game,
+#splash-screen-description {
     display: flex;
     text-align: center;
     justify-content: center;
@@ -104,7 +106,21 @@ a:visited {
     justify-content: center;
 }
 
-#footer { 
+#splash-screen-description > .row h1, h2 {
+    font-size: 18px;
+    color: white;
+}
+
+#splash-screen-description > .row p {
+    margin-top: 2.8em;
+    font-size: 14px;
+    color: rgb(148, 151, 155);
+}
+
+#splash-screen-description > .row {
+    flex-basis: 45%;
+}
+.footer { 
     margin: 0 auto;
     margin-bottom: 1.8em;
     flex-shrink: 0;
@@ -113,6 +129,13 @@ a:visited {
     text-align: center;
 }
 
+.footer p:last-child {
+    color: rgb(58, 85, 162);
+}
+
+.footer p:first-child {
+    color: rgb(148, 151, 155);
+}
 /* Phone number input field styles */
 
 #txtPhoneNumber {
@@ -203,16 +226,5 @@ i#tip-flat-to-ground {
 
 /* Desktop - In game styles */
 
-#splash {
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: url(/imgs/mainmenu.gif) no-repeat center center fixed; 
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+#splash-screen {
 }

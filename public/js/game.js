@@ -48,7 +48,10 @@ var camera = undefined,
     rawAccelY = [0, 0, 0, 0];
 
 // Assets
-var $splash = undefined,
+var $splashScreen = undefined,
+    $splashScreenTitle = undefined,
+    $splashScreenSubTitle = undefined,
+    $splashScreenLevelDescription = undefined,
     $level = undefined,
     $levelName = undefined,
     levelNames = 
@@ -61,6 +64,9 @@ var $splash = undefined,
         'PHONE HOME',
         'RAINBOW WORLD'
      ],
+    levelDescriptions = [
+        '',
+        "It's the year 15000 BC. A stone is thrown and communications are born. Roll your stone through the cave to complete the first phone call of all time.", '', '', '', '', ''],
     assets = [];
 
 // Preload textures
@@ -296,10 +302,13 @@ function gameLoop() {
 
 function advanceLevelTo(levelNumber) {
     currentLevel = levelNumber;
-    $splash.css('background', 'url(/imgs/level_' + currentLevel + '/splash.png) no-repeat center center fixed');
-    $splash.show();
+    $splashScreen.show();
+    $splashScreenTitle.text('CALL ' + currentLevel);
+    $splashScreenSubTitle.text(levelNames[currentLevel]);
+    $splashScreenLevelDescription.text(levelDescriptions[currentLevel]);
+    
     setTimeout(function () {
-        $splash.hide();
+        $splashScreen.hide();
         $level.html('CALL ' + currentLevel).show();
         $levelName.html(levelNames[currentLevel]).show();
         gameState = 'fade in';
@@ -317,7 +326,7 @@ function onResize() {
 
 // From mobile phone (controller)
 function onControllerUpdated(axis) {
-    // Return if steady
+    // Return if gyroscope is steady
     var beta = Math.floor(Math.abs(axis.beta));
     var gamma = Math.floor(Math.abs(axis.gamma));
     if (beta === 0 && gamma === 0) { return; }
@@ -390,7 +399,10 @@ jQuery.fn.center = function () {
 
 $(document)
     .ready(function () {
-        $splash = $('#splash').hide();
+        $splashScreen = $('#splash-screen').hide();
+        $splashScreenTitle = $('#splash-screen-description > .row > h1');
+        $splashScreenSubTitle = $('#splash-screen-description > .row > h2');
+        $splashScreenLevelDescription = $('#splash-screen-description > .row > p');
         $level = $('#desktop-level').hide();
         $levelName = $('#desktop-level-name').hide();
         // Set the initial game state
@@ -418,7 +430,7 @@ $(document)
                             // Hide entire menu
                             $('#main-menu').hide();
                             $('#start-game').hide();
-                            $('#footer').hide();
+                            $('#main-menu > .footer').hide();
 
                             // Create the renderer
                             renderer = new THREE.WebGLRenderer();
