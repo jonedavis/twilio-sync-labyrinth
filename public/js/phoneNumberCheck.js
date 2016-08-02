@@ -3,9 +3,9 @@ $(document).ready(function () {
     var $btnStart = $('#btnStart');
 
     var validNumber = false;
-    var validBorderKeyFrame = 'valid-border-pulse 0.25s infinite';
-    var validTextKeyFrame = 'valid-text-pulse 0.25s infinite';
-    var invalidBorderKeyFrame = 'invalid-border-pulse 0.25s infinite';
+    var validBorderKeyFrame = 'valid-border-pulse 1s infinite';
+    var validTextKeyFrame = 'valid-text-pulse 1s infinite';
+    var invalidBorderKeyFrame = 'invalid-border-pulse 1s infinite';
 
     // Define keyframe animations
     $.keyframe.define([
@@ -47,7 +47,8 @@ $(document).ready(function () {
 
         if (isValid) {
             validNumber = true;
-            $numberField.playKeyframe(validBorderKeyFrame);
+            $numberField.resetKeyframe();
+            $numberField.css('border-color', 'rgb(115, 204, 220)');
             $btnStart.playKeyframe(validTextKeyFrame);
         } else if (!isValid && validNumber) {
             validNumber = false;
@@ -58,7 +59,7 @@ $(document).ready(function () {
 
     // Check for valid phone numbers in north america and international (no shortcode check)
     function isValidPhoneNumber(number) {
-        var regex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+        var regex = /^\+?1?\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
         var isValid = number.match(regex) ? true : false;
         return isValid;
     }
