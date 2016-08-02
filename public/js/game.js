@@ -50,8 +50,18 @@ var camera = undefined,
 // Assets
 var $splash = undefined,
     $level = undefined,
+    $levelName = undefined,
+    levelNames = 
+    [
+        'MAIN MENU',
+        'STONES THROW',
+        'LIGHT MY FIRE',
+        'HOWDY PILGRAM',
+        'COPPER & TIN',
+        'PHONE HOME',
+        'RAINBOW WORLD'
+     ],
     assets = [];
-
 
 // Preload textures
 for (var i = 1; i <= numberOfLevels; i++) {
@@ -286,11 +296,12 @@ function gameLoop() {
 
 function advanceLevelTo(levelNumber) {
     currentLevel = levelNumber;
-    $level.html('Level ' + currentLevel).show();
     $splash.css('background', 'url(/imgs/level_' + currentLevel + '/splash.png) no-repeat center center fixed');
     $splash.show();
     setTimeout(function () {
         $splash.hide();
+        $level.html('CALL ' + currentLevel).show();
+        $levelName.html(levelNames[currentLevel]).show();
         gameState = 'fade in';
     }, 5000);
 }
@@ -381,7 +392,7 @@ $(document)
     .ready(function () {
         $splash = $('#splash').hide();
         $level = $('#desktop-level').hide();
-
+        $levelName = $('#desktop-level-name').hide();
         // Set the initial game state
         gameState = 'waiting for sync';
 
