@@ -65,8 +65,13 @@ var $splashScreen = undefined,
         'RAINBOW WORLD'
      ],
     levelDescriptions = [
-        '',
-        "It's the year 15000 BC. A stone is thrown and communications are born. Roll your stone through the cave to complete the first phone call of all time.", '', '', '', '', ''],
+        'Main Menu',
+        "It's the year 15000 BC. A stone is thrown and communications are born. Roll your stone through the cave to complete the first phone call of all time.", 'Something for level 2', 
+        'Something for level 3',
+        'Something for level 4',
+        'Something for level 5',
+        'Something for level 6',
+    ],
     assets = [];
 
 // Preload textures
