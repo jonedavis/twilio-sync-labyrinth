@@ -1,36 +1,178 @@
+/* Global Styles */
+
 @font-face {
     font-family: "PressStart2P";
-    src: url("/fonts/PressStart2P.ttf");
+    src: url(/fonts/PressStart2P.ttf);
 }
 
-body {
-  line-height: 1.8em; /* Space out PressStart2P font */
+* {
+    font-family: "PressStart2P";
+    font-size: 14px;
+    line-height: 1.6em;
 }
+
+html, 
+body { 
+    margin: 0;
+    padding: 0;
+    height: 100%; 
+    background: black;
+}
+
+a:link,
+a:visited {
+    color: rgb(148, 151, 155);
+}
+
+/* Desktop - Main Menu - Media Queries */
+
+@media all and (max-width: 1920px) and (min-width: 1281px) {
+    #logo {
+        height: auto; 
+        width: auto;
+        max-width: 811px;
+        max-height: 256px;
+    }
+}
+
+@media all and (max-width: 1280px) and (min-width: 767px) {
+    #logo {
+        height: auto; 
+        width: auto;
+        max-width: 640px;
+        max-height: 200px;
+    }
+}
+
+@media all and (max-width: 767px) {
+    #logo {
+        height: auto; 
+        width: auto;
+        max-width: 525px;
+        max-height: 164px;
+    }
+}
+
+@media all and (max-width: 500px) {
+    #logo {
+        height: auto; 
+        width: auto;
+        max-width: 400px;
+        max-height: 125px;
+    }
+    
+    #txtPhoneNumber {
+        width: 20em !important;
+    }
+    
+    input::-webkit-input-placeholder {
+        font-size: 14px !important;
+    }
+ 
+    input:-moz-placeholder {
+        font-size: 14px !important;
+    }
+
+    input::-moz-placeholder {
+        font-size: 14px !important; 
+    }
+
+    input:-ms-input-placeholder {
+        font-size: 14px !important; 
+    }
+}
+
+/* Desktop - Main Menu - Styles */
+
+#main-menu {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+#start-game {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    min-height: 100%;
+    flex: 1;
+}
+
+.row {
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+}
+
+#footer { 
+    margin: 0 auto;
+    margin-bottom: 1.8em;
+    flex-shrink: 0;
+    width: 54em;
+    color: rgb(148, 151, 155);
+    text-align: center;
+}
+
+/* Phone number input field styles */
+
+#txtPhoneNumber {
+    margin-top: 5.5em;
+    padding-left: .9em;
+    border: 4px solid rgb(58, 85, 162);
+    width: 25em;
+    height: 2em;
+    background: black;
+    color: white;
+    font-size: 18px;
+    text-align: center;
+}
+
+/* Input fields placeholder font color */
+
+#txtPhoneNumber:focus {
+    outline: none;
+}
+
+input::-webkit-input-placeholder {
+    color: white !important;
+}
+ 
+input:-moz-placeholder {
+    color: white !important;  
+}
+ 
+input::-moz-placeholder {
+    color: white !important;  
+}
+ 
+input:-ms-input-placeholder {
+    color: white !important;  
+}
+
+#btnStart {
+    margin-top: 2em;
+    background: black;
+    font-size: 18px;
+    text-align: center;
+    color: rgb(148, 151, 155);
+    border: none;
+}
+
+/* Mobile Phone - Controller - Styles */
 
 #controller {
     background-color: black;
     overflow: hidden;
     color: white;
-    font-family: 'PressStart2P';
     text-align: center;
-    font-size: 36px;
 }
 
 #controls-container { display: none; }
 #tips-container { display: block; }
-#controller {
-    background-color: #F44336 !important; /* temp */
-}
-
-#desktop-body {
-    background: black;
-    margin: 0;
-    padding: 0;
-    font-family: 'PressStart2P';
-    overflow: hidden;
-}
+#controller { background: black; }
 
 #desktop-level {
+    display: block;
     position: absolute;
     left: 0px;
     top: 0px;
@@ -55,59 +197,10 @@ i#tip-flat-to-ground {
     background-image: url(/imgs/flat-to-ground.png);
 }
 
-#start-game {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-image: radial-gradient(ellipse farthest-corner at 20% 20% , #828282 0%, rgba(0, 0, 255, 0) 75%, #000000 95%);
-}
-
-#start-game div {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100vw;
-    text-align: center;
-}
-
-#start-game div img {
-    width: 700px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-#start-game div h2 {
-    font-family: 'PressStart2P';
-    font-size: 36px;
-    color: white;
-}
-
-#start-game div h2.copyright {
-    font-family: 'PressStart2P';
-    font-size: 36px;
-    color: #21A4C9;
-}
-
-#start-game div h3 {
-    font-family: 'PressStart2P';
-    color: white;
-}
-
-#txtPhoneNumber {
-    width: 900px;
-    font-family: 'PressStart2P';
-    font-size: 36px;
-}
-
-#btnStart {
-    font-family: 'PressStart2P';
-    font-size: 36px;
-}
+/* Desktop - In game styles */
 
 #splash {
+    display: block;
     position: absolute;
     top: 0;
     left: 0;
