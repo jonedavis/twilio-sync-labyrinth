@@ -82,17 +82,6 @@ a:visited {
     }
 }
 
-/* CSS Keyframe animations */
-
-@keyframes pulse {
-    0% {
-        border-color: black;
-    }
-    100% {
-        border-color: rgb(58, 85, 162);
-    }
-}
-
 /* Desktop - Main Menu - Styles */
 
 #main-menu {
@@ -127,7 +116,6 @@ a:visited {
 /* Phone number input field styles */
 
 #txtPhoneNumber {
-    animation: pulse 0.25s infinite;
     margin-top: 5.5em;
     padding-left: .9em;
     border: 4px solid rgb(58, 85, 162);

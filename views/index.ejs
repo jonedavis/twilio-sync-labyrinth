@@ -6,12 +6,14 @@
     <script src="//media.twiliocdn.com/sdk/js/common/v0.1/twilio-common.min.js"></script>
     <script src="//media.twiliocdn.com/sdk/js/sync/v0.2/twilio-sync.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="/js/jquery.keyframes.min.js"></script>
     <script src="/js/Box2dWeb.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r68/three.min.js"></script>
     <script src="/js/maze.js"></script>
     <script src="/js/sync-helper.js"></script>
     <script src="/js/game.js"></script>
-
+    <script src="/js/phoneNumberCheck.js"></script>
+    
     <link rel="stylesheet" type="text/css" href="/css/styles.css">
 </head>
     
@@ -30,8 +32,10 @@
                 <% } else { %>
 
                 <div>
-                    <input id="txtPhoneNumber" type="number" pattern="^\d+$" placeholder="ENTER YOUR PHONE NUMBER"/>
-                    <div><button id="btnStart">SYNC PLAYER 1</button></div>
+                    <input id="txtPhoneNumber" type="number" pattern="^\d+$" placeholder="ENTER YOUR PHONE NUMBER" required/>
+                    <div>
+                        <button id="btnStart">SYNC PLAYER 1</button>
+                    </div>
                 </div>
                 
             </div>
