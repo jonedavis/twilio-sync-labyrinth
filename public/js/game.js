@@ -399,7 +399,10 @@ $(document)
                         syncClient.list('wall-collision-list-' + phoneNumber).then(function (syncList) {
                             wallCollisionList = syncList
 
+                            // Hide entire menu
+                            $('#main-menu').hide();
                             $('#start-game').hide();
+                            $('#footer').hide();
 
                             // Create the renderer
                             renderer = new THREE.WebGLRenderer();

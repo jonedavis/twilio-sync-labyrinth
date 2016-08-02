@@ -1,4 +1,4 @@
-/* Global CSS */
+/* Global Styles */
 
 @font-face {
     font-family: "PressStart2P";
@@ -24,7 +24,7 @@ a:visited {
     color: rgb(148, 151, 155);
 }
 
-/* Desktop - Main Menu - Queries */
+/* Desktop - Main Menu - Media Queries */
 
 @media all and (max-width: 1920px) and (min-width: 1281px) {
     #logo {
@@ -212,6 +212,7 @@ i#tip-flat-to-ground {
 /* Desktop - In game styles */
 
 #splash {
+    display: block;
     position: absolute;
     top: 0;
     left: 0;
