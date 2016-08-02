@@ -41,7 +41,9 @@ var camera = undefined,
     ACCEL_THRESHOLD = 0.3,
     NUM_FILTER_POINTS = 4,
     FORCE_MULTIPLIER = 4.0,
+    newAccel = { x: 0.0, y: 0.0 },    
     oldAccel = { x: 0.0, y: 0.0 },
+    diffAccel = { x: 0.0, y: 0.0 },
     rawAccelX = [0, 0, 0, 0],
     rawAccelY = [0, 0, 0, 0];
 
@@ -302,9 +304,12 @@ function onResize() {
     }
 }
 
-
 // From mobile phone (controller)
 function onControllerUpdated(axis) {
+    // Return if steady
+    var beta = Math.floor(Math.abs(axis.beta));
+    var gamma = Math.floor(Math.abs(axis.gamma));
+    if (beta === 0 && gamma === 0) { return; }
     // Push raw data to front of arrays
     // each coordinate gets it's own array
     rawAccelX.unshift(axis.x);
@@ -313,18 +318,18 @@ function onControllerUpdated(axis) {
     rawAccelX.pop();
     rawAccelY.pop();
     // Get new x & y acceleration average
-    var newAccel = {
+    newAccel = {
         x: getAvgAcceleration(rawAccelX),
         y: getAvgAcceleration(rawAccelY)
     };
-    var diff = {
+    diffAccel = {
         x: Math.abs(oldAccel.x - newAccel.x),
         y: Math.abs(oldAccel.y - newAccel.y)
     };
-    
-    if (diff.x <= ACCEL_THRESHOLD) return;
-    if (diff.y <= ACCEL_THRESHOLD) return;
 
+    if (diffAccel.x <= ACCEL_THRESHOLD) { return; } 
+    if (diffAccel.y <= ACCEL_THRESHOLD) { return; } 
+    
     var newAxis = [0, 0];
     if (newAccel.x < 0) newAxis[1] = 1;
     if (newAccel.x >= 0) newAxis[1] = -1;    
