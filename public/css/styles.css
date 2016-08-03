@@ -21,7 +21,7 @@ body {
 }
 
 a:link,
-a:visited {
+a:visited { 
     color: rgb(148, 151, 155);
 }
 
@@ -169,13 +169,7 @@ input:-ms-input-placeholder {
     justify-content: center;
 }
 
-.controller-layout h1 { 
-    color: rgb(58, 85, 162); 
-    font-size: 1.3em; 
-}
-
 .controller-layout ul { list-style: none; }
-.controller-layout strong { color: rgb(115, 204, 220); }
 
 .button-pulse {
     animation: color-pulse 1s infinite;
