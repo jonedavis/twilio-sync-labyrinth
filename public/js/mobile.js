@@ -7,14 +7,16 @@ audioPlayer.load({
     
 function startGame() {
     audioPlayer.play('collision');
+    $('#tips').hide();
+    $('#controls-container').show();
 }
 
 $(function () {
     var syncClient, gameStateDoc, controllerStateDoc;
-
     // Server url to request for an auth token
     var url = '/token-mobile/' + phoneNumber;
-
+    $('#controls-container').hide();
+    
     // Get a Sync client (with auth token from provided url)
     Twilio.Sync.CreateClient(url).then(function (client) {
         syncClient = client;
@@ -75,4 +77,6 @@ $(function () {
             window.navigator.vibrate(value);
         }
     }
+    
+    
 });
