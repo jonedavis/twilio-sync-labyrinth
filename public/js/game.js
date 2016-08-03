@@ -335,6 +335,7 @@ function onControllerUpdated(axis) {
     var beta = Math.floor(Math.abs(axis.beta));
     var gamma = Math.floor(Math.abs(axis.gamma));
     if (beta === 0 && gamma === 0) { return; }
+    
     // Push raw data to front of arrays
     // each coordinate gets it's own array
     rawAccelX.unshift(axis.x);

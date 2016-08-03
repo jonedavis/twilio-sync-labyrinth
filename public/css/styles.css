@@ -26,66 +26,6 @@ a:visited {
 }
 
 
-/* Desktop - Main Menu - Media Queries */
-
-
-@media all and (max-width: 1920px) and (min-width: 1281px) {
-    #logo {
-        height: auto; 
-        width: auto;
-        max-width: 811px;
-        max-height: 256px;
-    }
-}
-
-@media all and (max-width: 1280px) and (min-width: 767px) {
-    #logo {
-        height: auto; 
-        width: auto;
-        max-width: 640px;
-        max-height: 200px;
-    }
-}
-
-@media all and (max-width: 767px) {
-    #logo {
-        height: auto; 
-        width: auto;
-        max-width: 525px;
-        max-height: 164px;
-    }
-}
-
-@media all and (max-width: 500px) {
-    #logo {
-        height: auto; 
-        width: auto;
-        max-width: 400px;
-        max-height: 125px;
-    }
-    
-    #txtPhoneNumber {
-        width: 20em !important;
-    }
-    
-    input::-webkit-input-placeholder {
-        font-size: 14px !important;
-    }
- 
-    input:-moz-placeholder {
-        font-size: 14px !important;
-    }
-
-    input::-moz-placeholder {
-        font-size: 14px !important; 
-    }
-
-    input:-ms-input-placeholder {
-        font-size: 14px !important; 
-    }
-}
-
-
 /* Desktop - Main Menu - Styles */
 
 
@@ -159,7 +99,9 @@ a:visited {
     text-align: center;
 }
 
+
 /* Input fields placeholder font color */
+
 
 #txtPhoneNumber:focus {
     outline: none;
@@ -190,21 +132,6 @@ input:-ms-input-placeholder {
     border: none;
 }
 
-
-/* Mobile Phone - Controller - Styles */
-
-
-#controller {
-    background-color: black;
-    overflow: hidden;
-    color: white;
-    text-align: center;
-}
-
-#controls-container { display: none; }
-#tips-container { display: block; }
-#controller { background: black; }
-
 #desktop-level,
 #desktop-level-name {
     display: block;
@@ -218,6 +145,29 @@ input:-ms-input-placeholder {
 #desktop-level-name {
     top: 4.8em;
 }
+
+
+/* Mobile Phone - Controller - Styles */
+
+#controller {
+    min-width: 100vh;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+    color: white;    
+    text-align: center;
+}
+
+#controller h1 {
+    
+}
+
+#controller ul {
+    list-style: none;
+}
+
+
+#controls-container { display: none; }
+#tips-container { display: block; }
 
 i#tip-lock-portrait {
     display: block;    
@@ -233,4 +183,68 @@ i#tip-flat-to-ground {
     width: 100px;
     height: 130px;
     background-image: url(/imgs/flat-to-ground.png);
+}
+
+
+/* Media Queries */
+
+
+/* Desktop */
+@media all and (max-width: 1920px) and (min-width: 1281px) {
+    #logo {
+        height: auto; 
+        width: auto;
+        max-width: 811px;
+        max-height: 256px;
+    }
+}
+
+/* Desktop */
+@media all and (max-width: 1280px) and (min-width: 767px) {
+    #logo {
+        height: auto; 
+        width: auto;
+        max-width: 640px;
+        max-height: 200px;
+    }
+}
+
+/* Desktop */
+@media all and (max-width: 767px) {
+    #logo {
+        height: auto; 
+        width: auto;
+        max-width: 525px;
+        max-height: 164px;
+    }
+}
+
+/* Desktop */
+@media all and (max-width: 500px) {
+    #logo {
+        height: auto; 
+        width: auto;
+        max-width: 400px;
+        max-height: 125px;
+    }
+    
+    #txtPhoneNumber {
+        width: 20em !important;
+    }
+    
+    input::-webkit-input-placeholder {
+        font-size: 14px !important;
+    }
+ 
+    input:-moz-placeholder {
+        font-size: 14px !important;
+    }
+
+    input::-moz-placeholder {
+        font-size: 14px !important; 
+    }
+
+    input:-ms-input-placeholder {
+        font-size: 14px !important; 
+    }
 }
