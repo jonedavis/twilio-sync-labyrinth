@@ -34,6 +34,8 @@ a:visited {
     }
 }
 
+.display-none { display: none; }
+
 .flex { display: flex; }
 
 .flex-column {
@@ -45,6 +47,14 @@ a:visited {
     align-self: center;
     align-items: center;
     justify-content: center;
+}
+
+.footer { 
+    margin: 0 auto;
+    margin-bottom: 1.8em;
+    flex-shrink: 0;
+    max-width: 54em;
+    text-align: center;
 }
 
 .large-font { font-size: 2em; }
@@ -71,8 +81,7 @@ a:visited {
 /* Desktop - Main Menu - Styles */
 
 
-.flex-center,
-.description-info {
+.flex-center {
     display: flex;
     text-align: center;
     justify-content: center;
@@ -80,27 +89,12 @@ a:visited {
     flex: 1;
 }
 
-.description-info > .row h1, h2 {
-    font-size: 18px;
-    color: white;
-}
-
-.description-info > .row p {
-    font-size: 14px;
+.flex-center > .row p {
     margin-top: 2.8em;
-    color: rgb(148, 151, 155);
 }
 
-.description-info > .row {
+.flex-center > .row {
     flex-basis: 45%;
-}
-
-.footer { 
-    margin: 0 auto;
-    margin-bottom: 1.8em;
-    flex-shrink: 0;
-    max-width: 54em;
-    text-align: center;
 }
 
 
@@ -190,11 +184,10 @@ input:-ms-input-placeholder {
     background: black;
 }
 
-.display-none { display: none; }
-
 .bottom-flex {
     align-self: flex-start !important;
 }
+
 
 /* Media Queries */
 
