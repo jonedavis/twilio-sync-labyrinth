@@ -34,6 +34,19 @@ a:visited {
     }
 }
 
+.flex { display: flex; }
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+}
+
 .large-font { font-size: 2em; }
 .xmid-font { font-size: 1.5em; }
 .mid-font { font-size: 1.2em; }
@@ -46,17 +59,17 @@ a:visited {
 .white { color: white; }
 
 .full-height { min-height: 100vh; }
+.double-top-margin { margin-top: 2em; }
+
+.button {
+    background: black;
+    text-align: center;
+    border: none;
+}
 
 
 /* Desktop - Main Menu - Styles */
 
-
-.desktop,
-.flex-column {
-    display: flex;
-    flex-direction: column;
-    min-height: 100%;
-}
 
 .flex-center,
 .description-info {
@@ -65,12 +78,6 @@ a:visited {
     justify-content: center;
     min-height: 100%;
     flex: 1;
-}
-
-.row {
-    align-self: center;
-    align-items: center;
-    justify-content: center;
 }
 
 .description-info > .row h1, h2 {
@@ -93,16 +100,7 @@ a:visited {
     margin-bottom: 1.8em;
     flex-shrink: 0;
     max-width: 54em;
-    color: rgb(148, 151, 155);
     text-align: center;
-}
-
-.footer p:last-child {
-    color: rgb(58, 85, 162);
-}
-
-.footer p:first-child {
-    color: rgb(148, 151, 155);
 }
 
 
@@ -145,12 +143,6 @@ input:-ms-input-placeholder {
     color: white !important;  
 }
 
-.button {
-    background: black;
-    text-align: center;
-    border: none;
-}
-
 .call-hud {
     display: block;
     position: absolute;
@@ -167,8 +159,6 @@ input:-ms-input-placeholder {
 
 /* Mobile Phone - Controller - Styles */
 
-
-.flex { display: flex; }
 
 .rotate-landscape {
     margin: auto;
@@ -204,7 +194,6 @@ input:-ms-input-placeholder {
 
 .bottom-flex {
     align-self: flex-start !important;
-    background: red; 
 }
 
 /* Media Queries */
