@@ -25,6 +25,15 @@ a:visited {
     color: rgb(148, 151, 155);
 }
 
+@keyframes color-pulse {
+    0% {
+        color: black;
+    }
+    100% {
+        color: rgb(115, 204, 220);
+    }
+}
+
 
 /* Desktop - Main Menu - Styles */
 
@@ -149,37 +158,45 @@ input:-ms-input-placeholder {
 
 /* Mobile Phone - Controller - Styles */
 
+
+#mobile { display: flex;}
+
 #controller {
+    margin: auto;
+    padding: auto;
     display: flex;
-    min-width: 100vh;
+    color: white;
+    width: 100%;
     transform: rotate(-90deg);
     transform-origin: 50% 50%;
-    color: white;    
 }
 
-#tips-container {
-    justify-content: center;
-    align-content: center;
-
-}
-#tips-container h1 {
+#tips {
+    display: flex;
+    flex-direction: column;
     text-align: center;
-    font-size: 18px;
+    align-content: center;
+    justify-content: center;
 }
 
-#tips-container ul {
-    list-style: none;
+#tips h1 { 
+    color: rgb(58, 85, 162); 
+    font-size: 1.3em; 
 }
 
-#tips-container p {
-    font-size: 10px;
+#tips ul { list-style: none; }
+#tips p { font-size: 1.2em; }
+#tips strong { color: rgb(115, 204, 220); }
+
+#btnReady {
+    animation: color-pulse 1s infinite;
+    border: none;
+    font-size: 2em;
+    background: black;
 }
 
 #controls-container { display: none; }
 
-#controller-start-game {
-    text-align: center;
-}
 
 /* Media Queries */
 
@@ -195,7 +212,7 @@ input:-ms-input-placeholder {
 }
 
 /* Desktop */
-@media all and (max-width: 1280px) and (min-width: 767px) {
+@media all and (max-width: 1280px) and (min-width: 768px) {
     #logo {
         height: auto; 
         width: auto;
@@ -214,7 +231,7 @@ input:-ms-input-placeholder {
     }
 }
 
-/* Desktop */
+/* Desktop - input field too large, shrink */
 @media all and (max-width: 500px) {
     #logo {
         height: auto; 
