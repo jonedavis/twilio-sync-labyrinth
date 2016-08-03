@@ -1,5 +1,6 @@
 /* Global Styles */
 
+
 @font-face {
     font-family: "PressStart2P";
     src: url(/fonts/PressStart2P.ttf);
@@ -24,73 +25,28 @@ a:visited {
     color: rgb(148, 151, 155);
 }
 
-/* Desktop - Main Menu - Media Queries */
-
-@media all and (max-width: 1920px) and (min-width: 1281px) {
-    #logo {
-        height: auto; 
-        width: auto;
-        max-width: 811px;
-        max-height: 256px;
+@keyframes color-pulse {
+    0% {
+        color: black;
+    }
+    100% {
+        color: rgb(115, 204, 220);
     }
 }
 
-@media all and (max-width: 1280px) and (min-width: 767px) {
-    #logo {
-        height: auto; 
-        width: auto;
-        max-width: 640px;
-        max-height: 200px;
-    }
-}
-
-@media all and (max-width: 767px) {
-    #logo {
-        height: auto; 
-        width: auto;
-        max-width: 525px;
-        max-height: 164px;
-    }
-}
-
-@media all and (max-width: 500px) {
-    #logo {
-        height: auto; 
-        width: auto;
-        max-width: 400px;
-        max-height: 125px;
-    }
-    
-    #txtPhoneNumber {
-        width: 20em !important;
-    }
-    
-    input::-webkit-input-placeholder {
-        font-size: 14px !important;
-    }
- 
-    input:-moz-placeholder {
-        font-size: 14px !important;
-    }
-
-    input::-moz-placeholder {
-        font-size: 14px !important; 
-    }
-
-    input:-ms-input-placeholder {
-        font-size: 14px !important; 
-    }
-}
 
 /* Desktop - Main Menu - Styles */
 
-#main-menu {
+
+#main-menu,
+#splash-screen {
     display: flex;
     flex-direction: column;
     min-height: 100%;
 }
 
-#start-game {
+#start-game,
+#splash-screen-description {
     display: flex;
     text-align: center;
     justify-content: center;
@@ -104,7 +60,22 @@ a:visited {
     justify-content: center;
 }
 
-#footer { 
+#splash-screen-description > .row h1, h2 {
+    font-size: 18px;
+    color: white;
+}
+
+#splash-screen-description > .row p {
+    font-size: 14px;
+    margin-top: 2.8em;
+    color: rgb(148, 151, 155);
+}
+
+#splash-screen-description > .row {
+    flex-basis: 45%;
+}
+
+.footer { 
     margin: 0 auto;
     margin-bottom: 1.8em;
     flex-shrink: 0;
@@ -113,7 +84,17 @@ a:visited {
     text-align: center;
 }
 
+.footer p:last-child {
+    color: rgb(58, 85, 162);
+}
+
+.footer p:first-child {
+    color: rgb(148, 151, 155);
+}
+
+
 /* Phone number input field styles */
+
 
 #txtPhoneNumber {
     margin-top: 5.5em;
@@ -127,7 +108,9 @@ a:visited {
     text-align: center;
 }
 
+
 /* Input fields placeholder font color */
+
 
 #txtPhoneNumber:focus {
     outline: none;
@@ -158,57 +141,122 @@ input:-ms-input-placeholder {
     border: none;
 }
 
-/* Mobile Phone - Controller - Styles */
-
-#controller {
-    background-color: black;
-    overflow: hidden;
-    color: white;
-    text-align: center;
-}
-
-#controls-container { display: none; }
-#tips-container { display: block; }
-#controller { background: black; }
-
-#desktop-level {
+#desktop-level,
+#desktop-level-name {
     display: block;
     position: absolute;
-    left: 0px;
-    top: 0px;
-    padding: 4px;
-    color: yellow;
+    left: 2.9em;
+    top: 2.4em;
+    color: white;
     font-weight: bold;
 }
 
-i#tip-lock-portrait {
-    display: block;    
-    margin: 0 auto;
-    width: 100px;
-    height: 100px;
-    background-image: url(/imgs/lock-portrait.png);
+#desktop-level-name {
+    top: 4.8em;
 }
 
-i#tip-flat-to-ground {
-    display: block;    
-    margin: 0 auto;
-    width: 100px;
-    height: 130px;
-    background-image: url(/imgs/flat-to-ground.png);
+
+/* Mobile Phone - Controller - Styles */
+
+
+#mobile { display: flex;}
+
+#controller {
+    margin: auto;
+    padding: auto;
+    display: flex;
+    color: white;
+    width: 100%;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
 }
 
-/* Desktop - In game styles */
+#tips {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-content: center;
+    justify-content: center;
+}
 
-#splash {
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: url(/imgs/mainmenu.gif) no-repeat center center fixed; 
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+#tips h1 { 
+    color: rgb(58, 85, 162); 
+    font-size: 1.3em; 
+}
+
+#tips ul { list-style: none; }
+#tips p { font-size: 1.2em; }
+#tips strong { color: rgb(115, 204, 220); }
+
+#btnReady {
+    animation: color-pulse 1s infinite;
+    border: none;
+    font-size: 2em;
+    background: black;
+}
+
+#controls-container { display: none; }
+
+
+/* Media Queries */
+
+
+/* Desktop */
+@media all and (max-width: 1920px) and (min-width: 1281px) {
+    #logo {
+        height: auto; 
+        width: auto;
+        max-width: 811px;
+        max-height: 256px;
+    }
+}
+
+/* Desktop */
+@media all and (max-width: 1280px) and (min-width: 768px) {
+    #logo {
+        height: auto; 
+        width: auto;
+        max-width: 640px;
+        max-height: 200px;
+    }
+}
+
+/* Desktop */
+@media all and (max-width: 767px) {
+    #logo {
+        height: auto; 
+        width: auto;
+        max-width: 525px;
+        max-height: 164px;
+    }
+}
+
+/* Desktop - input field too large, shrink */
+@media all and (max-width: 500px) {
+    #logo {
+        height: auto; 
+        width: auto;
+        max-width: 400px;
+        max-height: 125px;
+    }
+    
+    #txtPhoneNumber {
+        width: 20em !important;
+    }
+    
+    input::-webkit-input-placeholder {
+        font-size: 14px !important;
+    }
+ 
+    input:-moz-placeholder {
+        font-size: 14px !important;
+    }
+
+    input::-moz-placeholder {
+        font-size: 14px !important; 
+    }
+
+    input:-ms-input-placeholder {
+        font-size: 14px !important; 
+    }
 }

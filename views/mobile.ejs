@@ -3,6 +3,8 @@
 <head>
     <title>CommsQuest IV - Controller</title>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <script src="//media.twiliocdn.com/sdk/js/common/v0.1/twilio-common.min.js"></script>
     <script src="//media.twiliocdn.com/sdk/js/sync/v0.2/twilio-sync.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
@@ -13,25 +15,45 @@
 
     <link rel="stylesheet" type="text/css" href="/css/styles.css">
 </head>
-<body id="controller">
-    <div id="tips-container">
-        <h2>To Begin Your Quest</h2>
-        <h3>1. Lock your phone's orientation to portrait.</h3>
-        <i id="tip-lock-portrait"></i>
-        <h3>2. Hold your phone flat and parallel to the ground.</h3>
-        <i id="tip-flat-to-ground"></i>
-        <br/>
-        <h2 onclick="startGame()">Start Game</h2>
+<body id="mobile">
+    
+    <div id="controller">
+        
+        <div id="tips">
+
+            <div class="row">
+                
+                <h1>TO BEING YOUR QUEST</h1>
+                <ul>
+                    <li>
+                        <p>1. Lock your phone's orientation to portrait.</p>
+                    </li>
+                    <li>
+                        <p>2. Hold your phone flat and parallel to the ground.</p>
+                    </li>
+                </ul>
+                
+            </div>
+            
+            <div class="footer">
+                <button id="btnReady" onclick="startGame()">READY</button>
+            </div>
+
+        </div>
+    
+        <div id="controls-container">
+
+            <div id="score">Score</div>
+            <div id="time">Time</div>
+            <div id="pause-button"></div>
+
+        </div>
+        
     </div>
     
-    <div id="controls-container">
-        <div id="score">Score</div>
-        <div id="time">Time</div>
-        <div id="pause-button"></div>
-    </div>
-
     <script>
         var phoneNumber = '<%= phoneNumber %>';
     </script>
+    
 </body>
 </html>

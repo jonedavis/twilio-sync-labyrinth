@@ -48,10 +48,31 @@ var camera = undefined,
     rawAccelY = [0, 0, 0, 0];
 
 // Assets
-var $splash = undefined,
+var $splashScreen = undefined,
+    $splashScreenTitle = undefined,
+    $splashScreenSubTitle = undefined,
+    $splashScreenLevelDescription = undefined,
     $level = undefined,
+    $levelName = undefined,
+    levelNames = 
+    [
+        'MAIN MENU',
+        'STONES THROW',
+        'LIGHT MY FIRE',
+        'HOWDY PILGRAM',
+        'COPPER & TIN',
+        'PHONE HOME',
+        'RAINBOW WORLD'
+     ],
+    levelDescriptions = [
+        'Main Menu',
+        "It's the year 15000 BC. A stone is thrown and communications are born. Roll your stone through the cave to complete the first phone call of all time.", 'Something for level 2', 
+        'Something for level 3',
+        'Something for level 4',
+        'Something for level 5',
+        'Something for level 6',
+    ],
     assets = [];
-
 
 // Preload textures
 for (var i = 1; i <= numberOfLevels; i++) {
@@ -286,11 +307,15 @@ function gameLoop() {
 
 function advanceLevelTo(levelNumber) {
     currentLevel = levelNumber;
-    $level.html('Level ' + currentLevel).show();
-    $splash.css('background', 'url(/imgs/level_' + currentLevel + '/splash.png) no-repeat center center fixed');
-    $splash.show();
+    $splashScreen.show();
+    $splashScreenTitle.text('CALL ' + currentLevel);
+    $splashScreenSubTitle.text(levelNames[currentLevel]);
+    $splashScreenLevelDescription.text(levelDescriptions[currentLevel]);
+    
     setTimeout(function () {
-        $splash.hide();
+        $splashScreen.hide();
+        $level.html('CALL ' + currentLevel).show();
+        $levelName.html(levelNames[currentLevel]).show();
         gameState = 'fade in';
     }, 5000);
 }
@@ -306,10 +331,11 @@ function onResize() {
 
 // From mobile phone (controller)
 function onControllerUpdated(axis) {
-    // Return if steady
+    // Return if gyroscope is steady
     var beta = Math.floor(Math.abs(axis.beta));
     var gamma = Math.floor(Math.abs(axis.gamma));
     if (beta === 0 && gamma === 0) { return; }
+    
     // Push raw data to front of arrays
     // each coordinate gets it's own array
     rawAccelX.unshift(axis.x);
@@ -379,9 +405,12 @@ jQuery.fn.center = function () {
 
 $(document)
     .ready(function () {
-        $splash = $('#splash').hide();
+        $splashScreen = $('#splash-screen').hide();
+        $splashScreenTitle = $('#splash-screen-description > .row > h1');
+        $splashScreenSubTitle = $('#splash-screen-description > .row > h2');
+        $splashScreenLevelDescription = $('#splash-screen-description > .row > p');
         $level = $('#desktop-level').hide();
-
+        $levelName = $('#desktop-level-name').hide();
         // Set the initial game state
         gameState = 'waiting for sync';
 
@@ -407,7 +436,7 @@ $(document)
                             // Hide entire menu
                             $('#main-menu').hide();
                             $('#start-game').hide();
-                            $('#footer').hide();
+                            $('#main-menu > .footer').hide();
 
                             // Create the renderer
                             renderer = new THREE.WebGLRenderer();
