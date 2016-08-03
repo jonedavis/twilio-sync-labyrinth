@@ -3,7 +3,7 @@
 
 @font-face {
     font-family: "PressStart2P";
-    src: url(/fonts/PressStart2P.ttf);
+    src: url(/fonts/PressStart2P.ttf) format('truetype');
 }
 
 * {
@@ -38,15 +38,15 @@ a:visited {
 /* Desktop - Main Menu - Styles */
 
 
-#main-menu,
-#splash-screen {
+.desktop,
+.flex-column {
     display: flex;
     flex-direction: column;
     min-height: 100%;
 }
 
-#start-game,
-#splash-screen-description {
+.flex-center,
+.description-info {
     display: flex;
     text-align: center;
     justify-content: center;
@@ -60,18 +60,18 @@ a:visited {
     justify-content: center;
 }
 
-#splash-screen-description > .row h1, h2 {
+.description-info > .row h1, h2 {
     font-size: 18px;
     color: white;
 }
 
-#splash-screen-description > .row p {
+.description-info > .row p {
     font-size: 14px;
     margin-top: 2.8em;
     color: rgb(148, 151, 155);
 }
 
-#splash-screen-description > .row {
+.description-info > .row {
     flex-basis: 45%;
 }
 
@@ -96,7 +96,7 @@ a:visited {
 /* Phone number input field styles */
 
 
-#txtPhoneNumber {
+.phone {
     margin-top: 5.5em;
     padding-left: .9em;
     border: 4px solid rgb(58, 85, 162);
@@ -112,7 +112,7 @@ a:visited {
 /* Input fields placeholder font color */
 
 
-#txtPhoneNumber:focus {
+.phone:focus {
     outline: none;
 }
 
@@ -132,7 +132,7 @@ input:-ms-input-placeholder {
     color: white !important;  
 }
 
-#btnStart {
+.button-sync {
     margin-top: 2em;
     background: black;
     font-size: 18px;
@@ -141,8 +141,7 @@ input:-ms-input-placeholder {
     border: none;
 }
 
-#desktop-level,
-#desktop-level-name {
+.call-hud {
     display: block;
     position: absolute;
     left: 2.9em;
@@ -151,7 +150,7 @@ input:-ms-input-placeholder {
     font-weight: bold;
 }
 
-#desktop-level-name {
+.level-name {
     top: 4.8em;
 }
 
@@ -159,9 +158,9 @@ input:-ms-input-placeholder {
 /* Mobile Phone - Controller - Styles */
 
 
-#mobile { display: flex;}
+.flex { display: flex; }
 
-#controller {
+.rotate-landscape {
     margin: auto;
     padding: auto;
     display: flex;
@@ -171,7 +170,7 @@ input:-ms-input-placeholder {
     transform-origin: 50% 50%;
 }
 
-#tips {
+.controller-layout {
     display: flex;
     flex-direction: column;
     text-align: center;
@@ -179,23 +178,23 @@ input:-ms-input-placeholder {
     justify-content: center;
 }
 
-#tips h1 { 
+.controller-layout h1 { 
     color: rgb(58, 85, 162); 
     font-size: 1.3em; 
 }
 
-#tips ul { list-style: none; }
-#tips p { font-size: 1.2em; }
-#tips strong { color: rgb(115, 204, 220); }
+.controller-layout ul { list-style: none; }
+.controller-layout p { font-size: 1.2em; }
+.controller-layout strong { color: rgb(115, 204, 220); }
 
-#btnReady {
+.button-pulse {
     animation: color-pulse 1s infinite;
     border: none;
     font-size: 2em;
     background: black;
 }
 
-#controls-container { display: none; }
+.controller-hud { display: none; }
 
 
 /* Media Queries */
@@ -203,7 +202,7 @@ input:-ms-input-placeholder {
 
 /* Desktop */
 @media all and (max-width: 1920px) and (min-width: 1281px) {
-    #logo {
+    .logo {
         height: auto; 
         width: auto;
         max-width: 811px;
@@ -213,7 +212,7 @@ input:-ms-input-placeholder {
 
 /* Desktop */
 @media all and (max-width: 1280px) and (min-width: 768px) {
-    #logo {
+    .logo {
         height: auto; 
         width: auto;
         max-width: 640px;
@@ -223,7 +222,7 @@ input:-ms-input-placeholder {
 
 /* Desktop */
 @media all and (max-width: 767px) {
-    #logo {
+    .logo {
         height: auto; 
         width: auto;
         max-width: 525px;
@@ -233,14 +232,14 @@ input:-ms-input-placeholder {
 
 /* Desktop - input field too large, shrink */
 @media all and (max-width: 500px) {
-    #logo {
+    .logo {
         height: auto; 
         width: auto;
         max-width: 400px;
         max-height: 125px;
     }
     
-    #txtPhoneNumber {
+    .phone {
         width: 20em !important;
     }
     
