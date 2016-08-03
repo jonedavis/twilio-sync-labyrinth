@@ -34,6 +34,19 @@ a:visited {
     }
 }
 
+.large-font { font-size: 2em; }
+.xmid-font { font-size: 1.5em; }
+.mid-font { font-size: 1.2em; }
+.small-font { font-size: .9em; }
+
+.darkblue { color: rgb(58, 85, 162); }
+.midblue { color: rgb(148, 151, 155); }
+.lightblue { color: rgb(115, 204, 220); }
+.gray { color: rgb(148, 151, 155); }
+.white { color: white; }
+
+.full-height { min-height: 100vh; }
+
 
 /* Desktop - Main Menu - Styles */
 
@@ -132,12 +145,9 @@ input:-ms-input-placeholder {
     color: white !important;  
 }
 
-.button-sync {
-    margin-top: 2em;
+.button {
     background: black;
-    font-size: 18px;
     text-align: center;
-    color: rgb(148, 151, 155);
     border: none;
 }
 
@@ -162,10 +172,7 @@ input:-ms-input-placeholder {
 
 .rotate-landscape {
     margin: auto;
-    padding: auto;
     display: flex;
-    color: white;
-    width: 100%;
     transform: rotate(-90deg);
     transform-origin: 50% 50%;
 }
@@ -184,7 +191,6 @@ input:-ms-input-placeholder {
 }
 
 .controller-layout ul { list-style: none; }
-.controller-layout p { font-size: 1.2em; }
 .controller-layout strong { color: rgb(115, 204, 220); }
 
 .button-pulse {
@@ -194,8 +200,12 @@ input:-ms-input-placeholder {
     background: black;
 }
 
-.controller-hud { display: none; }
+.display-none { display: none; }
 
+.bottom-flex {
+    align-self: flex-start !important;
+    background: red; 
+}
 
 /* Media Queries */
 
