@@ -4,7 +4,7 @@
     <title>CommsQuest IV - Controller</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    
     <script src="//media.twiliocdn.com/sdk/js/common/v0.1/twilio-common.min.js"></script>
     <script src="//media.twiliocdn.com/sdk/js/sync/v0.2/twilio-sync.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
@@ -15,46 +15,30 @@
 
     <link rel="stylesheet" type="text/css" href="/css/styles.css">
 </head>
-<body class="flex">
-        
-    <div id="controller" class="rotate-landscape">
-        
-
-        <div id="tips">
-
-            <div class="row controller-layout">
-                
-                <h1>TO BEING YOUR QUEST</h1>
-                <ul>
-                    <li>
-                        <p class="mid-font white">1. Lock your phone's orientation to portrait.</p>
-                    </li>
-                    <li>
-                        <p class="mid-font white">2. Hold your phone flat and parallel to the ground.</p>
-                    </li>
-                </ul>
-                
-            </div>
-            
-            <div class="footer">
-                <button id="btnReady" class="button-pulse" onclick="startGame()">READY</button>
-            </div>
-
-        </div>
+<body>
     
-        <div id="controls-container">
+    <div class="flex-container-full">
+        
+        <div id="controller-tips" class="center-text rotate-landscape">
             
-            <div class="row controller-layout">
-                <h2 id="score">CALLS CONNECTED 0</h2>
-                <p id="time" class="large-font white">1:00</p>
-                <p class="small-font white">TIME REMAINING TO CONNECT YOUR CALL</p>
-                <button id="btnPause" class="button xmid-font darkblue" onclick="">(TAP TO PAUSE)</button>
-            </div>
-                
+            <h1 class="mid-font darkblue">TO BEING YOUR QUEST</h1>
+            <p class="mid-font white">1. Lock your phone's orientation to portrait.</p>
+            <p class="mid-font white">2. Hold your phone flat and parallel to the ground.</p>
+            <button id="btnReady" class="button-pulse" onclick="startGame()">READY</button>
+            
         </div>
-                    
+        
+        <div id="controller-controls" class="hidden rotate-landscape center-text">
+
+            <p id="score" class="small-font gray">CALLS CONNECTED 0</p>
+            <p id="time" class="no-margin huge-font white">1:00</p>
+            <p class="single-top-margin small-font gray">TIME REMAINING TO CONNECT</p>
+            <button id="btnPause" class="button double-top-margin xmid-font lightblue" onclick="">(TAP TO PAUSE)</button>
+
+        </div>
+
     </div>
-    
+
     <script>
         var phoneNumber = '<%= phoneNumber %>';
     </script>

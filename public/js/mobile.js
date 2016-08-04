@@ -4,18 +4,48 @@ audioPlayer.load({
     name: 'collision',
     src: '/audio/Hammering-Collision_TTX024702.wav'
 });
-    
+
 function startGame() {
     audioPlayer.play('collision');
-    $('#tips').hide();
-    $('#controls-container').show();
+    $('#controller-tips').hide();
+    $('#controller-controls').show();
+    startCountdown();
+}
+
+// Countdown timer defaults to 1 min no callback
+function startCountdown(minutes, callback) {
+    var seconds = minutes != undefined ? (minutes * 60) : 30;
+    function tick() {
+        seconds--;
+        var itsTheFinalCountdown = seconds < 10;
+        var countdown = '0:' + (itsTheFinalCountdown ? '0' : '') + seconds;
+        
+        // Add some danger
+        if (!$time.hasClass('redish') && itsTheFinalCountdown) {
+            $time.addClass('redish');
+        }
+        
+        $time.text(countdown);
+        
+        if (seconds > 0) {
+            setTimeout(tick, 1000);
+        } else {
+            $time.text('ツ'); // ¯\_(ツ)_/¯
+            // Game over -> tell the server
+            if (callback != undefined) {
+                callback();
+            }
+        }
+    }
+    tick();
 }
 
 $(function () {
     var syncClient, gameStateDoc, controllerStateDoc;
     // Server url to request for an auth token
     var url = '/token-mobile/' + phoneNumber;
-    $('#controls-container').hide();
+    $('#controller-controls').hide(); //check
+    $time = $('#time');
     
     // Get a Sync client (with auth token from provided url)
     Twilio.Sync.CreateClient(url).then(function (client) {
@@ -77,6 +107,4 @@ $(function () {
             window.navigator.vibrate(value);
         }
     }
-    
-    
 });
