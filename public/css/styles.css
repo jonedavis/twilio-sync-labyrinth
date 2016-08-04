@@ -49,7 +49,6 @@ a:visited {
 .flex-column {
     display: flex;
     flex-direction: column;
-    background: red;
 }
 
 .flex-container-full {
