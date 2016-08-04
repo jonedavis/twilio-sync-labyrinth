@@ -7,8 +7,8 @@ audioPlayer.load({
     
 function startGame() {
     audioPlayer.play('collision');
-    $('#tips').hide();
-    $('#controls-container').show();
+    $('#controller-tips').hide();
+    $('#controller-controls').show();
 }
 
 $(function () {

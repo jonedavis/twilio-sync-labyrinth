@@ -16,7 +16,6 @@ html,
 body { 
     margin: 0;
     padding: 0;
-    height: 100%; 
     background: black;
 }
 
@@ -34,13 +33,25 @@ a:visited {
     }
 }
 
-.display-none { display: none; }
-
+.hidden { display: none; }
 .flex { display: flex; }
 
 .flex-column {
     display: flex;
     flex-direction: column;
+    background: red;
+}
+
+.flex-container-full {
+    display: flex;    
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-container-full div {
+    margin: 0 auto;
+    align-self: center;
 }
 
 .row {
@@ -61,6 +72,7 @@ a:visited {
 .xmid-font { font-size: 1.5em; }
 .mid-font { font-size: 1.2em; }
 .small-font { font-size: .9em; }
+.center-text { text-align: center; }
 
 .darkblue { color: rgb(58, 85, 162); }
 .midblue { color: rgb(148, 151, 155); }
@@ -69,7 +81,14 @@ a:visited {
 .white { color: white; }
 
 .full-height { min-height: 100vh; }
+.full-width { min-width: 100vh; }
+.full-height-percent { min-height: 100%; }
+.full-width-percent { min-width: 100%; }
+.inline-block {display: inline-block;}
+
 .double-top-margin { margin-top: 2em; }
+
+.no-bullets { list-style: none; }
 
 .button {
     background: black;
@@ -155,21 +174,9 @@ input:-ms-input-placeholder {
 
 
 .rotate-landscape {
-    margin: auto;
-    display: flex;
+    transform-origin: center center;
     transform: rotate(-90deg);
-    transform-origin: 50% 50%;
 }
-
-.controller-layout {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    align-content: center;
-    justify-content: center;
-}
-
-.controller-layout ul { list-style: none; }
 
 .button-pulse {
     animation: color-pulse 1s infinite;
