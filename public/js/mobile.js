@@ -15,7 +15,7 @@ $(function () {
     var syncClient, gameStateDoc, controllerStateDoc;
     // Server url to request for an auth token
     var url = '/token-mobile/' + phoneNumber;
-    $('#controls-container').hide();
+    $('#controller-controls').hide(); //check
     
     // Get a Sync client (with auth token from provided url)
     Twilio.Sync.CreateClient(url).then(function (client) {
