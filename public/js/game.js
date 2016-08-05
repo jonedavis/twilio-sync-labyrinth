@@ -15,7 +15,9 @@ var camera = undefined,
     gameState = undefined,
     numberOfLevels = 6,
     currentLevel = 0,
-    
+    yellowColor = 0xE7D441,
+    redColor = 0xEB354C,
+
     // Box2D shortcuts
     b2World = Box2D.Dynamics.b2World,
     b2FixtureDef = Box2D.Dynamics.b2FixtureDef,
@@ -164,7 +166,7 @@ function createRenderWorld() {
 
     // Flash Plane
     var flashPlane = new THREE.PlaneGeometry(mazeDimension * 10, mazeDimension * 10, mazeDimension, mazeDimension);
-    var flashMaterial = new THREE.MeshBasicMaterial({ color: 0xEB354C, opacity: 0, transparent: true });
+    var flashMaterial = new THREE.MeshBasicMaterial({ color: yellowColor, opacity: 0, transparent: true });
     flashMesh = new THREE.Mesh(flashPlane, flashMaterial);
     flashMesh.position.z = 2;
     scene.add(flashMesh);
