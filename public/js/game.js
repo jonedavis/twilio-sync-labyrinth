@@ -2,6 +2,7 @@ var camera = undefined,
     scene = undefined,
     renderer = undefined,
     light = undefined,
+    flashMesh = undefined,
     mouseX = undefined,
     mouseY = undefined,
     maze = undefined,
@@ -161,6 +162,13 @@ function createRenderWorld() {
     // Create the scene object
     scene = new THREE.Scene();
 
+    // Flash Plane
+    var flashPlane = new THREE.PlaneGeometry(mazeDimension * 10, mazeDimension * 10, mazeDimension, mazeDimension);
+    var flashMaterial = new THREE.MeshBasicMaterial({ color: 0xEB354C, opacity: 0, transparent: true });
+    flashMesh = new THREE.Mesh(flashPlane, flashMaterial);
+    flashMesh.position.z = 2;
+    scene.add(flashMesh);
+    
     // Add the light
     light = new THREE.PointLight(0xffffff, 1);
     light.position.set(1, 1, 1.3);
@@ -180,7 +188,7 @@ function createRenderWorld() {
     camera = new THREE.PerspectiveCamera(60, aspect, 1, 1000);
     camera.position.set(1, 1, 5);
     scene.add(camera);
-
+    
     // Add the maze
     mazeMesh = generate_maze_mesh(maze);
     scene.add(mazeMesh);
@@ -218,14 +226,13 @@ function updatePhysicsWorld() {
     wWorld.Step(1 / 120, 3, 3);
 }
 
-
 function updateRenderWorld() {
     // Update ball position
     var stepX = wBall.GetPosition().x - ballMesh.position.x;
     var stepY = wBall.GetPosition().y - ballMesh.position.y;
     ballMesh.position.x += stepX;
     ballMesh.position.y += stepY;
-
+    
     // Update ball rotation
     var tempMat = new THREE.Matrix4();
     tempMat.makeRotationAxis(new THREE.Vector3(0, 1, 0), stepX / ballRadius);
@@ -249,61 +256,72 @@ function updateRenderWorld() {
 
 function gameLoop() {
     switch (gameState) {
-
-    case 'initialize':
-        maze = generateSquareMaze(mazeDimension);
-        maze[mazeDimension - 1][mazeDimension - 2] = false;
-        createPhysicsWorld();
-        createRenderWorld();
-        camera.position.set(1, 1, 5);
-        light.position.set(1, 1, 1.3);
-        light.intensity = 0;
-        var level = Math.floor((mazeDimension - 1) / 2 - 4);
-        if (level > currentLevel) {
-            advanceLevelTo(level);
-        }
-        gameState = 'advancing';
-        break;
-
-    case 'fade in':
-        light.intensity += 0.1 * (1.0 - light.intensity);
-        renderer.render(scene, camera);
-        if (Math.abs(light.intensity - 1.0) < 0.05) {
-            light.intensity = 1.0;
-            gameState = 'play';
-        }
-        break;
-
-    case 'play':
-        updatePhysicsWorld();
-        updateRenderWorld();
-        renderer.render(scene, camera);
-
-        // Check for victory.
-        var mazeX = Math.floor(ballMesh.position.x + 0.5);
-        var mazeY = Math.floor(ballMesh.position.y + 0.5);
-        if (mazeX == mazeDimension && mazeY == mazeDimension - 2) {
-            mazeDimension += 2;
-            gameState = 'fade out';
-        }
-        break;
-
-    case 'fade out':
-        updatePhysicsWorld();
-        updateRenderWorld();
-        light.intensity += 0.1 * (0.0 - light.intensity);
-        renderer.render(scene, camera);
-        if (Math.abs(light.intensity - 0.0) < 0.1) {
-            light.intensity = 0.0;
+        case 'initialize':
+            maze = generateSquareMaze(mazeDimension);
+            maze[mazeDimension - 1][mazeDimension - 2] = false;
+            createPhysicsWorld();
+            createRenderWorld();
+            camera.position.set(1, 1, 5);
+            light.position.set(1, 1, 1.3);
+            light.intensity = 0;
+            var level = Math.floor((mazeDimension - 1) / 2 - 4);
+            if (level > currentLevel) {
+                advanceLevelTo(level);
+            }
+            gameState = 'advancing';
+            break;
+            
+        case 'fade in':
+            light.intensity += 0.1 * (1.0 - light.intensity);
             renderer.render(scene, camera);
-            gameState = 'initialize';
-        }
-        break;
+            if (Math.abs(light.intensity - 1.0) < 0.05) {
+                light.intensity = 1.0;
+                gameState = 'play';
+            }
+            break;
 
+        case 'play':
+            updatePhysicsWorld();
+            updateRenderWorld();
+            renderer.render(scene, camera);
+
+            // Check for victory.
+            var mazeX = Math.floor(ballMesh.position.x + 0.5);
+            var mazeY = Math.floor(ballMesh.position.y + 0.5);
+            if (mazeX == mazeDimension && mazeY == mazeDimension - 2) {
+                mazeDimension += 2;
+                gameState = 'fade out';
+            }
+            break;
+
+        case 'fade out':
+            updatePhysicsWorld();
+            updateRenderWorld();
+            light.intensity += 0.1 * (0.0 - light.intensity);
+            renderer.render(scene, camera);
+            if (Math.abs(light.intensity - 0.0) < 0.1) {
+                light.intensity = 0.0;
+                renderer.render(scene, camera);
+                gameState = 'initialize';
+            }
+            break;
     }
-
     requestAnimationFrame(gameLoop);
 }
+
+
+
+function flash() {
+    TweenLite.to(flashMesh.material, 0.15, {
+        opacity: 0.5,
+        onComplete: function () {
+            TweenLite.to(flashMesh.material, 0.15, {
+                opacity: 0
+            });
+        }
+    });
+}
+
 
 function advanceLevelTo(levelNumber) {
     currentLevel = levelNumber;
@@ -441,8 +459,8 @@ $(document)
                             // Create the renderer
                             renderer = new THREE.WebGLRenderer();
                             renderer.setSize(window.innerWidth, window.innerHeight);
+                            // Set ID to flash on collision
                             document.body.appendChild(renderer.domElement);
-
                             // Bind keyboard and resize events
                             $(window).resize(onResize);
 
