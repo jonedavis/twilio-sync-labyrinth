@@ -15,8 +15,9 @@ var camera = undefined,
     gameState = undefined,
     numberOfLevels = 6,
     currentLevel = 0,
-    yellowColor = 0xE7D441,
-    redColor = 0xEB354C,
+    yellowColor = { r: 231, g: 212, b: 65 },
+    redColor = { r: 235, g: 53, b: 76 },
+    getFlashColor = utils.colors.transition(yellowColor, redColor, 0.05);
 
     // Box2D shortcuts
     b2World = Box2D.Dynamics.b2World,
@@ -43,7 +44,7 @@ var camera = undefined,
     ACCEL_FACTOR = 10,
     ACCEL_THRESHOLD = 0.3,
     NUM_FILTER_POINTS = 4,
-    FORCE_MULTIPLIER = 4.0,
+    FORCE_MULTIPLIER = 7.0,
     newAccel = { x: 0.0, y: 0.0 },    
     oldAccel = { x: 0.0, y: 0.0 },
     diffAccel = { x: 0.0, y: 0.0 },
@@ -127,6 +128,8 @@ function createPhysicsWorld() {
 
         // Collision impulse threshold. Tweak as needed
         if (impulseSum >= 1.20) {
+            // flash screen
+            flash();
             wallCollisionList.push({ impulse: impulseSum })
                 .catch(function (err) {
                     console.log(err)
@@ -166,7 +169,11 @@ function createRenderWorld() {
 
     // Flash Plane
     var flashPlane = new THREE.PlaneGeometry(mazeDimension * 10, mazeDimension * 10, mazeDimension, mazeDimension);
-    var flashMaterial = new THREE.MeshBasicMaterial({ color: yellowColor, opacity: 0, transparent: true });
+    var flashMaterial = new THREE.MeshBasicMaterial({
+        color: utils.colors.rgbToString(yellowColor),
+        opacity: 0,
+        transparent: true
+    });
     flashMesh = new THREE.Mesh(flashPlane, flashMaterial);
     flashMesh.position.z = 2;
     scene.add(flashMesh);
@@ -273,6 +280,11 @@ function gameLoop() {
             gameState = 'advancing';
             break;
             
+        case 'advancing':
+            // reset flash matierial color
+            flashMesh.material.color.set(utils.colors.rgbToString(yellowColor));
+            break;
+        
         case 'fade in':
             light.intensity += 0.1 * (1.0 - light.intensity);
             renderer.render(scene, camera);
@@ -314,6 +326,9 @@ function gameLoop() {
 
 
 function flash() {
+    // update color 5% more red than before
+    var rgb = getFlashColor();
+    flashMesh.material.color.set(rgb);
     TweenLite.to(flashMesh.material, 0.15, {
         opacity: 0.5,
         onComplete: function () {
@@ -461,7 +476,6 @@ $(document)
                             // Create the renderer
                             renderer = new THREE.WebGLRenderer();
                             renderer.setSize(window.innerWidth, window.innerHeight);
-                            // Set ID to flash on collision
                             document.body.appendChild(renderer.domElement);
                             // Bind keyboard and resize events
                             $(window).resize(onResize);
