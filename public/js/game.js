@@ -56,6 +56,7 @@ var $splashScreen = undefined,
     $splashScreenTitle = undefined,
     $splashScreenLevelName = undefined,
     $splashScreenLevelDescription = undefined,
+    $splashLevelCompletedGraphic = undefined,
     $level = undefined,
     $levelName = undefined,
     levelNames = 
@@ -338,6 +339,12 @@ function flash() {
 
 
 function advanceLevelTo(levelNumber) {
+    if (currentLevel !== 0) {
+        $splashLevelCompletedGraphic
+            .attr('src', 'imgs/level_' + currentLevel + 'level_completed.gif')
+            .delay(2000)
+            .hide();
+    }
     currentLevel = levelNumber;
     $splashScreen.show();
     $splashScreenTitle.text('CALL ' + currentLevel);
@@ -438,6 +445,7 @@ jQuery.fn.center = function () {
 $(document)
     .ready(function () {
         $splashScreen = $('#splash-screen').hide();
+        $splashLevelCompletedGraphic = $('#splash-screen-description');
         $level = $('#desktop-level').hide();
         $levelName = $('#desktop-level-name').hide();
         $splashScreenTitle = $('#splash-screen-title');
