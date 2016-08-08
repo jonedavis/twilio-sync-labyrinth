@@ -276,6 +276,7 @@ function gameLoop() {
             camera.position.set(1, 1, 5);
             light.position.set(1, 1, 1.3);
             light.intensity = 0;
+            // TODO: What does this mean?
             var level = Math.floor((mazeDimension - 1) / 2 - 4);
             if (level > currentLevel) {
                 advanceLevelTo(level);
@@ -342,7 +343,7 @@ function advanceLevelTo(levelNumber) {
     currentLevel = levelNumber;
     if (currentLevel != 1) {
         $splashLevelCompletedGraphic
-            .attr('src', 'imgs/level_' + (currentLevel - 1) + '/level_completed.gif')
+            .attr('src', 'imgs/level_' + (currentLevel - 1) + '/level_completed.gif?a=' + Math.random()) // no cache for animations
             .show();
     }
 
