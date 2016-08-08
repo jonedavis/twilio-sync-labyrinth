@@ -31,7 +31,7 @@ function startCountdown(minutes, callback) {
             setTimeout(tick, 1000);
         } else {
             $time.text('ツ'); // ¯\_(ツ)_/¯
-            // Game over -> tell the server
+            // Game over -> tell the server?
             if (callback != undefined) {
                 callback();
             }
