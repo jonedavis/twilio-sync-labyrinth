@@ -125,6 +125,7 @@ a:visited {
     flex: 1;
 }
 
+
 .flex-center > .row p {
     margin-top: 2.8em;
 }
@@ -218,6 +219,11 @@ input:-ms-input-placeholder {
         max-width: 811px;
         max-height: 256px;
     }
+    
+    .animated-level-graphic {
+        width: 375px;
+        height: 375px;
+    }
 }
 
 /* Desktop */
@@ -227,6 +233,11 @@ input:-ms-input-placeholder {
         width: auto;
         max-width: 640px;
         max-height: 200px;
+    }
+    
+    .animated-level-graphic {
+        width: 350px;
+        height: 350px;
     }
 }
 
@@ -238,6 +249,11 @@ input:-ms-input-placeholder {
         max-width: 525px;
         max-height: 164px;
     }
+    
+    .animated-level-graphic {
+        width: 300px;
+        height: 300px;
+    }
 }
 
 /* Desktop - input field too large, shrink */
@@ -247,6 +263,11 @@ input:-ms-input-placeholder {
         width: auto;
         max-width: 400px;
         max-height: 125px;
+    }
+    
+    .animated-level-graphic {
+        width: 275px;
+        height: 275px;
     }
     
     .phone {

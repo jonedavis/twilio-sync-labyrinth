@@ -56,6 +56,7 @@ var $splashScreen = undefined,
     $splashScreenTitle = undefined,
     $splashScreenLevelName = undefined,
     $splashScreenLevelDescription = undefined,
+    $splashLevelCompletedGraphic = undefined,
     $level = undefined,
     $levelName = undefined,
     levelNames = 
@@ -275,6 +276,7 @@ function gameLoop() {
             camera.position.set(1, 1, 5);
             light.position.set(1, 1, 1.3);
             light.intensity = 0;
+            // TODO: What does this mean?
             var level = Math.floor((mazeDimension - 1) / 2 - 4);
             if (level > currentLevel) {
                 advanceLevelTo(level);
@@ -339,6 +341,12 @@ function flash() {
 
 function advanceLevelTo(levelNumber) {
     currentLevel = levelNumber;
+    if (currentLevel != 1) {
+        $splashLevelCompletedGraphic
+            .attr('src', 'imgs/level_' + (currentLevel - 1) + '/level_completed.gif?a=' + Math.random()) // no cache for animations
+            .show();
+    }
+
     $splashScreen.show();
     $splashScreenTitle.text('CALL ' + currentLevel);
     $splashScreenLevelName.text(levelNames[currentLevel]);
@@ -438,6 +446,7 @@ jQuery.fn.center = function () {
 $(document)
     .ready(function () {
         $splashScreen = $('#splash-screen').hide();
+        $splashLevelCompletedGraphic = $('#splash-level-completed-graphic');
         $level = $('#desktop-level').hide();
         $levelName = $('#desktop-level-name').hide();
         $splashScreenTitle = $('#splash-screen-title');
