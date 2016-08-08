@@ -266,6 +266,7 @@ function gameLoop() {
         case 'advancing':
             // reset flash matierial color
             flashMesh.material.color.set(utils.colors.rgbToString(yellowColor));
+            getFlashColor = utils.colors.transition(yellowColor, redColor, 0.05);
             break;
             
         case 'initialize':
