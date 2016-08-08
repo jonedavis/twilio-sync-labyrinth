@@ -13,7 +13,7 @@ var camera = undefined,
     ballRadius = 0.20,
     controllerAxis = [0, 0],
     gameState = undefined,
-    numberOfLevels = 6,
+    numberOfLevels = 4,
     currentLevel = 0,
     yellowColor = { r: 231, g: 212, b: 65 },
     redColor = { r: 235, g: 53, b: 76 },
@@ -54,27 +54,24 @@ var camera = undefined,
 // Assets
 var $splashScreen = undefined,
     $splashScreenTitle = undefined,
-    $splashScreenSubTitle = undefined,
+    $splashScreenLevelName = undefined,
     $splashScreenLevelDescription = undefined,
     $level = undefined,
     $levelName = undefined,
     levelNames = 
     [
         'MAIN MENU',
-        'STONES THROW',
-        'LIGHT MY FIRE',
-        'HOWDY PILGRAM',
-        'COPPER & TIN',
-        'PHONE HOME',
-        'RAINBOW WORLD'
+        'CAVE OF LAST-CALL',
+        'CASTLE CALLDROPSALOT',
+        'TELECOM TOWERS',
+        'TOMORROWLAND'
      ],
     levelDescriptions = [
         'Main Menu',
-        "It's the year 15000 BC. A stone is thrown and communications are born. Roll your stone through the cave to complete the first phone call of all time.", 'Something for level 2', 
-        'Something for level 3',
-        'Something for level 4',
-        'Something for level 5',
-        'Something for level 6',
+        "Roll your stone through the cave to complete the first “telestone” call of all time!", 
+        'Carry your spark through the tower to light the signal fire and save the castle!',
+        'Navigate your energy node through the global communications infrastructure to the PBX box across the world!',
+        'Roll your happy ball of light through a maze of infinite rainbows.'
     ],
     assets = [];
 
@@ -265,6 +262,11 @@ function updateRenderWorld() {
 
 function gameLoop() {
     switch (gameState) {
+        case 'advancing':
+            // reset flash matierial color
+            flashMesh.material.color.set(utils.colors.rgbToString(yellowColor));
+            break;
+            
         case 'initialize':
             maze = generateSquareMaze(mazeDimension);
             maze[mazeDimension - 1][mazeDimension - 2] = false;
@@ -278,11 +280,6 @@ function gameLoop() {
                 advanceLevelTo(level);
             }
             gameState = 'advancing';
-            break;
-            
-        case 'advancing':
-            // reset flash matierial color
-            flashMesh.material.color.set(utils.colors.rgbToString(yellowColor));
             break;
         
         case 'fade in':
@@ -344,7 +341,7 @@ function advanceLevelTo(levelNumber) {
     currentLevel = levelNumber;
     $splashScreen.show();
     $splashScreenTitle.text('CALL ' + currentLevel);
-    $splashScreenSubTitle.text(levelNames[currentLevel]);
+    $splashScreenLevelName.text(levelNames[currentLevel]);
     $splashScreenLevelDescription.text(levelDescriptions[currentLevel]);
     
     setTimeout(function () {
@@ -441,11 +438,11 @@ jQuery.fn.center = function () {
 $(document)
     .ready(function () {
         $splashScreen = $('#splash-screen').hide();
-        $splashScreenTitle = $('#splash-screen-description > .row > h1');
-        $splashScreenSubTitle = $('#splash-screen-description > .row > h2');
-        $splashScreenLevelDescription = $('#splash-screen-description > .row > p');
         $level = $('#desktop-level').hide();
         $levelName = $('#desktop-level-name').hide();
+        $splashScreenTitle = $('#splash-screen-title');
+        $splashScreenLevelName = $('#splash-screen-level-name');
+        $splashScreenLevelDescription = $('#splash-screen-level-description');
         // Set the initial game state
         gameState = 'waiting for sync';
 
