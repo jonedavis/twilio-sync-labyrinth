@@ -347,7 +347,10 @@ function advanceLevelTo(levelNumber) {
             .attr('src', 'imgs/level_' + (currentLevel - 1) + '/level_completed.gif?a=' + Math.random()) // no cache for animations
             .show();
     }
-
+    
+    $level.hide();
+    $levelName.hide();
+    
     $splashScreen.show();
     $splashScreenTitle.text('CALL ' + currentLevel);
     $splashScreenLevelName.text(levelNames[currentLevel]);
