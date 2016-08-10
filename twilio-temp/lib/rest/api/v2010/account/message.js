@@ -22,18 +22,16 @@ var MessageContext;
  *
  * @param {Twilio.Api.V2010} version - Version of the resource
  * @param {object} response - Response from the API
- * @param {string} accountSid - The unique sid that identifies this account
+ * @param {object} solution - Path solution
  *
  * @returns MessagePage
  */
 /* jshint ignore:end */
-function MessagePage(version, response, accountSid) {
-  Page.prototype.constructor.call(this, version, response);
-
+function MessagePage(version, response, solution) {
   // Path Solution
-  this._solution = {
-    accountSid: accountSid
-  };
+  this._solution = solution;
+
+  Page.prototype.constructor.call(this, version, response, this._solution);
 }
 
 _.extend(MessagePage.prototype, Page.prototype);
@@ -104,12 +102,15 @@ function MessageList(version, accountSid) {
    *
    * @param {object} opts - ...
    * @param {string} opts.to - The phone number to receive the message
-   * @param {string} opts.from - The phone number that initiated the message
    * @param {string} [opts.statusCallback] -
    *          URL Twilio will request when the status changes
    * @param {string} [opts.applicationSid] - The application to use for callbacks
+   * @param {number} [opts.maxPrice] - The max_price
+   * @param {string} [opts.provideFeedback] - The provide_feedback
    * @param {string} [opts.body] - The body
    * @param {string|list} [opts.mediaUrl] - The media_url
+   * @param {string} [opts.from] - The phone number that initiated the message
+   * @param {string} [opts.messagingServiceSid] - The messaging_service_sid
    * @param {function} [callback] - Callback to handle processed record
    *
    * @returns {Promise} Resolves to processed MessageInstance
@@ -122,18 +123,18 @@ function MessageList(version, accountSid) {
     if (_.isUndefined(opts.to)) {
       throw new Error('Required parameter "opts.to" missing.');
     }
-    if (_.isUndefined(opts.from)) {
-      throw new Error('Required parameter "opts.from" missing.');
-    }
 
     var deferred = Q.defer();
     var data = values.of({
       'To': opts.to,
-      'From': opts.from,
       'Body': opts.body,
       'MediaUrl': opts.mediaUrl,
+      'From': opts.from,
+      'MessagingServiceSid': opts.messagingServiceSid,
       'StatusCallback': opts.statusCallback,
-      'ApplicationSid': opts.applicationSid
+      'ApplicationSid': opts.applicationSid,
+      'MaxPrice': opts.maxPrice,
+      'ProvideFeedback': opts.provideFeedback
     });
 
     var promise = this._version.create({
@@ -375,8 +376,7 @@ function MessageList(version, accountSid) {
       deferred.resolve(new MessagePage(
         this._version,
         payload,
-        this._solution.accountSid,
-        this._solution.sid
+        this._solution
       ));
     }.bind(this));
 

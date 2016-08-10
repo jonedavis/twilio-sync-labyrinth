@@ -19,7 +19,7 @@ describe('Document', function() {
     function() {
       holodeck.mock(new Response(500, ''));
 
-      var promise = client.preview.Sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+      var promise = client.preview.sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
                                        .documents('sid').fetch();
       promise = promise.then(function() {
         throw new Error('failed');
@@ -44,7 +44,7 @@ describe('Document', function() {
     function() {
       holodeck.mock(new Response(500, ''));
 
-      var promise = client.preview.Sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+      var promise = client.preview.sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
                                        .documents('sid').remove();
       promise = promise.then(function() {
         throw new Error('failed');
@@ -69,7 +69,7 @@ describe('Document', function() {
     function() {
       holodeck.mock(new Response(500, ''));
 
-      var promise = client.preview.Sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+      var promise = client.preview.sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
                                        .documents.create();
       promise = promise.then(function() {
         throw new Error('failed');
@@ -93,7 +93,7 @@ describe('Document', function() {
     function() {
       holodeck.mock(new Response(500, ''));
 
-      var promise = client.preview.Sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+      var promise = client.preview.sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
                                        .documents.list();
       promise = promise.then(function() {
         throw new Error('failed');
@@ -120,7 +120,7 @@ describe('Document', function() {
       var opts = {
         data: '{}'
       };
-      var promise = client.preview.Sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+      var promise = client.preview.sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
                                        .documents('sid').update(opts);
       promise = promise.then(function() {
         throw new Error('failed');

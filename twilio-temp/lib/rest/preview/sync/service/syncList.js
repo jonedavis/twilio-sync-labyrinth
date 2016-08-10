@@ -20,18 +20,16 @@ var SyncListContext;
  *
  * @param {Twilio.Preview.Sync} version - Version of the resource
  * @param {object} response - Response from the API
- * @param {string} serviceSid - The service_sid
+ * @param {object} solution - Path solution
  *
  * @returns SyncListPage
  */
 /* jshint ignore:end */
-function SyncListPage(version, response, serviceSid) {
-  Page.prototype.constructor.call(this, version, response);
-
+function SyncListPage(version, response, solution) {
   // Path Solution
-  this._solution = {
-    serviceSid: serviceSid
-  };
+  this._solution = solution;
+
+  Page.prototype.constructor.call(this, version, response, this._solution);
 }
 
 _.extend(SyncListPage.prototype, Page.prototype);
@@ -193,6 +191,7 @@ function SyncListList(version, serviceSid) {
 
     var done = false;
     var currentPage = 1;
+    var syncListsProcessed = 0;
     var limits = this._version.readLimits({
       limit: opts.limit,
       pageSize: opts.pageSize
@@ -219,6 +218,11 @@ function SyncListList(version, serviceSid) {
           }
 
           opts.callback(instance, onComplete);
+
+          syncListsProcessed++;
+          if (!_.isUndefined(opts.limit) && syncListsProcessed === opts.limit) {
+            done = true;
+          }
         });
 
         if ((limits.pageLimit && limits.pageLimit <= currentPage)) {
@@ -271,10 +275,6 @@ function SyncListList(version, serviceSid) {
     var allResources = [];
     opts.callback = function(resource, done) {
       allResources.push(resource);
-
-      if (!_.isUndefined(opts.limit) && allResources.length === opts.limit) {
-        done();
-      }
     };
 
     opts.done = function(error) {
@@ -334,8 +334,7 @@ function SyncListList(version, serviceSid) {
       deferred.resolve(new SyncListPage(
         this._version,
         payload,
-        this._solution.serviceSid,
-        this._solution.sid
+        this._solution
       ));
     }.bind(this));
 
@@ -394,7 +393,7 @@ function SyncListList(version, serviceSid) {
  * @param {Twilio.Preview.Sync} version - Version of the resource
  * @param {object} payload - The instance payload
  * @param {sid} serviceSid - The service_sid
- * @param {string} sid - The sid
+ * @param {sid_like} sid - The sid
  */
 /* jshint ignore:end */
 function SyncListInstance(version, payload, serviceSid, sid) {
@@ -495,7 +494,7 @@ SyncListInstance.prototype.syncListItems = function syncListItems() {
  *
  * @param {Twilio.Preview.Sync} version - Version of the resource
  * @param {sid} serviceSid - The service_sid
- * @param {string} sid - The sid
+ * @param {sid_like} sid - The sid
  */
 /* jshint ignore:end */
 function SyncListContext(version, serviceSid, sid) {

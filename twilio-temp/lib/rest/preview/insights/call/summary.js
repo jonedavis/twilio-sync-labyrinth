@@ -18,18 +18,16 @@ var SummaryContext;
  *
  * @param {Twilio.Preview.Insights} version - Version of the resource
  * @param {object} response - Response from the API
- * @param {string} sid - The sid
+ * @param {object} solution - Path solution
  *
  * @returns SummaryPage
  */
 /* jshint ignore:end */
-function SummaryPage(version, response, sid) {
-  Page.prototype.constructor.call(this, version, response);
-
+function SummaryPage(version, response, solution) {
   // Path Solution
-  this._solution = {
-    sid: sid
-  };
+  this._solution = solution;
+
+  Page.prototype.constructor.call(this, version, response, this._solution);
 }
 
 _.extend(SummaryPage.prototype, Page.prototype);
@@ -119,6 +117,7 @@ function SummaryList(version, sid) {
  *
  * @property {string} accountSid - The account_sid
  * @property {string} parentAccountSid - The parent_account_sid
+ * @property {string} callSid - The call_sid
  * @property {string} accountFriendlyName - The account_friendly_name
  * @property {string} parentAccountFriendlyName - The parent_account_friendly_name
  * @property {string} summary - The summary
@@ -134,6 +133,7 @@ function SummaryInstance(version, payload, sid, callSid) {
   // Marshaled Properties
   this.accountSid = payload.account_sid; // jshint ignore:line
   this.parentAccountSid = payload.parent_account_sid; // jshint ignore:line
+  this.callSid = payload.call_sid; // jshint ignore:line
   this.accountFriendlyName = payload.account_friendly_name; // jshint ignore:line
   this.parentAccountFriendlyName = payload.parent_account_friendly_name; // jshint ignore:line
   this.summary = payload.summary; // jshint ignore:line

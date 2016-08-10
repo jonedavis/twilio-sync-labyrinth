@@ -19,15 +19,16 @@ var CallContext;
  *
  * @param {Twilio.Preview.Insights} version - Version of the resource
  * @param {object} response - Response from the API
+ * @param {object} solution - Path solution
  *
  * @returns CallPage
  */
 /* jshint ignore:end */
-function CallPage(version, response) {
-  Page.prototype.constructor.call(this, version, response);
-
+function CallPage(version, response, solution) {
   // Path Solution
-  this._solution = {};
+  this._solution = solution;
+
+  Page.prototype.constructor.call(this, version, response, this._solution);
 }
 
 _.extend(CallPage.prototype, Page.prototype);

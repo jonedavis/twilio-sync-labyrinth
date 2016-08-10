@@ -19,18 +19,16 @@ var MetricsContext;
  *
  * @param {Twilio.Preview.Insights} version - Version of the resource
  * @param {object} response - Response from the API
- * @param {string} sid - The sid
+ * @param {object} solution - Path solution
  *
  * @returns MetricsPage
  */
 /* jshint ignore:end */
-function MetricsPage(version, response, sid) {
-  Page.prototype.constructor.call(this, version, response);
-
+function MetricsPage(version, response, solution) {
   // Path Solution
-  this._solution = {
-    sid: sid
-  };
+  this._solution = solution;
+
+  Page.prototype.constructor.call(this, version, response, this._solution);
 }
 
 _.extend(MetricsPage.prototype, Page.prototype);
@@ -294,7 +292,8 @@ function MetricsList(version, sid) {
     promise = promise.then(function(payload) {
       deferred.resolve(new MetricsPage(
         this._version,
-        payload
+        payload,
+        this._solution
       ));
     }.bind(this));
 

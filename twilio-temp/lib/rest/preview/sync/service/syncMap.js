@@ -20,18 +20,16 @@ var SyncMapContext;
  *
  * @param {Twilio.Preview.Sync} version - Version of the resource
  * @param {object} response - Response from the API
- * @param {string} serviceSid - The service_sid
+ * @param {object} solution - Path solution
  *
  * @returns SyncMapPage
  */
 /* jshint ignore:end */
-function SyncMapPage(version, response, serviceSid) {
-  Page.prototype.constructor.call(this, version, response);
-
+function SyncMapPage(version, response, solution) {
   // Path Solution
-  this._solution = {
-    serviceSid: serviceSid
-  };
+  this._solution = solution;
+
+  Page.prototype.constructor.call(this, version, response, this._solution);
 }
 
 _.extend(SyncMapPage.prototype, Page.prototype);
@@ -193,6 +191,7 @@ function SyncMapList(version, serviceSid) {
 
     var done = false;
     var currentPage = 1;
+    var syncMapsProcessed = 0;
     var limits = this._version.readLimits({
       limit: opts.limit,
       pageSize: opts.pageSize
@@ -219,6 +218,11 @@ function SyncMapList(version, serviceSid) {
           }
 
           opts.callback(instance, onComplete);
+
+          syncMapsProcessed++;
+          if (!_.isUndefined(opts.limit) && syncMapsProcessed === opts.limit) {
+            done = true;
+          }
         });
 
         if ((limits.pageLimit && limits.pageLimit <= currentPage)) {
@@ -271,10 +275,6 @@ function SyncMapList(version, serviceSid) {
     var allResources = [];
     opts.callback = function(resource, done) {
       allResources.push(resource);
-
-      if (!_.isUndefined(opts.limit) && allResources.length === opts.limit) {
-        done();
-      }
     };
 
     opts.done = function(error) {
@@ -334,8 +334,7 @@ function SyncMapList(version, serviceSid) {
       deferred.resolve(new SyncMapPage(
         this._version,
         payload,
-        this._solution.serviceSid,
-        this._solution.sid
+        this._solution
       ));
     }.bind(this));
 
@@ -394,7 +393,7 @@ function SyncMapList(version, serviceSid) {
  * @param {Twilio.Preview.Sync} version - Version of the resource
  * @param {object} payload - The instance payload
  * @param {sid} serviceSid - The service_sid
- * @param {string} sid - The sid
+ * @param {sid_like} sid - The sid
  */
 /* jshint ignore:end */
 function SyncMapInstance(version, payload, serviceSid, sid) {
@@ -495,7 +494,7 @@ SyncMapInstance.prototype.syncMapItems = function syncMapItems() {
  *
  * @param {Twilio.Preview.Sync} version - Version of the resource
  * @param {sid} serviceSid - The service_sid
- * @param {string} sid - The sid
+ * @param {sid_like} sid - The sid
  */
 /* jshint ignore:end */
 function SyncMapContext(version, serviceSid, sid) {

@@ -24,19 +24,16 @@ var CallContext;
  *
  * @param {Twilio.Api.V2010} version - Version of the resource
  * @param {object} response - Response from the API
- * @param {string} accountSid -
- *          The unique id of the Account responsible for creating this Call
+ * @param {object} solution - Path solution
  *
  * @returns CallPage
  */
 /* jshint ignore:end */
-function CallPage(version, response, accountSid) {
-  Page.prototype.constructor.call(this, version, response);
-
+function CallPage(version, response, solution) {
   // Path Solution
-  this._solution = {
-    accountSid: accountSid
-  };
+  this._solution = solution;
+
+  Page.prototype.constructor.call(this, version, response, this._solution);
 }
 
 _.extend(CallPage.prototype, Page.prototype);
@@ -124,6 +121,8 @@ function CallList(version, accountSid) {
    *          Action to take if a machine has answered the call
    * @param {number} [opts.timeout] - Number of seconds to wait for an answer
    * @param {string} [opts.record] - Whether or not to record the Call
+   * @param {string} [opts.sipAuthUsername] - The sip_auth_username
+   * @param {string} [opts.sipAuthPassword] - The sip_auth_password
    * @param {string} [opts.url] - Url from which to fetch TwiML
    * @param {string} [opts.applicationSid] -
    *          ApplicationSid that configures from where to fetch TwiML
@@ -157,7 +156,9 @@ function CallList(version, accountSid) {
       'SendDigits': opts.sendDigits,
       'IfMachine': opts.ifMachine,
       'Timeout': opts.timeout,
-      'Record': opts.record
+      'Record': opts.record,
+      'SipAuthUsername': opts.sipAuthUsername,
+      'SipAuthPassword': opts.sipAuthPassword
     });
 
     var promise = this._version.create({
@@ -422,8 +423,7 @@ function CallList(version, accountSid) {
       deferred.resolve(new CallPage(
         this._version,
         payload,
-        this._solution.accountSid,
-        this._solution.sid
+        this._solution
       ));
     }.bind(this));
 

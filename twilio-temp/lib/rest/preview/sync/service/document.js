@@ -19,18 +19,16 @@ var DocumentContext;
  *
  * @param {Twilio.Preview.Sync} version - Version of the resource
  * @param {object} response - Response from the API
- * @param {string} serviceSid - The service_sid
+ * @param {object} solution - Path solution
  *
  * @returns DocumentPage
  */
 /* jshint ignore:end */
-function DocumentPage(version, response, serviceSid) {
-  Page.prototype.constructor.call(this, version, response);
-
+function DocumentPage(version, response, solution) {
   // Path Solution
-  this._solution = {
-    serviceSid: serviceSid
-  };
+  this._solution = solution;
+
+  Page.prototype.constructor.call(this, version, response, this._solution);
 }
 
 _.extend(DocumentPage.prototype, Page.prototype);
@@ -194,6 +192,7 @@ function DocumentList(version, serviceSid) {
 
     var done = false;
     var currentPage = 1;
+    var documentsProcessed = 0;
     var limits = this._version.readLimits({
       limit: opts.limit,
       pageSize: opts.pageSize
@@ -220,6 +219,11 @@ function DocumentList(version, serviceSid) {
           }
 
           opts.callback(instance, onComplete);
+
+          documentsProcessed++;
+          if (!_.isUndefined(opts.limit) && documentsProcessed === opts.limit) {
+            done = true;
+          }
         });
 
         if ((limits.pageLimit && limits.pageLimit <= currentPage)) {
@@ -272,10 +276,6 @@ function DocumentList(version, serviceSid) {
     var allResources = [];
     opts.callback = function(resource, done) {
       allResources.push(resource);
-
-      if (!_.isUndefined(opts.limit) && allResources.length === opts.limit) {
-        done();
-      }
     };
 
     opts.done = function(error) {
@@ -335,8 +335,7 @@ function DocumentList(version, serviceSid) {
       deferred.resolve(new DocumentPage(
         this._version,
         payload,
-        this._solution.serviceSid,
-        this._solution.sid
+        this._solution
       ));
     }.bind(this));
 

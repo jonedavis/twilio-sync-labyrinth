@@ -19,20 +19,16 @@ var SyncMapItemContext;
  *
  * @param {Twilio.Preview.Sync} version - Version of the resource
  * @param {object} response - Response from the API
- * @param {string} serviceSid - The service_sid
- * @param {string} mapSid - The map_sid
+ * @param {object} solution - Path solution
  *
  * @returns SyncMapItemPage
  */
 /* jshint ignore:end */
-function SyncMapItemPage(version, response, serviceSid, mapSid) {
-  Page.prototype.constructor.call(this, version, response);
-
+function SyncMapItemPage(version, response, solution) {
   // Path Solution
-  this._solution = {
-    serviceSid: serviceSid,
-    mapSid: mapSid
-  };
+  this._solution = solution;
+
+  Page.prototype.constructor.call(this, version, response, this._solution);
 }
 
 _.extend(SyncMapItemPage.prototype, Page.prototype);
@@ -171,11 +167,9 @@ function SyncMapItemList(version, serviceSid, mapSid) {
    * @instance
    *
    * @param {object|function} opts - ...
-   * @param {sync_map_item.query_direction} [opts.direction] - The direction
    * @param {sync_map_item.query_result_order} [opts.order] - The order
    * @param {string} [opts.from] - The from
    * @param {sync_map_item.query_from_bound_type} [opts.bounds] - The bounds
-   * @param {string} [opts.excludeData] - The exclude_data
    * @param {number} [opts.limit] -
    *         Upper limit for the number of records to return.
    *         each() guarantees never to return more than limit.
@@ -208,6 +202,7 @@ function SyncMapItemList(version, serviceSid, mapSid) {
 
     var done = false;
     var currentPage = 1;
+    var syncMapItemsProcessed = 0;
     var limits = this._version.readLimits({
       limit: opts.limit,
       pageSize: opts.pageSize
@@ -234,6 +229,11 @@ function SyncMapItemList(version, serviceSid, mapSid) {
           }
 
           opts.callback(instance, onComplete);
+
+          syncMapItemsProcessed++;
+          if (!_.isUndefined(opts.limit) && syncMapItemsProcessed === opts.limit) {
+            done = true;
+          }
         });
 
         if ((limits.pageLimit && limits.pageLimit <= currentPage)) {
@@ -261,11 +261,9 @@ function SyncMapItemList(version, serviceSid, mapSid) {
    * @instance
    *
    * @param {object|function} opts - ...
-   * @param {sync_map_item.query_direction} [opts.direction] - The direction
    * @param {sync_map_item.query_result_order} [opts.order] - The order
    * @param {string} [opts.from] - The from
    * @param {sync_map_item.query_from_bound_type} [opts.bounds] - The bounds
-   * @param {string} [opts.excludeData] - The exclude_data
    * @param {number} [opts.limit] -
    *         Upper limit for the number of records to return.
    *         list() guarantees never to return more than limit.
@@ -291,10 +289,6 @@ function SyncMapItemList(version, serviceSid, mapSid) {
     var allResources = [];
     opts.callback = function(resource, done) {
       allResources.push(resource);
-
-      if (!_.isUndefined(opts.limit) && allResources.length === opts.limit) {
-        done();
-      }
     };
 
     opts.done = function(error) {
@@ -325,11 +319,9 @@ function SyncMapItemList(version, serviceSid, mapSid) {
    * @instance
    *
    * @param {object|function} opts - ...
-   * @param {sync_map_item.query_direction} [opts.direction] - The direction
    * @param {sync_map_item.query_result_order} [opts.order] - The order
    * @param {string} [opts.from] - The from
    * @param {sync_map_item.query_from_bound_type} [opts.bounds] - The bounds
-   * @param {string} [opts.excludeData] - The exclude_data
    * @param {string} [opts.pageToken] - PageToken provided by the API
    * @param {number} [opts.pageNumber] -
    *          Page Number, this value is simply for client state
@@ -348,11 +340,9 @@ function SyncMapItemList(version, serviceSid, mapSid) {
 
     var deferred = Q.defer();
     var data = values.of({
-      'Direction': opts.direction,
       'Order': opts.order,
       'From': opts.from,
       'Bounds': opts.bounds,
-      'ExcludeData': opts.excludeData,
       'PageToken': opts.pageToken,
       'Page': opts.pageNumber,
       'PageSize': opts.pageSize
@@ -368,9 +358,7 @@ function SyncMapItemList(version, serviceSid, mapSid) {
       deferred.resolve(new SyncMapItemPage(
         this._version,
         payload,
-        this._solution.serviceSid,
-        this._solution.mapSid,
-        this._solution.key
+        this._solution
       ));
     }.bind(this));
 
@@ -430,7 +418,7 @@ function SyncMapItemList(version, serviceSid, mapSid) {
  * @param {Twilio.Preview.Sync} version - Version of the resource
  * @param {object} payload - The instance payload
  * @param {sid} serviceSid - The service_sid
- * @param {string} mapSid - The map_sid
+ * @param {sid_like} mapSid - The map_sid
  * @param {string} key - The key
  */
 /* jshint ignore:end */
@@ -535,7 +523,7 @@ SyncMapItemInstance.prototype.update = function update(opts, callback) {
  *
  * @param {Twilio.Preview.Sync} version - Version of the resource
  * @param {sid} serviceSid - The service_sid
- * @param {string} mapSid - The map_sid
+ * @param {sid_like} mapSid - The map_sid
  * @param {string} key - The key
  */
 /* jshint ignore:end */
