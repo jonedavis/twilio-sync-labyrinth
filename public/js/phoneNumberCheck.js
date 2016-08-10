@@ -1,3 +1,10 @@
+// Check for valid phone numbers in north america and international (no shortcode check)
+function isValidPhoneNumber(number) {
+    var regex = /^\+?1?\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+    var isValid = number.match(regex) ? true : false;
+    return isValid;
+}
+
 $(document).ready(function () {
     var $numberField = $('#txtPhoneNumber');
     var $btnStart = $('#btnStart');
@@ -56,11 +63,4 @@ $(document).ready(function () {
             $btnStart.resetKeyframe();
         }
     });
-
-    // Check for valid phone numbers in north america and international (no shortcode check)
-    function isValidPhoneNumber(number) {
-        var regex = /^\+?1?\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-        var isValid = number.match(regex) ? true : false;
-        return isValid;
-    }
 });

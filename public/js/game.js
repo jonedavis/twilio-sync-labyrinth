@@ -15,12 +15,20 @@ var camera = undefined,
     gameState = undefined,
     numberOfLevels = 4,
     currentLevel = 0,
-    yellowColor = { r: 231, g: 212, b: 65 },
-    redColor = { r: 235, g: 53, b: 76 },
+    yellowColor = {
+        r: 231,
+        g: 212,
+        b: 65
+    },
+    redColor = {
+        r: 235,
+        g: 53,
+        b: 76
+    },
     getFlashColor = utils.colors.transition(yellowColor, redColor, 0.05);
 
-    // Box2D shortcuts
-    b2World = Box2D.Dynamics.b2World,
+// Box2D shortcuts
+b2World = Box2D.Dynamics.b2World,
     b2FixtureDef = Box2D.Dynamics.b2FixtureDef,
     b2BodyDef = Box2D.Dynamics.b2BodyDef,
     b2Body = Box2D.Dynamics.b2Body,
@@ -39,15 +47,25 @@ var camera = undefined,
     gameStateDoc = undefined,
     controllerStateDoc = undefined,
     wallCollisionList = undefined,
-    
+
     // Controller variables
     ACCEL_FACTOR = 10,
     ACCEL_THRESHOLD = 0.3,
     NUM_FILTER_POINTS = 4,
     FORCE_MULTIPLIER = 7.0,
-    newAccel = { x: 0.0, y: 0.0 },    
-    oldAccel = { x: 0.0, y: 0.0 },
-    diffAccel = { x: 0.0, y: 0.0 },
+    newAccel = {
+        x: 0.0,
+        y: 0.0
+    },
+    oldAccel = {
+        x: 0.0,
+        y: 0.0
+    },
+    diffAccel = {
+        x: 0.0,
+        y: 0.0
+    },
+    newAxis = [0, 0],
     rawAccelX = [0, 0, 0, 0],
     rawAccelY = [0, 0, 0, 0];
 
@@ -59,8 +77,7 @@ var $splashScreen = undefined,
     $splashLevelCompletedGraphic = undefined,
     $level = undefined,
     $levelName = undefined,
-    levelNames = 
-    [
+    levelNames = [
         'MAIN MENU',
         'CAVE OF LAST-CALL',
         'CASTLE CALLDROPSALOT',
@@ -69,7 +86,7 @@ var $splashScreen = undefined,
      ],
     levelDescriptions = [
         'Main Menu',
-        "Roll your stone through the cave to complete the first “telestone” call of all time!", 
+        "Roll your stone through the cave to complete the first “telestone” call of all time!",
         'Carry your spark through the tower to light the signal fire and save the castle!',
         'Navigate your energy node through the global communications infrastructure to the PBX box across the world!',
         'Roll your happy ball of light through a maze of infinite rainbows.'
@@ -128,7 +145,9 @@ function createPhysicsWorld() {
         if (impulseSum >= 1.20) {
             // flash screen
             flash();
-            wallCollisionList.push({ impulse: impulseSum })
+            wallCollisionList.push({
+                    impulse: impulseSum
+                })
                 .catch(function (err) {
                     console.log(err)
                 })
@@ -175,7 +194,7 @@ function createRenderWorld() {
     flashMesh = new THREE.Mesh(flashPlane, flashMaterial);
     flashMesh.position.z = 2;
     scene.add(flashMesh);
-    
+
     // Add the light
     light = new THREE.PointLight(0xffffff, 1);
     light.position.set(1, 1, 1.3);
@@ -195,7 +214,7 @@ function createRenderWorld() {
     camera = new THREE.PerspectiveCamera(60, aspect, 1, 1000);
     camera.position.set(1, 1, 5);
     scene.add(camera);
-    
+
     // Add the maze
     mazeMesh = generate_maze_mesh(maze);
     scene.add(mazeMesh);
@@ -221,8 +240,8 @@ function updatePhysicsWorld() {
     wBall.SetLinearVelocity(lv);
 
     // Apply user-directed force
-    var f = new b2Vec2(controllerAxis[0] * FORCE_MULTIPLIER * wBall.GetMass(), 
-                       controllerAxis[1] * FORCE_MULTIPLIER * wBall.GetMass());
+    var f = new b2Vec2(controllerAxis[0] * FORCE_MULTIPLIER * wBall.GetMass(),
+        controllerAxis[1] * FORCE_MULTIPLIER * wBall.GetMass());
     wBall.ApplyImpulse(f, wBall.GetPosition());
     controllerAxis = [0, 0];
 
@@ -239,7 +258,7 @@ function updateRenderWorld() {
     var stepY = wBall.GetPosition().y - ballMesh.position.y;
     ballMesh.position.x += stepX;
     ballMesh.position.y += stepY;
-    
+
     // Update ball rotation
     var tempMat = new THREE.Matrix4();
     tempMat.makeRotationAxis(new THREE.Vector3(0, 1, 0), stepX / ballRadius);
@@ -263,62 +282,62 @@ function updateRenderWorld() {
 
 function gameLoop() {
     switch (gameState) {
-        case 'advancing':
-            // reset flash matierial color
-            flashMesh.material.color.set(utils.colors.rgbToString(yellowColor));
-            getFlashColor = utils.colors.transition(yellowColor, redColor, 0.05);
-            break;
-            
-        case 'initialize':
-            maze = generateSquareMaze(mazeDimension);
-            maze[mazeDimension - 1][mazeDimension - 2] = false;
-            createPhysicsWorld();
-            createRenderWorld();
-            camera.position.set(1, 1, 5);
-            light.position.set(1, 1, 1.3);
-            light.intensity = 0;
-            // TODO: What does this mean?
-            var level = Math.floor((mazeDimension - 1) / 2 - 4);
-            if (level > currentLevel) {
-                advanceLevelTo(level);
-            }
-            gameState = 'advancing';
-            break;
-        
-        case 'fade in':
-            light.intensity += 0.1 * (1.0 - light.intensity);
-            renderer.render(scene, camera);
-            if (Math.abs(light.intensity - 1.0) < 0.05) {
-                light.intensity = 1.0;
-                gameState = 'play';
-            }
-            break;
+    case 'advancing':
+        // reset flash matierial color
+        flashMesh.material.color.set(utils.colors.rgbToString(yellowColor));
+        getFlashColor = utils.colors.transition(yellowColor, redColor, 0.05);
+        break;
 
-        case 'play':
-            updatePhysicsWorld();
-            updateRenderWorld();
-            renderer.render(scene, camera);
+    case 'initialize':
+        maze = generateSquareMaze(mazeDimension);
+        maze[mazeDimension - 1][mazeDimension - 2] = false;
+        createPhysicsWorld();
+        createRenderWorld();
+        camera.position.set(1, 1, 5);
+        light.position.set(1, 1, 1.3);
+        light.intensity = 0;
+        // TODO: What does this mean?
+        var level = Math.floor((mazeDimension - 1) / 2 - 4);
+        if (level > currentLevel) {
+            advanceLevelTo(level);
+        }
+        gameState = 'advancing';
+        break;
 
-            // Check for victory.
-            var mazeX = Math.floor(ballMesh.position.x + 0.5);
-            var mazeY = Math.floor(ballMesh.position.y + 0.5);
-            if (mazeX == mazeDimension && mazeY == mazeDimension - 2) {
-                mazeDimension += 2;
-                gameState = 'fade out';
-            }
-            break;
+    case 'fade in':
+        light.intensity += 0.1 * (1.0 - light.intensity);
+        renderer.render(scene, camera);
+        if (Math.abs(light.intensity - 1.0) < 0.05) {
+            light.intensity = 1.0;
+            gameState = 'play';
+        }
+        break;
 
-        case 'fade out':
-            updatePhysicsWorld();
-            updateRenderWorld();
-            light.intensity += 0.1 * (0.0 - light.intensity);
+    case 'play':
+        updatePhysicsWorld();
+        updateRenderWorld();
+        renderer.render(scene, camera);
+
+        // Check for victory.
+        var mazeX = Math.floor(ballMesh.position.x + 0.5);
+        var mazeY = Math.floor(ballMesh.position.y + 0.5);
+        if (mazeX == mazeDimension && mazeY == mazeDimension - 2) {
+            mazeDimension += 2;
+            gameState = 'fade out';
+        }
+        break;
+
+    case 'fade out':
+        updatePhysicsWorld();
+        updateRenderWorld();
+        light.intensity += 0.1 * (0.0 - light.intensity);
+        renderer.render(scene, camera);
+        if (Math.abs(light.intensity - 0.0) < 0.1) {
+            light.intensity = 0.0;
             renderer.render(scene, camera);
-            if (Math.abs(light.intensity - 0.0) < 0.1) {
-                light.intensity = 0.0;
-                renderer.render(scene, camera);
-                gameState = 'initialize';
-            }
-            break;
+            gameState = 'initialize';
+        }
+        break;
     }
     requestAnimationFrame(gameLoop);
 }
@@ -347,15 +366,15 @@ function advanceLevelTo(levelNumber) {
             .attr('src', 'imgs/level_' + (currentLevel - 1) + '/level_completed.gif?a=' + Math.random()) // no cache for animations
             .show();
     }
-    
+
     $level.hide();
     $levelName.hide();
-    
+
     $splashScreen.show();
     $splashScreenTitle.text('CALL ' + currentLevel);
     $splashScreenLevelName.text(levelNames[currentLevel]);
     $splashScreenLevelDescription.text(levelDescriptions[currentLevel]);
-    
+
     setTimeout(function () {
         $splashScreen.hide();
         $level.html('CALL ' + currentLevel).show();
@@ -373,14 +392,16 @@ function onResize() {
     }
 }
 
-var newAxis = [0,0];
+
 // From mobile phone (controller)
 function onControllerUpdated(axis) {
     // Return if gyroscope is steady
     var beta = Math.floor(Math.abs(axis.beta));
     var gamma = Math.floor(Math.abs(axis.gamma));
-    if (beta === 0 && gamma === 0) { return; }
-    
+    if (beta === 0 && gamma === 0) {
+        return;
+    }
+
     // Push raw data to front of arrays
     // each coordinate gets it's own array
     rawAccelX.unshift(axis.x);
@@ -398,15 +419,19 @@ function onControllerUpdated(axis) {
         y: Math.abs(oldAccel.y - newAccel.y)
     };
 
-    if (diffAccel.x <= ACCEL_THRESHOLD) { return; } 
-    if (diffAccel.y <= ACCEL_THRESHOLD) { return; } 
-    
+    if (diffAccel.x <= ACCEL_THRESHOLD) {
+        return;
+    }
+    if (diffAccel.y <= ACCEL_THRESHOLD) {
+        return;
+    }
+
     newAxis = [0, 0];
     if (newAccel.x < 0) newAxis[1] = 1;
-    if (newAccel.x >= 0) newAxis[1] = -1;    
+    if (newAccel.x >= 0) newAxis[1] = -1;
     if (newAccel.y < 0) newAxis[0] = -1;
     if (newAccel.y >= 0) newAxis[0] = 1;
-    
+
     controllerAxis = newAxis;
     oldAccel.x = newAccel.x;
     oldAccel.y = newAccel.y;
@@ -447,26 +472,26 @@ jQuery.fn.center = function () {
 }
 
 
-$(document)
-    .ready(function () {
-        $splashScreen = $('#splash-screen').hide();
-        $splashLevelCompletedGraphic = $('#splash-level-completed-graphic');
-        $level = $('#desktop-level').hide();
-        $levelName = $('#desktop-level-name').hide();
-        $splashScreenTitle = $('#splash-screen-title');
-        $splashScreenLevelName = $('#splash-screen-level-name');
-        $splashScreenLevelDescription = $('#splash-screen-level-description');
-        // Set the initial game state
-        gameState = 'waiting for sync';
+$(document).ready(function () {
+    $splashScreen = $('#splash-screen').hide();
+    $splashLevelCompletedGraphic = $('#splash-level-completed-graphic');
+    $level = $('#desktop-level').hide();
+    $levelName = $('#desktop-level-name').hide();
+    $splashScreenTitle = $('#splash-screen-title');
+    $splashScreenLevelName = $('#splash-screen-level-name');
+    $splashScreenLevelDescription = $('#splash-screen-level-description');
+    // Set the initial game state
+    gameState = 'waiting for sync';
 
-        $('#txtPhoneNumber').bind('keypress', function (event) {
-            if (event.keyCode === 13) {
-                $('#btnStart').trigger('click');
-            }
-        });
+    $('#txtPhoneNumber').bind('keypress', function (event) {
+        if (event.keyCode === 13) {
+            $('#btnStart').trigger('click');
+        }
+    });
 
-        $('#btnStart').on('click', function () {
-            var phoneNumber = $('#txtPhoneNumber').val();
+    $('#btnStart').on('click', function () {
+        var phoneNumber = $('#txtPhoneNumber').val();
+        if (isValidPhoneNumber(phoneNumber)) {
             var url = '/token/' + phoneNumber;
             Twilio.Sync.CreateClient(url).then(function (client) {
                 syncClient = client;
@@ -502,5 +527,6 @@ $(document)
                     });
                 });
             });
-        });
+        }
     });
+});
