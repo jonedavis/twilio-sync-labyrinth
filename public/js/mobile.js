@@ -65,10 +65,11 @@ $(function () {
                 controllerStateDoc = ctrlDoc;
                 // Set frequency of updates to 100ms
                 gyro.frequency = 100;
-                // Fire up the gyro tracking                
-                gyro.startTracking(function(o) {
+                // Fire up the gyro tracking
+                // only send what we use
+                gyro.startTracking(function(axis) {
                     // Send the gyro data to Sync
-                    controllerStateDoc.set(o);
+                    controllerStateDoc.set(axis);
                 });
             });
 
