@@ -19,8 +19,8 @@ describe('SyncMapItem', function() {
     function() {
       holodeck.mock(new Response(500, ''));
 
-      var promise = client.preview.Sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-                                       .syncMaps('sid')
+      var promise = client.preview.sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+                                       .syncMaps('MPaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
                                        .syncMapItems('key').fetch();
       promise = promise.then(function() {
         throw new Error('failed');
@@ -31,7 +31,7 @@ describe('SyncMapItem', function() {
 
       var solution = {
         serviceSid: 'ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-        mapSid: 'mapSid',
+        mapSid: 'MPaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
         key: 'key'
       };
       var url = _.template('https://preview.twilio.com/Sync/Services/<%= serviceSid %>/Maps/<%= mapSid %>/Items/<%= key %>')(solution);
@@ -46,8 +46,8 @@ describe('SyncMapItem', function() {
     function() {
       holodeck.mock(new Response(500, ''));
 
-      var promise = client.preview.Sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-                                       .syncMaps('sid')
+      var promise = client.preview.sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+                                       .syncMaps('MPaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
                                        .syncMapItems('key').remove();
       promise = promise.then(function() {
         throw new Error('failed');
@@ -58,7 +58,7 @@ describe('SyncMapItem', function() {
 
       var solution = {
         serviceSid: 'ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-        mapSid: 'mapSid',
+        mapSid: 'MPaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
         key: 'key'
       };
       var url = _.template('https://preview.twilio.com/Sync/Services/<%= serviceSid %>/Maps/<%= mapSid %>/Items/<%= key %>')(solution);
@@ -77,8 +77,8 @@ describe('SyncMapItem', function() {
         key: 'key',
         data: '{}'
       };
-      var promise = client.preview.Sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-                                       .syncMaps('sid')
+      var promise = client.preview.sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+                                       .syncMaps('MPaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
                                        .syncMapItems.create(opts);
       promise = promise.then(function() {
         throw new Error('failed');
@@ -108,8 +108,8 @@ describe('SyncMapItem', function() {
     function() {
       holodeck.mock(new Response(500, ''));
 
-      var promise = client.preview.Sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-                                       .syncMaps('sid')
+      var promise = client.preview.sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+                                       .syncMaps('MPaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
                                        .syncMapItems.list();
       promise = promise.then(function() {
         throw new Error('failed');
@@ -137,8 +137,8 @@ describe('SyncMapItem', function() {
       var opts = {
         data: '{}'
       };
-      var promise = client.preview.Sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-                                       .syncMaps('sid')
+      var promise = client.preview.sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+                                       .syncMaps('MPaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
                                        .syncMapItems('key').update(opts);
       promise = promise.then(function() {
         throw new Error('failed');
@@ -149,7 +149,7 @@ describe('SyncMapItem', function() {
 
       var solution = {
         serviceSid: 'ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-        mapSid: 'mapSid',
+        mapSid: 'MPaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
         key: 'key'
       };
       var url = _.template('https://preview.twilio.com/Sync/Services/<%= serviceSid %>/Maps/<%= mapSid %>/Items/<%= key %>')(solution);

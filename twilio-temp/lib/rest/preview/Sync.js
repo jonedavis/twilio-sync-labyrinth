@@ -1,7 +1,7 @@
 'use strict';
 
 var _ = require('lodash');
-var ServiceList = require('./Sync/service').ServiceList;
+var ServiceList = require('./sync/service').ServiceList;
 var Version = require('../../base/Version');
 
 

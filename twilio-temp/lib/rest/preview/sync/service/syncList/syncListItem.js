@@ -19,20 +19,16 @@ var SyncListItemContext;
  *
  * @param {Twilio.Preview.Sync} version - Version of the resource
  * @param {object} response - Response from the API
- * @param {string} serviceSid - The service_sid
- * @param {string} listSid - The list_sid
+ * @param {object} solution - Path solution
  *
  * @returns SyncListItemPage
  */
 /* jshint ignore:end */
-function SyncListItemPage(version, response, serviceSid, listSid) {
-  Page.prototype.constructor.call(this, version, response);
-
+function SyncListItemPage(version, response, solution) {
   // Path Solution
-  this._solution = {
-    serviceSid: serviceSid,
-    listSid: listSid
-  };
+  this._solution = solution;
+
+  Page.prototype.constructor.call(this, version, response, this._solution);
 }
 
 _.extend(SyncListItemPage.prototype, Page.prototype);
@@ -167,11 +163,9 @@ function SyncListItemList(version, serviceSid, listSid) {
    * @instance
    *
    * @param {object|function} opts - ...
-   * @param {sync_list_item.query_direction} [opts.direction] - The direction
    * @param {sync_list_item.query_result_order} [opts.order] - The order
    * @param {string} [opts.from] - The from
    * @param {sync_list_item.query_from_bound_type} [opts.bounds] - The bounds
-   * @param {string} [opts.excludeData] - The exclude_data
    * @param {number} [opts.limit] -
    *         Upper limit for the number of records to return.
    *         each() guarantees never to return more than limit.
@@ -204,6 +198,7 @@ function SyncListItemList(version, serviceSid, listSid) {
 
     var done = false;
     var currentPage = 1;
+    var syncListItemsProcessed = 0;
     var limits = this._version.readLimits({
       limit: opts.limit,
       pageSize: opts.pageSize
@@ -230,6 +225,11 @@ function SyncListItemList(version, serviceSid, listSid) {
           }
 
           opts.callback(instance, onComplete);
+
+          syncListItemsProcessed++;
+          if (!_.isUndefined(opts.limit) && syncListItemsProcessed === opts.limit) {
+            done = true;
+          }
         });
 
         if ((limits.pageLimit && limits.pageLimit <= currentPage)) {
@@ -257,11 +257,9 @@ function SyncListItemList(version, serviceSid, listSid) {
    * @instance
    *
    * @param {object|function} opts - ...
-   * @param {sync_list_item.query_direction} [opts.direction] - The direction
    * @param {sync_list_item.query_result_order} [opts.order] - The order
    * @param {string} [opts.from] - The from
    * @param {sync_list_item.query_from_bound_type} [opts.bounds] - The bounds
-   * @param {string} [opts.excludeData] - The exclude_data
    * @param {number} [opts.limit] -
    *         Upper limit for the number of records to return.
    *         list() guarantees never to return more than limit.
@@ -287,10 +285,6 @@ function SyncListItemList(version, serviceSid, listSid) {
     var allResources = [];
     opts.callback = function(resource, done) {
       allResources.push(resource);
-
-      if (!_.isUndefined(opts.limit) && allResources.length === opts.limit) {
-        done();
-      }
     };
 
     opts.done = function(error) {
@@ -321,11 +315,9 @@ function SyncListItemList(version, serviceSid, listSid) {
    * @instance
    *
    * @param {object|function} opts - ...
-   * @param {sync_list_item.query_direction} [opts.direction] - The direction
    * @param {sync_list_item.query_result_order} [opts.order] - The order
    * @param {string} [opts.from] - The from
    * @param {sync_list_item.query_from_bound_type} [opts.bounds] - The bounds
-   * @param {string} [opts.excludeData] - The exclude_data
    * @param {string} [opts.pageToken] - PageToken provided by the API
    * @param {number} [opts.pageNumber] -
    *          Page Number, this value is simply for client state
@@ -344,11 +336,9 @@ function SyncListItemList(version, serviceSid, listSid) {
 
     var deferred = Q.defer();
     var data = values.of({
-      'Direction': opts.direction,
       'Order': opts.order,
       'From': opts.from,
       'Bounds': opts.bounds,
-      'ExcludeData': opts.excludeData,
       'PageToken': opts.pageToken,
       'Page': opts.pageNumber,
       'PageSize': opts.pageSize
@@ -364,9 +354,7 @@ function SyncListItemList(version, serviceSid, listSid) {
       deferred.resolve(new SyncListItemPage(
         this._version,
         payload,
-        this._solution.serviceSid,
-        this._solution.listSid,
-        this._solution.index
+        this._solution
       ));
     }.bind(this));
 
@@ -426,7 +414,7 @@ function SyncListItemList(version, serviceSid, listSid) {
  * @param {Twilio.Preview.Sync} version - Version of the resource
  * @param {object} payload - The instance payload
  * @param {sid} serviceSid - The service_sid
- * @param {string} listSid - The list_sid
+ * @param {sid_like} listSid - The list_sid
  * @param {integer} index - The index
  */
 /* jshint ignore:end */
@@ -531,7 +519,7 @@ SyncListItemInstance.prototype.update = function update(opts, callback) {
  *
  * @param {Twilio.Preview.Sync} version - Version of the resource
  * @param {sid} serviceSid - The service_sid
- * @param {string} listSid - The list_sid
+ * @param {sid_like} listSid - The list_sid
  * @param {integer} index - The index
  */
 /* jshint ignore:end */

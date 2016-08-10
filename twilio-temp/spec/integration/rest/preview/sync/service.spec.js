@@ -19,7 +19,7 @@ describe('Service', function() {
     function() {
       holodeck.mock(new Response(500, ''));
 
-      var promise = client.preview.Sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa').fetch();
+      var promise = client.preview.sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa').fetch();
       promise = promise.then(function() {
         throw new Error('failed');
       }, function(error) {
@@ -42,7 +42,7 @@ describe('Service', function() {
     function() {
       holodeck.mock(new Response(500, ''));
 
-      var promise = client.preview.Sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa').remove();
+      var promise = client.preview.sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa').remove();
       promise = promise.then(function() {
         throw new Error('failed');
       }, function(error) {
@@ -65,7 +65,7 @@ describe('Service', function() {
     function() {
       holodeck.mock(new Response(500, ''));
 
-      var promise = client.preview.Sync.services.create();
+      var promise = client.preview.sync.services.create();
       promise = promise.then(function() {
         throw new Error('failed');
       }, function(error) {
@@ -85,7 +85,7 @@ describe('Service', function() {
     function() {
       holodeck.mock(new Response(500, ''));
 
-      var promise = client.preview.Sync.services.list();
+      var promise = client.preview.sync.services.list();
       promise = promise.then(function() {
         throw new Error('failed');
       }, function(error) {
@@ -105,7 +105,7 @@ describe('Service', function() {
     function() {
       holodeck.mock(new Response(500, ''));
 
-      var promise = client.preview.Sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa').update();
+      var promise = client.preview.sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa').update();
       promise = promise.then(function() {
         throw new Error('failed');
       }, function(error) {

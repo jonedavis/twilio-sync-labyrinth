@@ -19,8 +19,8 @@ describe('SyncListItem', function() {
     function() {
       holodeck.mock(new Response(500, ''));
 
-      var promise = client.preview.Sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-                                       .syncLists('sid')
+      var promise = client.preview.sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+                                       .syncLists('ESaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
                                        .syncListItems(1).fetch();
       promise = promise.then(function() {
         throw new Error('failed');
@@ -31,7 +31,7 @@ describe('SyncListItem', function() {
 
       var solution = {
         serviceSid: 'ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-        listSid: 'listSid',
+        listSid: 'ESaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
         index: 1
       };
       var url = _.template('https://preview.twilio.com/Sync/Services/<%= serviceSid %>/Lists/<%= listSid %>/Items/<%= index %>')(solution);
@@ -46,8 +46,8 @@ describe('SyncListItem', function() {
     function() {
       holodeck.mock(new Response(500, ''));
 
-      var promise = client.preview.Sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-                                       .syncLists('sid')
+      var promise = client.preview.sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+                                       .syncLists('ESaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
                                        .syncListItems(1).remove();
       promise = promise.then(function() {
         throw new Error('failed');
@@ -58,7 +58,7 @@ describe('SyncListItem', function() {
 
       var solution = {
         serviceSid: 'ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-        listSid: 'listSid',
+        listSid: 'ESaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
         index: 1
       };
       var url = _.template('https://preview.twilio.com/Sync/Services/<%= serviceSid %>/Lists/<%= listSid %>/Items/<%= index %>')(solution);
@@ -76,8 +76,8 @@ describe('SyncListItem', function() {
       var opts = {
         data: '{}'
       };
-      var promise = client.preview.Sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-                                       .syncLists('sid')
+      var promise = client.preview.sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+                                       .syncLists('ESaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
                                        .syncListItems.create(opts);
       promise = promise.then(function() {
         throw new Error('failed');
@@ -106,8 +106,8 @@ describe('SyncListItem', function() {
     function() {
       holodeck.mock(new Response(500, ''));
 
-      var promise = client.preview.Sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-                                       .syncLists('sid')
+      var promise = client.preview.sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+                                       .syncLists('ESaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
                                        .syncListItems.list();
       promise = promise.then(function() {
         throw new Error('failed');
@@ -135,8 +135,8 @@ describe('SyncListItem', function() {
       var opts = {
         data: '{}'
       };
-      var promise = client.preview.Sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-                                       .syncLists('sid')
+      var promise = client.preview.sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+                                       .syncLists('ESaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
                                        .syncListItems(1).update(opts);
       promise = promise.then(function() {
         throw new Error('failed');
@@ -147,7 +147,7 @@ describe('SyncListItem', function() {
 
       var solution = {
         serviceSid: 'ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-        listSid: 'listSid',
+        listSid: 'ESaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
         index: 1
       };
       var url = _.template('https://preview.twilio.com/Sync/Services/<%= serviceSid %>/Lists/<%= listSid %>/Items/<%= index %>')(solution);

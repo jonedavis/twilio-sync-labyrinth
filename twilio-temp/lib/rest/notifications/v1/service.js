@@ -21,15 +21,16 @@ var ServiceContext;
  *
  * @param {Twilio.Notifications.V1} version - Version of the resource
  * @param {object} response - Response from the API
+ * @param {object} solution - Path solution
  *
  * @returns ServicePage
  */
 /* jshint ignore:end */
-function ServicePage(version, response) {
-  Page.prototype.constructor.call(this, version, response);
-
+function ServicePage(version, response, solution) {
   // Path Solution
-  this._solution = {};
+  this._solution = solution;
+
+  Page.prototype.constructor.call(this, version, response, this._solution);
 }
 
 _.extend(ServicePage.prototype, Page.prototype);
@@ -98,6 +99,8 @@ function ServiceList(version) {
    * @param {string} [opts.friendlyName] - The friendly_name
    * @param {string} [opts.apnCredentialSid] - The apn_credential_sid
    * @param {string} [opts.gcmCredentialSid] - The gcm_credential_sid
+   * @param {string} [opts.messagingServiceSid] - The messaging_service_sid
+   * @param {string} [opts.facebookMessengerPageId] - The facebook_messenger_page_id
    * @param {string} [opts.defaultApnNotificationProtocolVersion] -
    *          The default_apn_notification_protocol_version
    * @param {string} [opts.defaultGcmNotificationProtocolVersion] -
@@ -119,6 +122,8 @@ function ServiceList(version) {
       'FriendlyName': opts.friendlyName,
       'ApnCredentialSid': opts.apnCredentialSid,
       'GcmCredentialSid': opts.gcmCredentialSid,
+      'MessagingServiceSid': opts.messagingServiceSid,
+      'FacebookMessengerPageId': opts.facebookMessengerPageId,
       'DefaultApnNotificationProtocolVersion': opts.defaultApnNotificationProtocolVersion,
       'DefaultGcmNotificationProtocolVersion': opts.defaultGcmNotificationProtocolVersion
     });
@@ -345,7 +350,7 @@ function ServiceList(version) {
       deferred.resolve(new ServicePage(
         this._version,
         payload,
-        this._solution.sid
+        this._solution
       ));
     }.bind(this));
 
@@ -396,6 +401,8 @@ function ServiceList(version) {
  * @property {Date} dateUpdated - The date_updated
  * @property {string} apnCredentialSid - The apn_credential_sid
  * @property {string} gcmCredentialSid - The gcm_credential_sid
+ * @property {string} messagingServiceSid - The messaging_service_sid
+ * @property {string} facebookMessengerPageId - The facebook_messenger_page_id
  * @property {string} defaultApnNotificationProtocolVersion -
  *          The default_apn_notification_protocol_version
  * @property {string} defaultGcmNotificationProtocolVersion -
@@ -419,6 +426,8 @@ function ServiceInstance(version, payload, sid) {
   this.dateUpdated = deserialize.iso8601DateTime(payload.date_updated); // jshint ignore:line
   this.apnCredentialSid = payload.apn_credential_sid; // jshint ignore:line
   this.gcmCredentialSid = payload.gcm_credential_sid; // jshint ignore:line
+  this.messagingServiceSid = payload.messaging_service_sid; // jshint ignore:line
+  this.facebookMessengerPageId = payload.facebook_messenger_page_id; // jshint ignore:line
   this.defaultApnNotificationProtocolVersion = payload.default_apn_notification_protocol_version; // jshint ignore:line
   this.defaultGcmNotificationProtocolVersion = payload.default_gcm_notification_protocol_version; // jshint ignore:line
   this.url = payload.url; // jshint ignore:line
@@ -491,6 +500,8 @@ ServiceInstance.prototype.fetch = function fetch(callback) {
  * @param {string} [opts.friendlyName] - The friendly_name
  * @param {string} [opts.apnCredentialSid] - The apn_credential_sid
  * @param {string} [opts.gcmCredentialSid] - The gcm_credential_sid
+ * @param {string} [opts.messagingServiceSid] - The messaging_service_sid
+ * @param {string} [opts.facebookMessengerPageId] - The facebook_messenger_page_id
  * @param {string} [opts.defaultApnNotificationProtocolVersion] -
  *          The default_apn_notification_protocol_version
  * @param {string} [opts.defaultGcmNotificationProtocolVersion] -
@@ -651,6 +662,8 @@ ServiceContext.prototype.fetch = function fetch(callback) {
  * @param {string} [opts.friendlyName] - The friendly_name
  * @param {string} [opts.apnCredentialSid] - The apn_credential_sid
  * @param {string} [opts.gcmCredentialSid] - The gcm_credential_sid
+ * @param {string} [opts.messagingServiceSid] - The messaging_service_sid
+ * @param {string} [opts.facebookMessengerPageId] - The facebook_messenger_page_id
  * @param {string} [opts.defaultApnNotificationProtocolVersion] -
  *          The default_apn_notification_protocol_version
  * @param {string} [opts.defaultGcmNotificationProtocolVersion] -
@@ -672,6 +685,8 @@ ServiceContext.prototype.update = function update(opts, callback) {
     'FriendlyName': opts.friendlyName,
     'ApnCredentialSid': opts.apnCredentialSid,
     'GcmCredentialSid': opts.gcmCredentialSid,
+    'MessagingServiceSid': opts.messagingServiceSid,
+    'FacebookMessengerPageId': opts.facebookMessengerPageId,
     'DefaultApnNotificationProtocolVersion': opts.defaultApnNotificationProtocolVersion,
     'DefaultGcmNotificationProtocolVersion': opts.defaultGcmNotificationProtocolVersion
   });

@@ -1,4 +1,4 @@
-﻿var AccessToken = require('./twilio-temp').AccessToken;
+﻿var AccessToken = require('./twilio-temp').jwt.AccessToken;
 var SyncGrant = AccessToken.SyncGrant;
 var config = require('./config.js');
 

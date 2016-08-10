@@ -19,18 +19,16 @@ var NotificationContext;
  *
  * @param {Twilio.Notifications.V1} version - Version of the resource
  * @param {object} response - Response from the API
- * @param {string} serviceSid - The service_sid
+ * @param {object} solution - Path solution
  *
  * @returns NotificationPage
  */
 /* jshint ignore:end */
-function NotificationPage(version, response, serviceSid) {
-  Page.prototype.constructor.call(this, version, response);
-
+function NotificationPage(version, response, solution) {
   // Path Solution
-  this._solution = {
-    serviceSid: serviceSid
-  };
+  this._solution = solution;
+
+  Page.prototype.constructor.call(this, version, response, this._solution);
 }
 
 _.extend(NotificationPage.prototype, Page.prototype);
@@ -104,7 +102,7 @@ function NotificationList(version, serviceSid) {
    * @param {string|list} [opts.identity] - The identity
    * @param {string|list} [opts.tag] - The tag
    * @param {string} [opts.body] - The body
-   * @param {string} [opts.priority] - The priority
+   * @param {notification.priority} [opts.priority] - The priority
    * @param {number} [opts.ttl] - The ttl
    * @param {string} [opts.title] - The title
    * @param {string} [opts.sound] - The sound
@@ -112,6 +110,8 @@ function NotificationList(version, serviceSid) {
    * @param {string} [opts.data] - The data
    * @param {string} [opts.apn] - The apn
    * @param {string} [opts.gcm] - The gcm
+   * @param {string} [opts.sms] - The sms
+   * @param {string} [opts.facebookMessenger] - The facebook_messenger
    * @param {function} [callback] - Callback to handle processed record
    *
    * @returns {Promise} Resolves to processed NotificationInstance
@@ -136,7 +136,9 @@ function NotificationList(version, serviceSid) {
       'Action': opts.action,
       'Data': opts.data,
       'Apn': opts.apn,
-      'Gcm': opts.gcm
+      'Gcm': opts.gcm,
+      'Sms': opts.sms,
+      'FacebookMessenger': opts.facebookMessenger
     });
 
     var promise = this._version.create({
@@ -178,7 +180,7 @@ function NotificationList(version, serviceSid) {
  * @property {Date} dateCreated - The date_created
  * @property {string} identities - The identities
  * @property {string} tags - The tags
- * @property {string} priority - The priority
+ * @property {notification.priority} priority - The priority
  * @property {number} ttl - The ttl
  * @property {string} title - The title
  * @property {string} body - The body
@@ -187,6 +189,8 @@ function NotificationList(version, serviceSid) {
  * @property {string} data - The data
  * @property {string} apn - The apn
  * @property {string} gcm - The gcm
+ * @property {string} sms - The sms
+ * @property {string} facebookMessenger - The facebook_messenger
  *
  * @param {Twilio.Notifications.V1} version - Version of the resource
  * @param {object} payload - The instance payload
@@ -211,6 +215,8 @@ function NotificationInstance(version, payload, serviceSid) {
   this.data = payload.data; // jshint ignore:line
   this.apn = payload.apn; // jshint ignore:line
   this.gcm = payload.gcm; // jshint ignore:line
+  this.sms = payload.sms; // jshint ignore:line
+  this.facebookMessenger = payload.facebook_messenger; // jshint ignore:line
 
   // Context
   this._context = undefined;

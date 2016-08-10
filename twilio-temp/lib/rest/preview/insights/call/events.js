@@ -19,18 +19,16 @@ var EventsContext;
  *
  * @param {Twilio.Preview.Insights} version - Version of the resource
  * @param {object} response - Response from the API
- * @param {string} sid - The sid
+ * @param {object} solution - Path solution
  *
  * @returns EventsPage
  */
 /* jshint ignore:end */
-function EventsPage(version, response, sid) {
-  Page.prototype.constructor.call(this, version, response);
-
+function EventsPage(version, response, solution) {
   // Path Solution
-  this._solution = {
-    sid: sid
-  };
+  this._solution = solution;
+
+  Page.prototype.constructor.call(this, version, response, this._solution);
 }
 
 _.extend(EventsPage.prototype, Page.prototype);
@@ -306,7 +304,8 @@ function EventsList(version, sid) {
     promise = promise.then(function(payload) {
       deferred.resolve(new EventsPage(
         this._version,
-        payload
+        payload,
+        this._solution
       ));
     }.bind(this));
 

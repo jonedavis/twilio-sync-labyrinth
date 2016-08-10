@@ -19,8 +19,8 @@ describe('SyncMap', function() {
     function() {
       holodeck.mock(new Response(500, ''));
 
-      var promise = client.preview.Sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-                                       .syncMaps('sid').fetch();
+      var promise = client.preview.sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+                                       .syncMaps('MPaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa').fetch();
       promise = promise.then(function() {
         throw new Error('failed');
       }, function(error) {
@@ -30,7 +30,7 @@ describe('SyncMap', function() {
 
       var solution = {
         serviceSid: 'ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-        sid: 'sid'
+        sid: 'MPaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
       };
       var url = _.template('https://preview.twilio.com/Sync/Services/<%= serviceSid %>/Maps/<%= sid %>')(solution);
 
@@ -44,8 +44,8 @@ describe('SyncMap', function() {
     function() {
       holodeck.mock(new Response(500, ''));
 
-      var promise = client.preview.Sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-                                       .syncMaps('sid').remove();
+      var promise = client.preview.sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+                                       .syncMaps('MPaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa').remove();
       promise = promise.then(function() {
         throw new Error('failed');
       }, function(error) {
@@ -55,7 +55,7 @@ describe('SyncMap', function() {
 
       var solution = {
         serviceSid: 'ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-        sid: 'sid'
+        sid: 'MPaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
       };
       var url = _.template('https://preview.twilio.com/Sync/Services/<%= serviceSid %>/Maps/<%= sid %>')(solution);
 
@@ -69,7 +69,7 @@ describe('SyncMap', function() {
     function() {
       holodeck.mock(new Response(500, ''));
 
-      var promise = client.preview.Sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+      var promise = client.preview.sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
                                        .syncMaps.create();
       promise = promise.then(function() {
         throw new Error('failed');
@@ -93,7 +93,7 @@ describe('SyncMap', function() {
     function() {
       holodeck.mock(new Response(500, ''));
 
-      var promise = client.preview.Sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+      var promise = client.preview.sync.services('ISaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
                                        .syncMaps.list();
       promise = promise.then(function() {
         throw new Error('failed');

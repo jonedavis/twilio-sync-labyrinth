@@ -1,0 +1,24 @@
+{
+  "name": "ts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha ./js --recursive --timeout 5000",
+    "test-Service": "./node_modules/mocha/bin/mocha ./js/rest/preview/sync/service.js --timeout 5000",
+    "test-Document": "./node_modules/mocha/bin/mocha ./js/rest/preview/sync/service/document.js --timeout 5000",
+    "test-SyncList": "./node_modules/mocha/bin/mocha ./js ./js/rest/preview/sync/service/syncList.js --timeout 5000",
+    "test-SyncListItem": "./node_modules/mocha/bin/mocha ./js/rest/preview/sync/service/syncList/syncListItem.js --timeout 5000",
+    "test-SyncMap": "./node_modules/mocha/bin/mocha ./js/rest/preview/sync/service/syncMap.js --timeout 5000",
+    "test-SyncMapItem": "./node_modules/mocha/bin/mocha ./js/rest/preview/sync/service/syncMap/syncMapItem.js --timeout 5000",
+    "tsc": "./node_modules/typescript/bin/tsc -p ./ts",
+    "tsc-watch": "./node_modules/typescript/bin/tsc -p ./ts --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.5.3",
+    "typescript": "^1.8.10"
+  }
+}

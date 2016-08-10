@@ -23,19 +23,16 @@ var DomainContext;
  *
  * @param {Twilio.Api.V2010} version - Version of the resource
  * @param {object} response - Response from the API
- * @param {string} accountSid -
- *          A 34 character string that uniquely identifies this resource.
+ * @param {object} solution - Path solution
  *
  * @returns DomainPage
  */
 /* jshint ignore:end */
-function DomainPage(version, response, accountSid) {
-  Page.prototype.constructor.call(this, version, response);
-
+function DomainPage(version, response, solution) {
   // Path Solution
-  this._solution = {
-    accountSid: accountSid
-  };
+  this._solution = solution;
+
+  Page.prototype.constructor.call(this, version, response, this._solution);
 }
 
 _.extend(DomainPage.prototype, Page.prototype);
@@ -286,8 +283,7 @@ function DomainList(version, accountSid) {
       deferred.resolve(new DomainPage(
         this._version,
         payload,
-        this._solution.accountSid,
-        this._solution.sid
+        this._solution
       ));
     }.bind(this));
 
@@ -315,6 +311,8 @@ function DomainList(version, accountSid) {
    *          The unique address on Twilio to route SIP traffic
    * @param {string} [opts.friendlyName] -
    *          A user-specified, human-readable name for the trigger.
+   * @param {string} [opts.authType] -
+   *          The types of authentication mapped to the domain
    * @param {string} [opts.voiceUrl] - URL Twilio will request when receiving a call
    * @param {string} [opts.voiceMethod] - HTTP method to use with voice_url
    * @param {string} [opts.voiceFallbackUrl] -
@@ -342,6 +340,7 @@ function DomainList(version, accountSid) {
     var data = values.of({
       'DomainName': opts.domainName,
       'FriendlyName': opts.friendlyName,
+      'AuthType': opts.authType,
       'VoiceUrl': opts.voiceUrl,
       'VoiceMethod': opts.voiceMethod,
       'VoiceFallbackUrl': opts.voiceFallbackUrl,
@@ -504,7 +503,7 @@ DomainInstance.prototype.fetch = function fetch(callback) {
  * @instance
  *
  * @param {object|function} opts - ...
- * @param {string} [opts.apiVersion] - The api_version
+ * @param {string} [opts.authType] - The auth_type
  * @param {string} [opts.friendlyName] -
  *          A user-specified, human-readable name for the trigger.
  * @param {string} [opts.voiceFallbackMethod] - The voice_fallback_method
@@ -654,7 +653,7 @@ DomainContext.prototype.fetch = function fetch(callback) {
  * @instance
  *
  * @param {object|function} opts - ...
- * @param {string} [opts.apiVersion] - The api_version
+ * @param {string} [opts.authType] - The auth_type
  * @param {string} [opts.friendlyName] -
  *          A user-specified, human-readable name for the trigger.
  * @param {string} [opts.voiceFallbackMethod] - The voice_fallback_method
@@ -678,7 +677,7 @@ DomainContext.prototype.update = function update(opts, callback) {
 
   var deferred = Q.defer();
   var data = values.of({
-    'ApiVersion': opts.apiVersion,
+    'AuthType': opts.authType,
     'FriendlyName': opts.friendlyName,
     'VoiceFallbackMethod': opts.voiceFallbackMethod,
     'VoiceFallbackUrl': opts.voiceFallbackUrl,

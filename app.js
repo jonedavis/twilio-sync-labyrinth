@@ -42,13 +42,24 @@ function sendMessage(toNumber) {
     return;
   }
 
-  var client = new Twilio.Twilio(config.accountSid, config.authToken);
-  client.messages.create({
+  var sms = {
     body: 'Are you ready for your quest? ' + config.domain + '/game/' + toNumber,
-    to: toNumber,  // Text this number
-    from: config.twilioNumber // From a valid Twilio number
-  }, function (err, message) {
-    console.log(message.sid);
+    to: toNumber
+  };
+
+  if (config.messagingServiceSid) {
+    sms.messagingServiceSid = config.messagingServiceSid;
+  } else {
+    sms.from = config.twilioNumber;
+  }
+
+  var client = new Twilio.Twilio(config.accountSid, config.authToken);
+  client.messages.create(sms, function (err, message) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(message.sid);
+    }
   });
 }
 
