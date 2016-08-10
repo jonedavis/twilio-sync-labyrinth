@@ -230,7 +230,7 @@ function updatePhysicsWorld() {
     // a: time to pass in seconds
     // b: how strong to correct velocity
     // c: how strong to correct position
-    wWorld.Step(1 / 120, 3, 3);
+    wWorld.Step(1 / 240, 1, 1);
 }
 
 function updateRenderWorld() {
@@ -373,6 +373,7 @@ function onResize() {
     }
 }
 
+var newAxis = [0,0];
 // From mobile phone (controller)
 function onControllerUpdated(axis) {
     // Return if gyroscope is steady
@@ -400,7 +401,7 @@ function onControllerUpdated(axis) {
     if (diffAccel.x <= ACCEL_THRESHOLD) { return; } 
     if (diffAccel.y <= ACCEL_THRESHOLD) { return; } 
     
-    var newAxis = [0, 0];
+    newAxis = [0, 0];
     if (newAccel.x < 0) newAxis[1] = 1;
     if (newAccel.x >= 0) newAxis[1] = -1;    
     if (newAccel.y < 0) newAxis[0] = -1;
@@ -410,7 +411,6 @@ function onControllerUpdated(axis) {
     oldAccel.x = newAccel.x;
     oldAccel.y = newAccel.y;
 }
-
 
 function getAvgAcceleration(rawAccel) {
     var accel = 0.0;
