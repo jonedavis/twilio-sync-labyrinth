@@ -531,7 +531,7 @@ $(document).ready(function () {
 
     $('#btnStart').on('click', function () {
         var phoneNumber = $('#txtPhoneNumber').val();
-        //if (isValidPhoneNumber(phoneNumber)) {
+        if (isValidPhoneNumber(phoneNumber)) {
             var url = '/token/' + phoneNumber;
             Twilio.Sync.CreateClient(url).then(function (client) {
                 syncClient = client;
@@ -570,6 +570,6 @@ $(document).ready(function () {
                     });
                 });
             });
-        //}
+        }
     });
 });
