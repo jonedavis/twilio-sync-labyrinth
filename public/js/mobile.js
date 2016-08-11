@@ -3,15 +3,15 @@ var audioPlayer = new simpleWebAudioPlayer();
 audioPlayer.load([
     {
         name: 'collision',
-        src: '/audio/free-collision.mp3'
+        src: '/audio/collision.mp3'
     },
     {
         name: 'positive',
-        src: '/audio/free-positive.mp3'
+        src: '/audio/positive.mp3'
     },
     {
         name: 'win',
-        src: '/audio/free-win.mp3'
+        src: '/audio/win.mp3'
     }    
 ]);
 
