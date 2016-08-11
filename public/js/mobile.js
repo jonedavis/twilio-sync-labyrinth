@@ -1,12 +1,22 @@
 // Audio player for Android & iOS
 var audioPlayer = new simpleWebAudioPlayer();
-audioPlayer.load({
-    name: 'collision',
-    src: '/audio/Hammering-Collision_TTX024702.wav'
-});
+audioPlayer.load([
+    {
+        name: 'collision',
+        src: '/audio/collision.mp3'
+    },
+    {
+        name: 'positive',
+        src: '/audio/positive.mp3'
+    },
+    {
+        name: 'win',
+        src: '/audio/win.mp3'
+    }    
+]);
 
 function startGame() {
-    audioPlayer.play('collision');
+    audioPlayer.play('positive');
     $('#controller-tips').hide();
     $('#controller-controls').show();
     startCountdown();

@@ -8,29 +8,38 @@ if (typeof AudioContext !== 'undefined') {
     webAudioPlayer.ctx = new webkitAudioContext();
 }
 
-var simpleWebAudioPlayer = function() {
+var simpleWebAudioPlayer = function () {
     var player = {},
         sounds = [],
-        masterGain;
+        masterGain = undefined;
 
-    player.load = function(sound) {
-        sounds[sound.name] = sound;
-        // Load the sound
-        var request = new window.XMLHttpRequest();
-        request.open('GET', sound.src, true);
-        request.responseType = 'arraybuffer';
-        request.onload = function() {
-            webAudioPlayer.ctx.decodeAudioData(request.response, function(buffer) {
-                sounds[sound.name].buffer = buffer;
-                if (sounds[sound.name].callback) {
-                    sounds[sound.name].callback();
-                }
-            });
-        };
-        request.send();
+    player.load = function (files) {
+        var requests = [];
+        for (var i = 0; i < files.length; i++) {
+            var sound = files[i];
+            sounds[sound.name] = sound;
+            // Load the sound
+            var req = new window.XMLHttpRequest();
+            req.desc = sound.name;
+            req.open('GET', sound.src, true);
+            req.responseType = 'arraybuffer';
+            onLoad(req);
+            req.send();
+        }
+
+        function onLoad(req) {
+            req.onload = function () {
+                webAudioPlayer.ctx.decodeAudioData(req.response, function (buffer) {
+                    sounds[req.desc].buffer = buffer;
+                    if (sounds[req.desc].callback) {
+                        sounds[req.desc].callback();
+                    }
+                });
+            };
+        }
     };
 
-    player.play = function(name) {
+    player.play = function (name) {
         var inst = {};
         if (sounds[name]) {
             inst.source = webAudioPlayer.ctx.createBufferSource();
@@ -39,7 +48,7 @@ var simpleWebAudioPlayer = function() {
             inst.source.start(0);
         }
     };
-    
+
     masterGain = (typeof webAudioPlayer.ctx.createGain === 'undefined') ? webAudioPlayer.ctx.createGainNode() : webAudioPlayer.ctx.createGain();
     masterGain.gain.value = 1;
     masterGain.connect(webAudioPlayer.ctx.destination);
