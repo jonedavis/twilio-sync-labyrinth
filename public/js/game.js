@@ -74,6 +74,7 @@ var $splashScreen = undefined,
     $splashScreenTitle = undefined,
     $splashScreenLevelName = undefined,
     $splashScreenLevelDescription = undefined,
+    $splashLevelCompleted = undefined,
     $splashLevelCompletedGraphic = undefined,
     $level = undefined,
     $levelName = undefined,
@@ -300,6 +301,7 @@ function gameLoop() {
         var level = Math.floor((mazeDimension - 1) / 2 - 4);
         if (level > currentLevel) {
             advanceLevelTo(level);
+            showSplashForLevel(level);
         }
         gameState = 'advancing';
         break;
@@ -359,28 +361,49 @@ function flash() {
 }
 
 
-function advanceLevelTo(levelNumber) {
-    currentLevel = levelNumber;
-    if (currentLevel != 1) {
+function advanceLevelTo(level) {
+    currentLevel = level;
+}
+
+
+function showSplashForLevel(level) {
+    // Hide level name and description hud
+    $level.hide();
+    $levelName.hide();
+    updateSplashScreen(level);
+
+    // Update splash screen animation graphic
+    // no cache for animations
+    if (level != 1) {
         $splashLevelCompletedGraphic
-            .attr('src', 'imgs/level_' + (currentLevel - 1) + '/level_completed.gif?a=' + Math.random()) // no cache for animations
+            .attr('src', 'imgs/level_' + (level - 1) + '/level_completed.gif?a=' + Math.random())
             .show();
     }
 
-    $level.hide();
-    $levelName.hide();
+    if (level == 1) {
+        $splashScreen.show();
+    } else if (level == 4) {
+        alert('Level 4');
+    } else {
+        // Start with level complete graphic
+        setTimeout(function () {
+            $splashLevelCompleted.hide();
+            $splashScreen.show();
+        }, 3000);
+    }
 
-    $splashScreen.show();
-    $splashScreenTitle.text('CALL ' + currentLevel);
-    $splashScreenLevelName.text(levelNames[currentLevel]);
-    $splashScreenLevelDescription.text(levelDescriptions[currentLevel]);
-
+    // End of splash screens. Show game
     setTimeout(function () {
         $splashScreen.hide();
-        $level.html('CALL ' + currentLevel).show();
-        $levelName.html(levelNames[currentLevel]).show();
         gameState = 'fade in';
-    }, 5000);
+    }, 7000)
+}
+
+
+function updateSplashScreen(level) {
+    $splashScreenTitle.text('CALL ' + level);
+    $splashScreenLevelName.text(levelNames[level]);
+    $splashScreenLevelDescription.text(levelDescriptions[level]);
 }
 
 
@@ -398,9 +421,7 @@ function onControllerUpdated(axis) {
     // Return if gyroscope is steady
     var beta = Math.floor(Math.abs(axis.beta));
     var gamma = Math.floor(Math.abs(axis.gamma));
-    if (beta === 0 && gamma === 0) {
-        return;
-    }
+    if (beta === 0 && gamma === 0) return;
 
     // Push raw data to front of arrays
     // each coordinate gets it's own array
@@ -419,12 +440,8 @@ function onControllerUpdated(axis) {
         y: Math.abs(oldAccel.y - newAccel.y)
     };
 
-    if (diffAccel.x <= ACCEL_THRESHOLD) {
-        return;
-    }
-    if (diffAccel.y <= ACCEL_THRESHOLD) {
-        return;
-    }
+    if (diffAccel.x <= ACCEL_THRESHOLD) return;
+    if (diffAccel.y <= ACCEL_THRESHOLD) return;
 
     newAxis = [0, 0];
     if (newAccel.x < 0) newAxis[1] = 1;
@@ -436,6 +453,7 @@ function onControllerUpdated(axis) {
     oldAccel.x = newAccel.x;
     oldAccel.y = newAccel.y;
 }
+
 
 function getAvgAcceleration(rawAccel) {
     var accel = 0.0;
@@ -474,6 +492,7 @@ jQuery.fn.center = function () {
 
 $(document).ready(function () {
     $splashScreen = $('#splash-screen').hide();
+    $splashLevelCompleted = $('#splash-level-completed').hide();
     $splashLevelCompletedGraphic = $('#splash-level-completed-graphic');
     $level = $('#desktop-level').hide();
     $levelName = $('#desktop-level-name').hide();
@@ -511,6 +530,9 @@ $(document).ready(function () {
                             // Create the renderer
                             renderer = new THREE.WebGLRenderer();
                             renderer.setSize(window.innerWidth, window.innerHeight);
+                            // Set an id for the game canvas
+                            renderer.domElement.setAttribute('id', 'game-canvas');
+                            // Add canvas to body
                             document.body.appendChild(renderer.domElement);
                             // Bind keyboard and resize events
                             $(window).resize(onResize);
