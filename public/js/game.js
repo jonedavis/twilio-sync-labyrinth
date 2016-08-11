@@ -345,7 +345,6 @@ function gameLoop() {
 }
 
 
-
 function flash() {
     // update color 5% more red than before
     var rgb = getFlashColor();
@@ -366,26 +365,28 @@ function advanceLevelTo(level) {
 }
 
 
-function showSplashForLevel(level) {
+function showSplashForLevel() {
     // Hide level name and description hud
-    $level.hide();
-    $levelName.hide();
-    updateSplashScreen(level);
-
+    hideLevelHud();
+    // Update splash screen info for level
+    updateSplashScreen();
+    
     // Update splash screen animation graphic
     // no cache for animations
-    if (level != 1) {
+    if (currentLevel != 1) {
         $splashLevelCompletedGraphic
-            .attr('src', 'imgs/level_' + (level - 1) + '/level_completed.gif?a=' + Math.random())
+            .attr('src', 'imgs/level_' + (currentLevel - 1) + '/level_completed.gif?a=' + Math.random())
             .show();
     }
 
-    if (level == 1) {
+    if (currentLevel == 1) {
         $splashScreen.show();
-    } else if (level == 4) {
+    } else if (currentLevel == 5) {
         alert('Level 4');
     } else {
         // Start with level complete graphic
+        $splashLevelCompleted.show();
+        // Shut it down after 3 seconds
         setTimeout(function () {
             $splashLevelCompleted.hide();
             $splashScreen.show();
@@ -395,15 +396,35 @@ function showSplashForLevel(level) {
     // End of splash screens. Show game
     setTimeout(function () {
         $splashScreen.hide();
+        updateLevelHud();
+        showLevelHud();
         gameState = 'fade in';
     }, 7000)
 }
 
 
-function updateSplashScreen(level) {
-    $splashScreenTitle.text('CALL ' + level);
-    $splashScreenLevelName.text(levelNames[level]);
-    $splashScreenLevelDescription.text(levelDescriptions[level]);
+function updateSplashScreen() {
+    $splashScreenTitle.text('CALL ' + currentLevel);
+    $splashScreenLevelName.text(levelNames[currentLevel]);
+    $splashScreenLevelDescription.text(levelDescriptions[currentLevel]);
+}
+
+
+function updateLevelHud() {
+    $level.html('CALL ' + currentLevel).show();
+    $levelName.html(levelNames[currentLevel]).show();
+}
+
+
+function hideLevelHud() {
+    $level.hide();
+    $levelName.hide();
+}
+
+
+function showLevelHud() {
+    $level.show();
+    $levelName.show();
 }
 
 
@@ -510,7 +531,7 @@ $(document).ready(function () {
 
     $('#btnStart').on('click', function () {
         var phoneNumber = $('#txtPhoneNumber').val();
-        if (isValidPhoneNumber(phoneNumber)) {
+        //if (isValidPhoneNumber(phoneNumber)) {
             var url = '/token/' + phoneNumber;
             Twilio.Sync.CreateClient(url).then(function (client) {
                 syncClient = client;
@@ -549,6 +570,6 @@ $(document).ready(function () {
                     });
                 });
             });
-        }
+        //}
     });
 });
