@@ -5,7 +5,7 @@ const http = require('http');
 const path = require('path');
 const Twilio = require('../../twilio-temp')
 const isCallerMobile = require('./libs/mobiledetection');
-const getToken = require('./syncSetup');
+const getToken = require('./sync.setup.js');
 const config = require('../../config.js');
 const app = express();
 

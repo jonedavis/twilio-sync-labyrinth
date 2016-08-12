@@ -24,6 +24,15 @@ a:visited {
     color: rgb(148, 151, 155);
 }
 
+#mobile-index {
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+}
+
 @keyframes colorPulseKeyframe {
     0% {
         color: black;

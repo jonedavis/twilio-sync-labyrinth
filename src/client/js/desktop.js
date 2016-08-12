@@ -94,6 +94,7 @@ var $splashScreen = undefined,
     ],
     assets = [];
 
+
 // Preload textures
 for (var i = 1; i <= numberOfLevels; i++) {
     var tempAsset = {
@@ -103,6 +104,7 @@ for (var i = 1; i <= numberOfLevels; i++) {
     }
     assets.push(tempAsset)
 }
+
 
 function createPhysicsWorld() {
     // Create the world object
@@ -252,6 +254,7 @@ function updatePhysicsWorld() {
     // c: how strong to correct position
     wWorld.Step(1 / 240, 1, 1);
 }
+
 
 function updateRenderWorld() {
     // Update ball position
@@ -483,31 +486,6 @@ function getAvgAcceleration(rawAccel) {
     }
     accel *= ACCEL_FACTOR / NUM_FILTER_POINTS;
     return accel;
-}
-
-
-jQuery.fn.centerv = function () {
-    var wh = window.innerHeight;
-    var h = this.outerHeight();
-    this.css('position', 'absolute');
-    this.css('top', Math.max(0, (wh - h) / 2) + 'px');
-    return this;
-}
-
-
-jQuery.fn.centerh = function () {
-    var ww = window.innerWidth;
-    var w = this.outerWidth();
-    this.css('position', 'absolute');
-    this.css('left', Math.max(0, (ww - w) / 2) + 'px');
-    return this;
-}
-
-
-jQuery.fn.center = function () {
-    this.centerv();
-    this.centerh();
-    return this;
 }
 
 
