@@ -15,5 +15,9 @@ module.exports = {
     apiSecret: 'your_api_secret',
 
     // Your Sync service instance SID
-    serviceSid: 'ISXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+    serviceSid: 'ISXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    
+    // Your Copilot SID
+    // https://www.twilio.com/user/account/messaging/services
+    messagingServiceSid: 'MGXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 };
