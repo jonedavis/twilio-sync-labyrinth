@@ -4,7 +4,7 @@ A WebGL maze game built with Twilio, Three.js, and Box2dWeb. CommsQuest IV uses 
 ## Play it here
 Are you ready for the challenge? Take it for a spin in your desktop browser:
 
-[CommsQuest IV](http://bit.ly/2auDnm0)
+[CommsQuest IV](http://bit.ly/2bofiwx)
 
 After you enter your phone number you will receive a text message with a link. Click the link to sync your mobile phone with your desktop browser.
 
