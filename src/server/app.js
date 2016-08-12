@@ -25,7 +25,7 @@ app.get('/kiosk', (req, res) => {
 });
 
 app.get('/game/:phoneNumber', (req, res) => {
-  res.render('mobile', { phoneNumber: req.params.phoneNumber });
+  res.render('mobile-joystick', { phoneNumber: req.params.phoneNumber });
 });
 
 app.get('/token/:phoneNumber', (request, response) => {
@@ -48,7 +48,7 @@ function renderHome(req, res, kiosk) {
   let isMobile = isCallerMobile(req);
 
   if (!isMobile) {
-    res.render('index', {kiosk: !!kiosk});
+    res.render('desktop-index', {kiosk: !!kiosk});
   } else {
     res.render('mobile-index');
   }
