@@ -18,11 +18,11 @@ module.exports = function (phoneNumber) {
     // Create an access token which we will sign and return to the client,
     // containing the grant we just created
     let token = new AccessToken(
-      config.accountSid,
-      config.apiKey,
-      config.apiSecret
+        config.accountSid,
+        config.apiKey,
+        config.apiSecret
     );
-    
+
     token.addGrant(syncGrant);
     token.identity = phoneNumber;
 
