@@ -53,6 +53,7 @@ There is still work to be done:
 5. Nathan Sharp
 6. Sean McBride
 7. [Brent Schooley](https://github.com/brentschooley/)
+8. [Michael Davis](https://github.com/michaeled)
 
 ## License
 MIT
