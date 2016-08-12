@@ -31,3 +31,27 @@ var utils = {
         }
     }
 };
+
+jQuery.fn.centerv = function () {
+    var wh = window.innerHeight;
+    var h = this.outerHeight();
+    this.css('position', 'absolute');
+    this.css('top', Math.max(0, (wh - h) / 2) + 'px');
+    return this;
+}
+
+
+jQuery.fn.centerh = function () {
+    var ww = window.innerWidth;
+    var w = this.outerWidth();
+    this.css('position', 'absolute');
+    this.css('left', Math.max(0, (ww - w) / 2) + 'px');
+    return this;
+}
+
+
+jQuery.fn.center = function () {
+    this.centerv();
+    this.centerh();
+    return this;
+}

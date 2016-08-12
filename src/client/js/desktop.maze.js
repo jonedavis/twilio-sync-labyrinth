@@ -39,7 +39,5 @@ function generateSquareMaze(dimension) {
     field = iterate(field, 1, 1);
     
     return field;
-
+    
 }
-
-
