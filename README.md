@@ -1,4 +1,4 @@
-# twilio-sync-labyrinth aka CommsQuest IV.
+# CommsQuest IV
 A WebGL maze game built with Twilio, Three.js, and Box2dWeb. CommsQuest IV uses your mobile phone and it's accelerometer as a controller. Your mission is to escape a unique world filled with crazy passages and secret chambers!
 
 ## Play it here
@@ -16,22 +16,17 @@ To follow along at home you’ll need:
 3. [Ngrok](https://ngrok.com/)
 
 ## Twilio products used
-#### [Twilio Sync](https://www.twilio.com/sync/api) - 
+#### [Twilio Sync](https://www.twilio.com/sync/api)
 Synchronize application state across mobile apps and websites in real-time.
 
-#### [Programmable SMS](https://www.twilio.com/sms/api) - 
+#### [Programmable SMS](https://www.twilio.com/sms/api)
 Exchange text and pictures around the world from any web or mobile app with one API.
+
+#### [Messaging Copilot](https://www.twilio.com/copilot)
+Improve SMS delivery with phone number and content intelligence by simply enabling features in the Account Portal.
 
 ## Motivation
 This project stemmed from an intense 4 hour hack session. With 5 minutes remaining in the session, we finally got the ball to move on the screen. I'll never forget David yelling at the top of his lungs and everyone jumping up and down when we got it to work.
-
-## Next Steps
-There is still work to be done:
-
-1. The ball movement needs to be smoothed out
-2. There is no final level or end screen
-3. Android and iPhone have inverse coordinates
-4. The controller webpage could use some visuals
 
 ## How to run it locally
 1. Clone this repo.
