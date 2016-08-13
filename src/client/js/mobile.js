@@ -1,5 +1,4 @@
 (function () {
-    
     // audio player for Android & iOS
     var audioPlayer = new simpleWebAudioPlayer();
     
@@ -122,5 +121,4 @@
             });
         });
     });
-
 })();

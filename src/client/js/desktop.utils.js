@@ -40,7 +40,6 @@ jQuery.fn.centerv = function () {
     return this;
 }
 
-
 jQuery.fn.centerh = function () {
     var ww = window.innerWidth;
     var w = this.outerWidth();
@@ -48,7 +47,6 @@ jQuery.fn.centerh = function () {
     this.css('left', Math.max(0, (ww - w) / 2) + 'px');
     return this;
 }
-
 
 jQuery.fn.center = function () {
     this.centerv();
