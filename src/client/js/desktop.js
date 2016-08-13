@@ -70,7 +70,10 @@ b2World = Box2D.Dynamics.b2World,
     rawAccelY = [0, 0, 0, 0];
 
 // Assets
-var $splashScreen = undefined,
+var $mainMenu = undefined,
+    $startGame = undefined,
+    $mainMenuFooter = undefined,
+    $splashScreen = undefined,
     $splashScreenTitle = undefined,
     $splashScreenLevelName = undefined,
     $splashScreenLevelDescription = undefined,
@@ -385,7 +388,7 @@ function showSplashForLevel() {
     if (currentLevel == 1) {
         $splashScreen.show();
     } else if (currentLevel == 5) {
-        alert('Level 4');
+        alert('Level 5');
     } else {
         // Start with level complete graphic
         $splashLevelCompleted.show();
@@ -490,17 +493,35 @@ function getAvgAcceleration(rawAccel) {
 
 
 $(document).ready(function () {
-    $splashScreen = $('#splash-screen').hide();
-    $splashLevelCompleted = $('#splash-level-completed').hide();
-    $splashLevelCompletedGraphic = $('#splash-level-completed-graphic');
-    $level = $('#desktop-level').hide();
-    $levelName = $('#desktop-level-name').hide();
-    $splashScreenTitle = $('#splash-screen-title');
-    $splashScreenLevelName = $('#splash-screen-level-name');
-    $splashScreenLevelDescription = $('#splash-screen-level-description');
-    // Set the initial game state
-    gameState = 'waiting for sync';
+    function getHandles() {
+        $mainMenu =  $('#main-menu');
+        $startGame = $('#start-game');
+        $mainMenuFooter = $('#main-menu-footer');
+        $splashScreen = $('#splash-screen');
+        $splashLevelCompleted = $('#splash-level-completed');
+        $splashLevelCompletedGraphic = $('#splash-level-completed-graphic');
+        $level = $('#desktop-level');
+        $levelName = $('#desktop-level-name');
+        $splashScreenTitle = $('#splash-screen-title');
+        $splashScreenLevelName = $('#splash-screen-level-name');
+        $splashScreenLevelDescription = $('#splash-screen-level-description');       
+    }
 
+    function initGame() {
+        // Get jQuery handles
+        getHandles();
+        // Hide unncecessary controls in initial state
+        $splashScreen.hide();
+        $splashLevelCompleted.hide();
+        $level.hide();
+        $levelName.hide();
+        // Set the initial game state
+        gameState = 'waiting for sync'; 
+    }
+    
+    initGame();
+    
+    // Bind enterkey to trigger click event on phone number field
     $('#txtPhoneNumber').bind('keypress', function (event) {
         if (event.keyCode === 13) {
             $('#btnStart').trigger('click');
@@ -522,9 +543,9 @@ $(document).ready(function () {
                             wallCollisionList = syncList
 
                             // Hide entire menu
-                            $('#main-menu').hide();
-                            $('#start-game').hide();
-                            $('#main-menu > .footer').hide();
+                            $mainMenu.hide();
+                            $startGame.hide();
+                            $mainMenuFooter.hide();
 
                             // Create the renderer
                             renderer = new THREE.WebGLRenderer();
@@ -548,6 +569,6 @@ $(document).ready(function () {
                     });
                 });
             });
-        }
+       }
     });
 });
