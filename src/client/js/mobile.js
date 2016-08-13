@@ -69,7 +69,12 @@
         var url = '/token-mobile/' + phoneNumber;
         $('#controller-controls').hide(); //check
         $time = $('#time');
-
+        
+        // Setup button click event
+        $('#btnReady').on('click', function() {
+            startGame();
+        });
+        
         // Get a Sync client (with auth token from provided url)
         Twilio.Sync.CreateClient(url).then(function (client) {
             syncClient = client;

@@ -569,6 +569,6 @@ $(document).ready(function () {
                     });
                 });
             });
-       }
+        }
     });
 });
