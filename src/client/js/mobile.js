@@ -24,7 +24,7 @@
         startCountdown();
     }
 
-    // Countdown timer defaults to 1 min no callback
+    // Countdown timer defaults to 30 seconds no callback
     function startCountdown(minutes, callback) {
         var seconds = minutes != undefined ? (minutes * 60) : 30;
         function tick() {
@@ -65,15 +65,24 @@
 
     $(function () {
         var syncClient, gameStateDoc, controllerStateDoc;
+        var gyroData = { x: 0, y: 0, beta: 0, gamma: 0 };
         // Server url to request for an auth token
         var url = '/token-mobile/' + phoneNumber;
-        $('#controller-controls').hide(); //check
+        $('#controller-controls').hide();
         $time = $('#time');
         
         // Setup button click event
         $('#btnReady').on('click', function() {
             startGame();
         });
+        
+        // Set gyro data
+        function setGyro(data) {
+            gyroData.x = data.x;
+            gyroData.y = data.y;
+            gyroData.beta = data.beta;
+            gyroData.gamma = data.gamma;
+        }
         
         // Get a Sync client (with auth token from provided url)
         Twilio.Sync.CreateClient(url).then(function (client) {
@@ -94,10 +103,10 @@
                     // Set frequency of updates to 100ms
                     gyro.frequency = 100;
                     // Fire up the gyro tracking
-                    // only send what we use
                     gyro.startTracking(function(axis) {
-                        // Send the gyro data to Sync
-                        controllerStateDoc.set(axis);
+                        setGyro(axis);
+                        // Send only what we use of the gyro data to Sync
+                        controllerStateDoc.set(gyroData);
                     });
                 });
 
