@@ -76,6 +76,7 @@ var $mainMenu = undefined,
     $splashScreen = undefined,
     $splashScreenTitle = undefined,
     $splashScreenLevelName = undefined,
+    $splashScreenLevelDetails = undefined,
     $splashScreenLevelDescription = undefined,
     $splashLevelCompleted = undefined,
     $splashLevelCompletedGraphic = undefined,
@@ -385,6 +386,7 @@ function advanceLevelTo(level) {
 
 
 function showSplashForLevel() {
+    var animationDelay = currentLevel != 5 ? 3000 : 8000;
     // Hide level name and description hud
     showLevelHud(false);
     showGameCanvas(false);
@@ -398,7 +400,7 @@ function showSplashForLevel() {
             .attr('src', 'imgs/level_' + (currentLevel - 1) + '/level_completed.gif?a=' + Math.random())
             .show();
     }
-
+        
     if (currentLevel == 1) {
         $splashScreen.show();
     } else {
@@ -408,11 +410,12 @@ function showSplashForLevel() {
         setTimeout(function () {
             $splashLevelCompleted.hide();
             $splashScreen.show();
-        }, 3000);
+        }, animationDelay);
     }
     
     // End of game. Show menu for next steps
     if (currentLevel == 5) {
+        $splashScreenLevelDetails.hide();
         $splashScreenGameOverMenu.show();
         gameState = 'idle';
     } else {
@@ -525,6 +528,7 @@ $(document).ready(function () {
         $startGame = $('#start-game');
         $mainMenuFooter = $('#main-menu-footer');
         $splashScreen = $('#splash-screen');
+        $splashScreenLevelDetails = $('#splash-screen-details');
         $splashLevelCompleted = $('#splash-level-completed');
         $splashLevelCompletedGraphic = $('#splash-level-completed-graphic');
         $level = $('#desktop-level');
@@ -544,6 +548,7 @@ $(document).ready(function () {
         $splashScreenGameOverMenu.hide();
         $level.hide();
         $levelName.hide();
+        $mainMenu.show();
         // Set the initial game state
         gameState = 'waiting for sync'; 
     }
@@ -557,9 +562,21 @@ $(document).ready(function () {
         }
     });
 
+    
+    function openLinkInNewTab(id) {
+        $(id).on('click', function () {
+            $(this).target = '_blank';
+            window.open($(this).prop('href'));
+            return false;
+        });
+    }
+    
+    openLinkInNewTab('#btnLearnAbout');  
+    openLinkInNewTab('#btnViewSource');    
+    
     $('#btnStart').on('click', function () {
         var phoneNumber = $('#txtPhoneNumber').val();
-        //if (isValidPhoneNumber(phoneNumber)) {
+        if (isValidPhoneNumber(phoneNumber)) {
             var url = '/token/' + phoneNumber;
             Twilio.Sync.CreateClient(url).then(function (client) {
                 syncClient = client;
@@ -598,6 +615,6 @@ $(document).ready(function () {
                     });
                 });
             });
-        //}
+        }
     });
 });
