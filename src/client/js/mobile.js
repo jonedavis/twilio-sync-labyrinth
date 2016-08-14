@@ -26,7 +26,7 @@
 
     // Countdown timer defaults to 30 seconds no callback
     function startCountdown(minutes, callback) {
-        var seconds = minutes != undefined ? (minutes * 60) : 30;
+        var seconds = minutes != undefined ? (minutes * 60) : 60;
         function tick() {
             seconds--;
             var itsTheFinalCountdown = seconds < 10;
