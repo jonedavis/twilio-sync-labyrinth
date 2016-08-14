@@ -76,9 +76,12 @@ var $mainMenu = undefined,
     $splashScreen = undefined,
     $splashScreenTitle = undefined,
     $splashScreenLevelName = undefined,
+    $splashScreenLevelDetails = undefined,
     $splashScreenLevelDescription = undefined,
     $splashLevelCompleted = undefined,
     $splashLevelCompletedGraphic = undefined,
+    $splashScreenGameOverMenu = undefined,
+    $gameCanvasDisplay = undefined,
     $level = undefined,
     $levelName = undefined,
     levelNames = [
@@ -303,7 +306,6 @@ function gameLoop() {
         camera.position.set(1, 1, 5);
         light.position.set(1, 1, 1.3);
         light.intensity = 0;
-        // TODO: What does this mean?
         var level = Math.floor((mazeDimension - 1) / 2 - 4);
         if (level > currentLevel) {
             advanceLevelTo(level);
@@ -325,7 +327,6 @@ function gameLoop() {
         updatePhysicsWorld();
         updateRenderWorld();
         renderer.render(scene, camera);
-
         // Check for victory.
         var mazeX = Math.floor(ballMesh.position.x + 0.5);
         var mazeY = Math.floor(ballMesh.position.y + 0.5);
@@ -336,6 +337,11 @@ function gameLoop() {
         break;
 
     case 'fade out':
+        if (currentLevel == 4) {
+            advanceLevelTo(5);
+            gameState = 'end of game';
+            break;
+        }
         updatePhysicsWorld();
         updateRenderWorld();
         light.intensity += 0.1 * (0.0 - light.intensity);
@@ -346,6 +352,14 @@ function gameLoop() {
             gameState = 'initialize';
         }
         break;
+            
+    case 'end of game':
+        // Show end of game animation and menu
+        showSplashForLevel();
+        break;
+    
+        case 'idle':
+        break;        
     }
     requestAnimationFrame(gameLoop);
 }
@@ -372,8 +386,10 @@ function advanceLevelTo(level) {
 
 
 function showSplashForLevel() {
+    var animationDelay = currentLevel != 5 ? 3000 : 8000;
     // Hide level name and description hud
-    hideLevelHud();
+    showLevelHud(false);
+    showGameCanvas(false);
     // Update splash screen info for level
     updateSplashScreen();
     
@@ -384,11 +400,9 @@ function showSplashForLevel() {
             .attr('src', 'imgs/level_' + (currentLevel - 1) + '/level_completed.gif?a=' + Math.random())
             .show();
     }
-
+        
     if (currentLevel == 1) {
         $splashScreen.show();
-    } else if (currentLevel == 5) {
-        alert('Level 5');
     } else {
         // Start with level complete graphic
         $splashLevelCompleted.show();
@@ -396,16 +410,24 @@ function showSplashForLevel() {
         setTimeout(function () {
             $splashLevelCompleted.hide();
             $splashScreen.show();
-        }, 3000);
+        }, animationDelay);
     }
-
-    // End of splash screens. Show game
-    setTimeout(function () {
-        $splashScreen.hide();
-        updateLevelHud();
-        showLevelHud();
-        gameState = 'fade in';
-    }, 7000)
+    
+    // End of game. Show menu for next steps
+    if (currentLevel == 5) {
+        $splashScreenLevelDetails.hide();
+        $splashScreenGameOverMenu.show();
+        gameState = 'idle';
+    } else {
+        // End of splash screens. Show game
+        setTimeout(function () {
+            $splashScreen.hide();
+            updateLevelHud();
+            showLevelHud(true);
+            showGameCanvas(true);
+            gameState = 'fade in';
+        }, 7000);
+    }
 }
 
 
@@ -422,15 +444,23 @@ function updateLevelHud() {
 }
 
 
-function hideLevelHud() {
-    $level.hide();
-    $levelName.hide();
+function showLevelHud(show) {
+    if (show) {
+        $level.show();
+        $levelName.show();
+    } else {
+        $level.hide();
+        $levelName.hide();
+    }
 }
 
 
-function showLevelHud() {
-    $level.show();
-    $levelName.show();
+function showGameCanvas(show) {
+    if (show) {
+        $gameCanvasDisplay.style.display = 'block';
+    } else {
+        $gameCanvasDisplay.style.display = 'none';
+    }
 }
 
 
@@ -498,13 +528,15 @@ $(document).ready(function () {
         $startGame = $('#start-game');
         $mainMenuFooter = $('#main-menu-footer');
         $splashScreen = $('#splash-screen');
+        $splashScreenLevelDetails = $('#splash-screen-details');
         $splashLevelCompleted = $('#splash-level-completed');
         $splashLevelCompletedGraphic = $('#splash-level-completed-graphic');
         $level = $('#desktop-level');
         $levelName = $('#desktop-level-name');
         $splashScreenTitle = $('#splash-screen-title');
         $splashScreenLevelName = $('#splash-screen-level-name');
-        $splashScreenLevelDescription = $('#splash-screen-level-description');       
+        $splashScreenLevelDescription = $('#splash-screen-level-description');
+        $splashScreenGameOverMenu = $('#splash-scren-gameover-menu');
     }
 
     function initGame() {
@@ -513,8 +545,10 @@ $(document).ready(function () {
         // Hide unncecessary controls in initial state
         $splashScreen.hide();
         $splashLevelCompleted.hide();
+        $splashScreenGameOverMenu.hide();
         $level.hide();
         $levelName.hide();
+        $mainMenu.show();
         // Set the initial game state
         gameState = 'waiting for sync'; 
     }
@@ -528,6 +562,18 @@ $(document).ready(function () {
         }
     });
 
+    
+    function openLinkInNewTab(id) {
+        $(id).on('click', function () {
+            $(this).target = '_blank';
+            window.open($(this).prop('href'));
+            return false;
+        });
+    }
+    
+    openLinkInNewTab('#btnLearnAbout');  
+    openLinkInNewTab('#btnViewSource');    
+    
     $('#btnStart').on('click', function () {
         var phoneNumber = $('#txtPhoneNumber').val();
         if (isValidPhoneNumber(phoneNumber)) {
@@ -554,13 +600,13 @@ $(document).ready(function () {
                             renderer.domElement.setAttribute('id', 'game-canvas');
                             // Add canvas to body
                             document.body.appendChild(renderer.domElement);
+                            // Get Handle to game canvs to toggle visibility
+                            $gameCanvasDisplay = document.getElementById("game-canvas");
                             // Bind keyboard and resize events
                             $(window).resize(onResize);
-
                             // Start the game loop
                             gameState = 'initialize';
                             requestAnimationFrame(gameLoop);
-
                             // Subscribe to changes to the controller state document
                             controllerStateDoc.on('updated', function (data) {
                                 onControllerUpdated(data);
