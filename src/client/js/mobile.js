@@ -21,35 +21,35 @@
         audioPlayer.play('positive');
         $('#controller-tips').hide();
         $('#controller-controls').show();
-        startCountdown();
+        // 1:30 countdown
+        startTimer(1.5 * 60);
     }
 
-    // Countdown timer defaults to 30 seconds no callback
-    function startCountdown(minutes, callback) {
-        var seconds = minutes != undefined ? (minutes * 60) : 60;
-        function tick() {
-            seconds--;
-            var itsTheFinalCountdown = seconds < 10;
-            var countdown = '0:' + (itsTheFinalCountdown ? '0' : '') + seconds;
+    // Countdown timer
+    function startTimer(duration) {
+        var timer = duration;
+        var minutes = undefined;
+        var seconds = undefined;
+        var timeInterval = setInterval(function () {
+                minutes = parseInt(timer / 60, 10)
+                seconds = parseInt(timer % 60, 10);
 
-            // Add some danger
-            if (!$time.hasClass('redish') && itsTheFinalCountdown) {
-                $time.addClass('redish');
-            }
+                minutes = minutes < 10 ? '' + minutes : minutes;
+                seconds = seconds < 10 ? '0' + seconds : seconds;
 
-            $time.text(countdown);
-
-            if (seconds > 0) {
-                setTimeout(tick, 1000);
-            } else {
-                $time.text('ツ'); // ¯\_(ツ)_/¯
-                // Game over -> tell the server?
-                if (callback != undefined) {
-                    callback();
+                $time.text(minutes + ':' + seconds);
+                timer--;
+                
+                if (timer < 10 && !$time.hasClass('redish')) {
+                    // Add some danger                    
+                    $time.addClass('redish');
                 }
-            }
-        }
-        tick();
+                
+                if (timer < 0) {
+                    clearTimeout(timeInterval);
+                    $time.text('SYNC');
+                }
+            }, 1000);
     }
 
     /**
