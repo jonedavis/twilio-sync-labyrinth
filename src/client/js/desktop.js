@@ -476,6 +476,14 @@ function onResize() {
 
 // From mobile phone (controller)
 function onControllerUpdated(axis) {
+    // Check if game is paused
+    if (axis.isGamePaused) {
+        $pauseScreen.show();
+        return;
+    } else if (!axis.isGamePaused && $pauseScreen.is(':visible')) {
+        $pauseScreen.hide();
+    }
+    
     // Return if gyroscope is steady
     var beta = Math.floor(Math.abs(axis.beta));
     var gamma = Math.floor(Math.abs(axis.gamma));
@@ -582,10 +590,13 @@ $(document).ready(function () {
             var url = '/token/' + phoneNumber;
             Twilio.Sync.CreateClient(url).then(function (client) {
                 syncClient = client;
+                
                 syncClient.document('game-state-' + phoneNumber).then(function (doc) {
                     gameStateDoc = doc;
+                    
                     syncClient.document('controller-state-' + phoneNumber).then(function (ctrlDoc) {
                         controllerStateDoc = ctrlDoc;
+                        
                         syncClient.list('wall-collision-list-' + phoneNumber).then(function (syncList) {
                             wallCollisionList = syncList
 

@@ -1,6 +1,7 @@
 (function () {
     // audio player for Android & iOS
     var audioPlayer = new simpleWebAudioPlayer();
+    var isGamePaused = false;
     
     audioPlayer.load([
         {
@@ -31,6 +32,7 @@
         var minutes = undefined;
         var seconds = undefined;
         var timeInterval = setInterval(function () {
+            if (!isGamePaused) {
                 minutes = parseInt(timer / 60, 10)
                 seconds = parseInt(timer % 60, 10);
 
@@ -49,7 +51,8 @@
                     clearTimeout(timeInterval);
                     $time.text('SYNC');
                 }
-            }, 1000);
+            }
+        }, 1000);    
     }
 
     /**
@@ -66,15 +69,27 @@
     $(function () {
         var syncClient, gameStateDoc, controllerStateDoc;
         var gyroData = { x: 0, y: 0, beta: 0, gamma: 0 };
+        $pauseButton = $('#btnPause');
+        var pauseState = 'PAUSE_STATE';
         // Server url to request for an auth token
         var url = '/token-mobile/' + phoneNumber;
         $('#controller-controls').hide();
         $time = $('#time');
+        // Subscribe to pause state
+        $.Topic(pauseState).subscribe(setPauseState);
         
         // Setup button click event
         $('#btnReady').on('click', function() {
             startGame();
         });
+        
+        // Setup pause button events
+        $pauseButton.on('click', function() {
+            isGamePaused = !isGamePaused;
+            var text = isGamePaused ? '(UNPAUSE)' : '(PAUSE)';
+            $pauseButton.text(text);
+            setPauseState();
+        })
         
         // Set gyro data
         function setGyro(data) {
@@ -82,6 +97,14 @@
             gyroData.y = data.y;
             gyroData.beta = data.beta;
             gyroData.gamma = data.gamma;
+        }
+        
+        // Publish pause state
+        function setPauseState() {
+            $.Topic(pauseState).publish(isGamePaused);
+            // Send it to the Desktop
+            gyroData.isGamePaused = isGamePaused;
+            controllerStateDoc.set(gyroData);
         }
         
         // Get a Sync client (with auth token from provided url)
@@ -104,9 +127,12 @@
                     gyro.frequency = 100;
                     // Fire up the gyro tracking
                     gyro.startTracking(function(axis) {
-                        setGyro(axis);
-                        // Send only what we use of the gyro data to Sync
-                        controllerStateDoc.set(gyroData);
+                        // Don't send gryo data to Sync if paused
+                        if (!isGamePaused) {
+                            setGyro(axis);
+                            // Send only what we use of the gyro data to Sync
+                            controllerStateDoc.set(gyroData);
+                        }
                     });
                 });
 
