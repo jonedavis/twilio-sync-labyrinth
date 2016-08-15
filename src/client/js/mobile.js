@@ -63,8 +63,8 @@
                 
                 if (timer < 0) {
                     clearTimeout(timeInterval);
+                    isGamePaused = true;
                     // Pause game at end of timer
-                    togglePauseState();
                     showEndOfGameControls();
                 }
             }
