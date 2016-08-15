@@ -23,7 +23,7 @@
         audioPlayer.play('positive');
         $('#controller-tips').hide();
         $('#controller-controls').show();
-        // 1:30 countdown
+        // 3:00 countdown
         startTimer(3 * 60);
     }
 
@@ -63,9 +63,9 @@
                 
                 if (timer < 0) {
                     clearTimeout(timeInterval);
-                    setEndOfGame();
                     // Pause game at end of timer
                     togglePauseState();
+                    showEndOfGameControls();
                 }
             }
         }, 1000);    
@@ -93,9 +93,7 @@
         $time = $('#time');
         $twilioLogo = $('#twilio-logo');
         $btnLearnAbout = $('#btnLearnAbout').hide();
-        // Subscribe to pause state
-        $.Topic(pauseState).subscribe(setPauseState);
-        
+
         // Setup button click event
         $('#btnReady').on('click', function() {
             startGame();
@@ -106,6 +104,7 @@
             togglePauseState();
             var text = isGamePaused ? '(UNPAUSE)' : '(PAUSE)';
             $pauseButton.text(text);
+            setPauseState();
         })
         
         // Set gyro data
@@ -119,12 +118,10 @@
         // Toggle pause
         function togglePauseState() {
             isGamePaused = !isGamePaused;
-            setPauseState();            
         }
         
-        // Publish pause state
+        // Send pause state top Sync
         function setPauseState() {
-            $.Topic(pauseState).publish(isGamePaused);
             // Send it to the Desktop
             gyroData.isGamePaused = isGamePaused;
             controllerStateDoc.set(gyroData);
