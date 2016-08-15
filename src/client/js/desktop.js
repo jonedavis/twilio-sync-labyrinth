@@ -11,6 +11,7 @@ var camera = undefined,
     planeMesh = undefined,
     ballMesh = undefined,
     ballRadius = 0.20,
+    collisionImpulseThreshold = 2.4,
     controllerAxis = [0, 0],
     gameState = undefined,
     numberOfLevels = 4,
@@ -148,19 +149,17 @@ function createPhysicsWorld() {
     // http://www.box2dflash.org/docs/2.1a/reference/Box2D/Dynamics/b2ContactListener.html
     wContactListener.PostSolve = function (contact, impulse) {
         var impulseSum = impulse.normalImpulses.reduce(function (accum, item) {
-            return accum + item
-        }, 0)
+            return accum + item;
+        }, 0);
 
         // Collision impulse threshold. Tweak as needed
-        if (impulseSum >= 1.20) {
+        if (impulseSum >= collisionImpulseThreshold) {
             // flash screen
             flash();
-            wallCollisionList.push({
-                    impulse: impulseSum
-                })
+            wallCollisionList.push({impulse: impulseSum })
                 .catch(function (err) {
                     console.log(err)
-                })
+                });
         }
     }
     wWorld.SetContactListener(wContactListener);
@@ -587,7 +586,7 @@ $(document).ready(function () {
 
     $('#btnStart').on('click', function () {
         var phoneNumber = $('#txtPhoneNumber').val();
-        if (isValidPhoneNumber(phoneNumber)) {
+        //if (isValidPhoneNumber(phoneNumber)) {
             var url = '/token/' + phoneNumber;
             Twilio.Sync.CreateClient(url).then(function (client) {
                 syncClient = client;
@@ -628,6 +627,6 @@ $(document).ready(function () {
                     });
                 });
             });
-        }
+        //}
     });
 });
