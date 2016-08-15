@@ -1,6 +1,8 @@
 (function () {
     // audio player for Android & iOS
     var audioPlayer = new simpleWebAudioPlayer();
+    var isGamePaused = false;
+    var timeInterval = undefined;
     
     audioPlayer.load([
         {
@@ -22,15 +24,29 @@
         $('#controller-tips').hide();
         $('#controller-controls').show();
         // 1:30 countdown
-        startTimer(1.5 * 60);
+        startTimer(3 * 60);
     }
 
+    // End of game screen
+    function showEndOfGameControls() {
+        // Stop the timer 
+        clearTimeout(timeInterval);
+        // Play winning sound
+        audioPlayer.play('win');
+        // Toggle UI Controls
+        $time.hide();
+        $twilioLogo.show();
+        $btnLearnAbout.show();
+        $pauseButton.hide();        
+    }
+    
     // Countdown timer
     function startTimer(duration) {
         var timer = duration;
         var minutes = undefined;
         var seconds = undefined;
-        var timeInterval = setInterval(function () {
+        timeInterval = setInterval(function () {
+            if (!isGamePaused) {
                 minutes = parseInt(timer / 60, 10)
                 seconds = parseInt(timer % 60, 10);
 
@@ -41,15 +57,18 @@
                 timer--;
                 
                 if (timer < 10 && !$time.hasClass('redish')) {
-                    // Add some danger                    
+                    // Add some danger
                     $time.addClass('redish');
                 }
                 
                 if (timer < 0) {
                     clearTimeout(timeInterval);
-                    $time.text('SYNC');
+                    setEndOfGame();
+                    // Pause game at end of timer
+                    togglePauseState();
                 }
-            }, 1000);
+            }
+        }, 1000);    
     }
 
     /**
@@ -66,15 +85,28 @@
     $(function () {
         var syncClient, gameStateDoc, controllerStateDoc;
         var gyroData = { x: 0, y: 0, beta: 0, gamma: 0 };
+        $pauseButton = $('#btnPause');
+        var pauseState = 'PAUSE_STATE';
         // Server url to request for an auth token
         var url = '/token-mobile/' + phoneNumber;
         $('#controller-controls').hide();
         $time = $('#time');
+        $twilioLogo = $('#twilio-logo');
+        $btnLearnAbout = $('#btnLearnAbout').hide();
+        // Subscribe to pause state
+        $.Topic(pauseState).subscribe(setPauseState);
         
         // Setup button click event
         $('#btnReady').on('click', function() {
             startGame();
         });
+        
+        // Setup pause button events
+        $pauseButton.on('click', function() {
+            togglePauseState();
+            var text = isGamePaused ? '(UNPAUSE)' : '(PAUSE)';
+            $pauseButton.text(text);
+        })
         
         // Set gyro data
         function setGyro(data) {
@@ -82,6 +114,20 @@
             gyroData.y = data.y;
             gyroData.beta = data.beta;
             gyroData.gamma = data.gamma;
+        }
+        
+        // Toggle pause
+        function togglePauseState() {
+            isGamePaused = !isGamePaused;
+            setPauseState();            
+        }
+        
+        // Publish pause state
+        function setPauseState() {
+            $.Topic(pauseState).publish(isGamePaused);
+            // Send it to the Desktop
+            gyroData.isGamePaused = isGamePaused;
+            controllerStateDoc.set(gyroData);
         }
         
         // Get a Sync client (with auth token from provided url)
@@ -94,7 +140,10 @@
 
                 // Listen for changes in the game state to update the mobile UI
                 gameStateDoc.on('updated', function(data) {
-                    //TODO: Update UI from data parameter
+                    // Check if game is over
+                    if (data.isGameOver) {
+                        showEndOfGameControls();
+                    }
                 });
 
                 // Setup the controller state document
@@ -104,9 +153,12 @@
                     gyro.frequency = 100;
                     // Fire up the gyro tracking
                     gyro.startTracking(function(axis) {
-                        setGyro(axis);
-                        // Send only what we use of the gyro data to Sync
-                        controllerStateDoc.set(gyroData);
+                        // Don't send gryo data to Sync if paused
+                        if (!isGamePaused) {
+                            setGyro(axis);
+                            // Send only what we use of the gyro data to Sync
+                            controllerStateDoc.set(gyroData);
+                        }
                     });
                 });
 

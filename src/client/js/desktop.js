@@ -81,6 +81,7 @@ var $mainMenu = undefined,
     $splashLevelCompleted = undefined,
     $splashLevelCompletedGraphic = undefined,
     $splashScreenGameOverMenu = undefined,
+    $pauseScreen = undefined,
     $gameCanvasDisplay = undefined,
     $level = undefined,
     $levelName = undefined,
@@ -417,14 +418,15 @@ function showSplashForLevel() {
     if (currentLevel == 5) {
         $splashScreenLevelDetails.hide();
         $splashScreenGameOverMenu.show();
+        gameStateDoc.set({isGameOver: true});
         gameState = 'idle';
     } else {
         // End of splash screens. Show game
         setTimeout(function () {
             $splashScreen.hide();
             updateLevelHud();
-            showLevelHud(true);
             showGameCanvas(true);
+            showLevelHud(true);
             gameState = 'fade in';
         }, 7000);
     }
@@ -475,6 +477,14 @@ function onResize() {
 
 // From mobile phone (controller)
 function onControllerUpdated(axis) {
+    // Check if game is paused
+    if (axis.isGamePaused) {
+        $pauseScreen.show();
+        return;
+    } else if (!axis.isGamePaused && $pauseScreen.is(':visible')) {
+        $pauseScreen.hide();
+    }
+    
     // Return if gyroscope is steady
     var beta = Math.floor(Math.abs(axis.beta));
     var gamma = Math.floor(Math.abs(axis.gamma));
@@ -537,6 +547,7 @@ $(document).ready(function () {
         $splashScreenLevelName = $('#splash-screen-level-name');
         $splashScreenLevelDescription = $('#splash-screen-level-description');
         $splashScreenGameOverMenu = $('#splash-scren-gameover-menu');
+        $pauseScreen = $('#pause-screen');
     }
 
     function initGame() {
@@ -548,6 +559,7 @@ $(document).ready(function () {
         $splashScreenGameOverMenu.hide();
         $level.hide();
         $levelName.hide();
+        $pauseScreen.hide();
         $mainMenu.show();
         // Set the initial game state
         gameState = 'waiting for sync'; 
@@ -561,7 +573,6 @@ $(document).ready(function () {
             $('#btnStart').trigger('click');
         }
     });
-
     
     function openLinkInNewTab(id) {
         $(id).on('click', function () {
@@ -573,18 +584,20 @@ $(document).ready(function () {
     
     openLinkInNewTab('#btnLearnAbout');  
     openLinkInNewTab('#btnViewSource');    
-    
+
     $('#btnStart').on('click', function () {
         var phoneNumber = $('#txtPhoneNumber').val();
         if (isValidPhoneNumber(phoneNumber)) {
             var url = '/token/' + phoneNumber;
             Twilio.Sync.CreateClient(url).then(function (client) {
                 syncClient = client;
+                
                 syncClient.document('game-state-' + phoneNumber).then(function (doc) {
                     gameStateDoc = doc;
+                    
                     syncClient.document('controller-state-' + phoneNumber).then(function (ctrlDoc) {
                         controllerStateDoc = ctrlDoc;
-
+                        
                         syncClient.list('wall-collision-list-' + phoneNumber).then(function (syncList) {
                             wallCollisionList = syncList
 
@@ -592,7 +605,7 @@ $(document).ready(function () {
                             $mainMenu.hide();
                             $startGame.hide();
                             $mainMenuFooter.hide();
-
+                            
                             // Create the renderer
                             renderer = new THREE.WebGLRenderer();
                             renderer.setSize(window.innerWidth, window.innerHeight);
