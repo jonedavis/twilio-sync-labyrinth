@@ -41,7 +41,7 @@
                 timer--;
                 
                 if (timer < 10 && !$time.hasClass('redish')) {
-                    // Add some danger                    
+                    // Add some danger
                     $time.addClass('redish');
                 }
                 

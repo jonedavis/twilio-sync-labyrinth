@@ -105,6 +105,7 @@ a:visited {
 .gray { color: rgb(148, 151, 155); }
 .white { color: white; }
 .redish { color: rgb(235, 53, 76); }
+.yellow { color: rgb(239, 220, 46); }
 
 .full-height { min-height: 100vh; }
 .full-width { min-width: 100vh; }
@@ -205,6 +206,16 @@ input:-ms-input-placeholder {
 
 .level-name {
     top: 4.8em;
+}
+
+#pause-screen {
+    position: absolute;
+    margin: auto;
+    top: 25%;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    max-width: 40em;
 }
 
 

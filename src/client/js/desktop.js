@@ -81,6 +81,7 @@ var $mainMenu = undefined,
     $splashLevelCompleted = undefined,
     $splashLevelCompletedGraphic = undefined,
     $splashScreenGameOverMenu = undefined,
+    $pauseScreen = undefined,
     $gameCanvasDisplay = undefined,
     $level = undefined,
     $levelName = undefined,
@@ -423,8 +424,8 @@ function showSplashForLevel() {
         setTimeout(function () {
             $splashScreen.hide();
             updateLevelHud();
-            showLevelHud(true);
             showGameCanvas(true);
+            showLevelHud(true);
             gameState = 'fade in';
         }, 7000);
     }
@@ -537,6 +538,7 @@ $(document).ready(function () {
         $splashScreenLevelName = $('#splash-screen-level-name');
         $splashScreenLevelDescription = $('#splash-screen-level-description');
         $splashScreenGameOverMenu = $('#splash-scren-gameover-menu');
+        $pauseScreen = $('#pause-screen');
     }
 
     function initGame() {
@@ -548,6 +550,7 @@ $(document).ready(function () {
         $splashScreenGameOverMenu.hide();
         $level.hide();
         $levelName.hide();
+        $pauseScreen.hide();
         $mainMenu.show();
         // Set the initial game state
         gameState = 'waiting for sync'; 
@@ -561,7 +564,6 @@ $(document).ready(function () {
             $('#btnStart').trigger('click');
         }
     });
-
     
     function openLinkInNewTab(id) {
         $(id).on('click', function () {
@@ -573,7 +575,7 @@ $(document).ready(function () {
     
     openLinkInNewTab('#btnLearnAbout');  
     openLinkInNewTab('#btnViewSource');    
-    
+
     $('#btnStart').on('click', function () {
         var phoneNumber = $('#txtPhoneNumber').val();
         if (isValidPhoneNumber(phoneNumber)) {
@@ -584,7 +586,6 @@ $(document).ready(function () {
                     gameStateDoc = doc;
                     syncClient.document('controller-state-' + phoneNumber).then(function (ctrlDoc) {
                         controllerStateDoc = ctrlDoc;
-
                         syncClient.list('wall-collision-list-' + phoneNumber).then(function (syncList) {
                             wallCollisionList = syncList
 
@@ -592,7 +593,7 @@ $(document).ready(function () {
                             $mainMenu.hide();
                             $startGame.hide();
                             $mainMenuFooter.hide();
-
+                            
                             // Create the renderer
                             renderer = new THREE.WebGLRenderer();
                             renderer.setSize(window.innerWidth, window.innerHeight);
