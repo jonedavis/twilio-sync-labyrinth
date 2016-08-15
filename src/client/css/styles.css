@@ -120,6 +120,11 @@ a:visited {
 .single-bottom-margin { margin-bottom: 1em; }
 .center-margin { margin: 0 auto; }
 
+.auto-size {
+    max-width: 161px;
+    max-height: 161px;
+}
+
 .no-bullets { list-style: none; }
 
 .button {
@@ -165,11 +170,15 @@ a:visited {
     text-align: center;
 }
 
-
 .buttonish {
     padding-top: .5em;
     border: 4px solid rgb(115, 204, 220);
     text-decoration: none;
+}
+
+.buttonish.mid-width {
+    padding-left: 0;
+    max-width: 20em;
 }
 
 /* Input fields placeholder font color */

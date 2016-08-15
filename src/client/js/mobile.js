@@ -2,6 +2,7 @@
     // audio player for Android & iOS
     var audioPlayer = new simpleWebAudioPlayer();
     var isGamePaused = false;
+    var timeInterval = undefined;
     
     audioPlayer.load([
         {
@@ -23,15 +24,28 @@
         $('#controller-tips').hide();
         $('#controller-controls').show();
         // 1:30 countdown
-        startTimer(1.5 * 60);
+        startTimer(3 * 60);
     }
 
+    // End of game screen
+    function showEndOfGameControls() {
+        // Stop the timer 
+        clearTimeout(timeInterval);
+        // Play winning sound
+        audioPlayer.play('win');
+        // Toggle UI Controls
+        $time.hide();
+        $twilioLogo.show();
+        $btnLearnAbout.show();
+        $pauseButton.hide();        
+    }
+    
     // Countdown timer
     function startTimer(duration) {
         var timer = duration;
         var minutes = undefined;
         var seconds = undefined;
-        var timeInterval = setInterval(function () {
+        timeInterval = setInterval(function () {
             if (!isGamePaused) {
                 minutes = parseInt(timer / 60, 10)
                 seconds = parseInt(timer % 60, 10);
@@ -49,7 +63,9 @@
                 
                 if (timer < 0) {
                     clearTimeout(timeInterval);
-                    $time.text('SYNC');
+                    setEndOfGame();
+                    // Pause game at end of timer
+                    togglePauseState();
                 }
             }
         }, 1000);    
@@ -75,6 +91,8 @@
         var url = '/token-mobile/' + phoneNumber;
         $('#controller-controls').hide();
         $time = $('#time');
+        $twilioLogo = $('#twilio-logo');
+        $btnLearnAbout = $('#btnLearnAbout').hide();
         // Subscribe to pause state
         $.Topic(pauseState).subscribe(setPauseState);
         
@@ -85,10 +103,9 @@
         
         // Setup pause button events
         $pauseButton.on('click', function() {
-            isGamePaused = !isGamePaused;
+            togglePauseState();
             var text = isGamePaused ? '(UNPAUSE)' : '(PAUSE)';
             $pauseButton.text(text);
-            setPauseState();
         })
         
         // Set gyro data
@@ -97,6 +114,12 @@
             gyroData.y = data.y;
             gyroData.beta = data.beta;
             gyroData.gamma = data.gamma;
+        }
+        
+        // Toggle pause
+        function togglePauseState() {
+            isGamePaused = !isGamePaused;
+            setPauseState();            
         }
         
         // Publish pause state
@@ -117,7 +140,10 @@
 
                 // Listen for changes in the game state to update the mobile UI
                 gameStateDoc.on('updated', function(data) {
-                    //TODO: Update UI from data parameter
+                    // Check if game is over
+                    if (data.isGameOver) {
+                        showEndOfGameControls();
+                    }
                 });
 
                 // Setup the controller state document

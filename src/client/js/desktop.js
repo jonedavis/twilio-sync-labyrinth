@@ -418,6 +418,7 @@ function showSplashForLevel() {
     if (currentLevel == 5) {
         $splashScreenLevelDetails.hide();
         $splashScreenGameOverMenu.show();
+        gameStateDoc.set({isGameOver: true});
         gameState = 'idle';
     } else {
         // End of splash screens. Show game
