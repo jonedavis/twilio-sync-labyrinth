@@ -371,7 +371,7 @@ function flash() {
     var rgb = getFlashColor();
     flashMesh.material.color.set(rgb);
     TweenLite.to(flashMesh.material, 0.15, {
-        opacity: 0.5,
+        opacity: 0.30,
         onComplete: function () {
             TweenLite.to(flashMesh.material, 0.15, {
                 opacity: 0
