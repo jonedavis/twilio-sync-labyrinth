@@ -9,7 +9,7 @@ const gulpSequence = require('gulp-sequence');
 const notify = require('gulp-notify');
 const config = require('./gulp.config')();
 
-gulp.task('prod', gulpSequence('styles','useref','scripts:desktop','scripts:mobile'));
+gulp.task('default', gulpSequence('styles','useref','scripts:desktop','scripts:mobile'));
 
 gulp.task('styles', function () {
     return gulp.src(config.cssSource)
@@ -44,6 +44,8 @@ gulp.task('scripts:mobile', function() {
         .pipe(notify({message: 'Scripts:mobile task complete.'}));
 });
 
-gulp.task('css-watcher', function() {
-   gulp.watch([config.cssSource], ['styles']); 
+gulp.task('watch', function() {
+    // Watch styles.css
+    gulp.watch(config.cssSource, ['styles']);
+    // Watch js files
 });
