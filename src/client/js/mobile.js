@@ -81,10 +81,10 @@
             window.navigator.vibrate(value);
         }
     }
-
+    
     $(function () {
         var syncClient, gameStateDoc, controllerStateDoc;
-        var gyroData = { x: 0, y: 0, beta: 0, gamma: 0 };
+        var gyroData = { x: 0, y: 0, beta: 0, gamma: 0 };        
         $pauseButton = $('#btnPause');
         var pauseState = 'PAUSE_STATE';
         // Server url to request for an auth token
