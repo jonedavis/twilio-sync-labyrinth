@@ -9,10 +9,11 @@ var utils = {
             return 'rgb(' + parseInt(prop.r) + ',' + parseInt(prop.g) + ',' + parseInt(prop.b) + ')';
         },
         // 5% step default
-        transition: function(startColor, endColor, step = 0.05) {
+        transition: function(startColor, endColor, step) {
             var currentColor = {};
             var total = 0.0;
-
+            step = step || 0.05;
+            
             var updateColor = function () {
                 if (total >= 1.0) return utils.colors.rgbToString(endColor);
 
