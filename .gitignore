@@ -3,4 +3,5 @@ node_modules
 config.js
 .editorconfig
 npm-debug.log
-src/client/dist/
+src/client/dist/js/*
+src/client/dist/css/*
