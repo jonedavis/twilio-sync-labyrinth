@@ -82,9 +82,23 @@
         }
     }
     
+    // Check if android. We inverse coordinate system for android device
+    function isAndroidDevice() {
+        var isAndroid = false;
+        if (navigator != undefined && navigator.userAgent != undefined) {
+            var user_agent = navigator.userAgent.toLowerCase();
+            if (user_agent.indexOf('android') > -1) {
+                isAndroid = true;
+            }
+        }
+        return isAndroid;
+    }
+    
     $(function () {
         var syncClient, gameStateDoc, controllerStateDoc;
-        var gyroData = { x: 0, y: 0, beta: 0, gamma: 0 };        
+        var gyroData = { x: 0, y: 0, beta: 0, gamma: 0 };
+        // Flip coordinate system if android device
+        var coordinateSystem = isAndroidDevice() ? -1 : 1;        
         $pauseButton = $('#btnPause');
         var pauseState = 'PAUSE_STATE';
         // Server url to request for an auth token
@@ -109,10 +123,10 @@
         
         // Set gyro data
         function setGyro(data) {
-            gyroData.x = data.x;
-            gyroData.y = data.y;
-            gyroData.beta = data.beta;
-            gyroData.gamma = data.gamma;
+            gyroData.x = coordinateSystem * data.x;
+            gyroData.y = coordinateSystem * data.y;
+            gyroData.beta = coordinateSystem * data.beta;
+            gyroData.gamma = coordinateSystem * data.gamma;
         }
         
         // Toggle pause
