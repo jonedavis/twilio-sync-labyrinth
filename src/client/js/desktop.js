@@ -483,11 +483,6 @@ function onControllerUpdated(axis) {
     } else if (!axis.isGamePaused && $pauseScreen.is(':visible')) {
         $pauseScreen.hide();
     }
-    
-    // Return if gyroscope is steady
-    var beta = Math.floor(Math.abs(axis.beta));
-    var gamma = Math.floor(Math.abs(axis.gamma));
-    if (beta === 0 && gamma === 0) return;
 
     // Push raw data to front of arrays
     // each coordinate gets it's own array
@@ -586,7 +581,7 @@ $(document).ready(function () {
 
     $('#btnStart').on('click', function () {
         var phoneNumber = $('#txtPhoneNumber').val();
-        //if (isValidPhoneNumber(phoneNumber)) {
+        if (isValidPhoneNumber(phoneNumber)) {
             var url = '/token/' + phoneNumber;
             Twilio.Sync.CreateClient(url).then(function (client) {
                 syncClient = client;
@@ -627,6 +622,6 @@ $(document).ready(function () {
                     });
                 });
             });
-        //}
+        }
     });
 });

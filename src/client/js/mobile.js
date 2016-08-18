@@ -96,7 +96,7 @@
     
     $(function () {
         var syncClient, gameStateDoc, controllerStateDoc;
-        var gyroData = { x: 0, y: 0, beta: 0, gamma: 0 };
+        var gyroData = { x: 0, y: 0 };
         // Flip coordinate system if android device
         var coordinateSystem = isAndroidDevice() ? -1 : 1;        
         $pauseButton = $('#btnPause');
@@ -125,8 +125,6 @@
         function setGyro(data) {
             gyroData.x = coordinateSystem * data.x;
             gyroData.y = coordinateSystem * data.y;
-            gyroData.beta = coordinateSystem * data.beta;
-            gyroData.gamma = coordinateSystem * data.gamma;
         }
         
         // Toggle pause
@@ -159,13 +157,20 @@
 
                 // Setup the controller state document
                 syncClient.document('controller-state-' + phoneNumber).then(function (ctrlDoc) {
+                    var beta = 0;
+                    var gamma = 0;
                     controllerStateDoc = ctrlDoc;
                     // Set frequency of updates to 100ms
                     gyro.frequency = 100;
                     // Fire up the gyro tracking
                     gyro.startTracking(function(axis) {
                         // Don't send gryo data to Sync if paused
-                        if (!isGamePaused) {
+                        if (!isGamePaused) {    
+                            // Return if gyroscope is steady
+                            beta = Math.floor(Math.abs(axis.beta));
+                            gamma = Math.floor(Math.abs(axis.gamma));
+                            if (beta === 0 && gamma === 0) return;
+                            
                             setGyro(axis);
                             // Send only what we use of the gyro data to Sync
                             controllerStateDoc.set(gyroData);
