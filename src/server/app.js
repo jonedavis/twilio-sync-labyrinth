@@ -9,7 +9,7 @@ const getToken = require('./sync.setup.js');
 const config = require('../../config.js');
 const app = express();
 
-app.use(express.static('../client'));
+app.use(express.static('./client'));
 app.use('/.well-known', express.static('../../.well-known')); // For Let's Encrypt
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.resolve(__dirname, 'views'));
