@@ -14,7 +14,7 @@ var camera = undefined,
     gameState = undefined,
     BALL_RADIUS = 0.20,
     NUMBER_OF_LEVELS = 4,
-    COLLISION_IMPULSE_THRESHOLD = 1.3,
+    COLLISION_IMPULSE_THRESHOLD = 1.5,
     currentLevel = 0,
     yellowColor = {
         r: 231,
