@@ -1,6 +1,6 @@
 // Check for valid phone numbers in north america and international (no shortcode check)
 function isValidPhoneNumber(number) {
-    var regex = /^\+?1?\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+    var regex = /^(\+(([0-9]){1,2})[-.])?((((([0-9]){2,3})[-.]){1,2}([0-9]{4,10}))|([0-9]{10}))$/;
     var isValid = number.match(regex) ? true : false;
     return isValid;
 }
