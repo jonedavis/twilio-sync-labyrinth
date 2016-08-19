@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <title>CommsQuest IV - Controller</title>
+    
+    <script src="//media.twiliocdn.com/sdk/js/common/v0.1/twilio-common.min.js"></script>
+    <script src="//media.twiliocdn.com/sdk/js/sync/v0.2/twilio-sync.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    
+    <!-- Intentionally left unminified -->
+    <!--build:js(./src/client) mobile.js -->
+    <script src="/js/libs/gyro.js"></script>
+    <script src="/js/libs/simpleWebAudioPlayer.js"></script>    
+    
+    <script src="/js/sync.client.js"></script>
+    <script src="/js/mobile.js"></script>
+    <!--endbuild -->
+    
+    <link rel="stylesheet" type="text/css" href="/css/styles.min.css">
+</head>
+<body>
+    
+    <div class="flex-container-full">
+        
+        <div id="controller-tips" class="center-text rotate-landscape">
+            
+            <h1 class="mid-font darkblue">TO BEGIN YOUR QUEST</h1>
+            <p class="mid-font white">1. Lock your phone's orientation.</p>
+            <p class="mid-font white">2. Hold your phone flat and parallel to the ground.</p>
+            <button id="btnReady" class="button-pulse">READY</button>
+            
+        </div>
+        
+        <div id="controller-controls" class="hidden rotate-landscape center-text">
+
+            <p id="time" class="no-margin huge-font white">3:00</p>
+            <img id="twilio-logo" class="hidden auto-size" src="/imgs/twilio_logo.png">
+            <a id="btnLearnAbout" class="block buttonish mid-width center-margin" href="https://www.twilio.com/blog/2016/07/sync.html">LEARN ABOUT SYNC</a>
+            <button id="btnPause" class="button button-pulse double-top-margin smaller-font lightblue">(PAUSE)</button>
+
+        </div>
+        
+    </div>
+
+    <script>
+        var phoneNumber = '<%= phoneNumber %>';
+    </script>
+    
+</body>
+</html>

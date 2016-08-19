@@ -1,0 +1,330 @@
+/* Global Styles */
+
+
+@font-face {
+    font-family: "PressStart2P";
+    src: url(/fonts/PressStart2P.eot?#iefix') format('embedded-opentype');
+    src: url(/fonts/PressStart2P.ttf);
+}
+
+* {
+    font-family: "PressStart2P";
+    font-size: 14px;
+    line-height: 1.6em;
+}
+
+html, 
+body { 
+    margin: 0;
+    padding: 0;
+    background: black;
+}
+
+a:link,
+a:visited { 
+    color: rgb(148, 151, 155);
+}
+
+
+#mobile-index {
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+@keyframes colorPulseKeyframe {
+    0% {
+        color: black;
+    }
+    100% {
+        color: rgb(115, 204, 220);
+    }
+}
+
+@keyframes blinkKeyframe {
+    50% {
+        opacity: 0.0;
+    }
+}
+
+.blink {
+    animation: blinkKeyframe 1s linear inifite;
+}
+
+.hidden { display: none; }
+.flex { display: flex; }
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-container-full {
+    display: flex;    
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-container-full div {
+    margin: 0 auto;
+    align-self: center;
+}
+
+.row {
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer { 
+    margin: 0 auto;
+    margin-bottom: 1.8em;
+    flex-shrink: 0;
+    max-width: 54em;
+    text-align: center;
+}
+
+.flex-full-width { width: 100%; }
+.huge-font { font-size: 7em; }
+.xxlarge-font { font-size: 4em; }
+.large-font { font-size: 2em; }
+.xmid-font { font-size: 1.5em; }
+.mid-font { font-size: 1.2em; }
+.default-font { font-size: 1em; }
+.small-font { font-size: .9em; }
+.smaller-font { font-size: .7em; }
+.center-text { text-align: center; }
+.left-text { text-align: left; }
+
+.darkblue { color: rgb(58, 85, 162); }
+.midblue { color: rgb(148, 151, 155); }
+.lightblue { color: rgb(115, 204, 220); }
+.gray { color: rgb(148, 151, 155); }
+.white { color: white; }
+.redish { color: rgb(235, 53, 76); }
+.yellow { color: rgb(239, 220, 46); }
+
+.full-height { min-height: 100vh; }
+.full-width { min-width: 100vh; }
+.full-height-percent { min-height: 100%; }
+.full-width-percent { min-width: 100%; }
+.inline-block { display: inline-block; }
+.block { display: block; }
+
+.no-margin { margin: 0; }
+.single-top-margin { margin-top: 1em; }
+.double-top-margin { margin-top: 2em; }
+.single-bottom-margin { margin-bottom: 1em; }
+.center-margin { margin: 0 auto; }
+
+.auto-size {
+    max-width: 161px;
+    max-height: 161px;
+}
+
+.no-bullets { list-style: none; }
+
+.button {
+    background: black;
+    text-align: center;
+    border: none;
+}
+
+
+/* Desktop - Main Menu - Styles */
+
+
+.flex-center {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    min-height: 100%;
+    flex: 1;
+}
+
+
+.flex-center > .row p {
+    margin-top: 2.8em;
+}
+
+.flex-center > .row {
+    flex-basis: 45%;
+}
+
+
+/* Phone number input field styles */
+
+.buttonish,
+.phone {
+    margin-top: 5.5em;
+    padding-left: .9em;
+    border: 4px solid rgb(58, 85, 162);
+    width: 25em;
+    height: 2em;
+    background: black;
+    color: white;
+    font-size: 18px;
+    text-align: center;
+}
+
+.buttonish {
+    padding-left: 0!important;
+    padding-top: .5em;
+    border: 4px solid rgb(115, 204, 220);
+    text-decoration: none;
+}
+
+
+/* Input fields placeholder font color */
+
+
+.phone:focus {
+    outline: none;
+}
+
+input::-webkit-input-placeholder {
+    color: white !important;
+}
+ 
+input:-moz-placeholder {
+    color: white !important;  
+}
+ 
+input::-moz-placeholder {
+    color: white !important;  
+}
+ 
+input:-ms-input-placeholder {
+    color: white !important;  
+}
+
+.call-hud {
+    display: block;
+    position: absolute;
+    left: 2.9em;
+    top: 2.4em;
+    color: white;
+    font-weight: bold;
+}
+
+.level-name {
+    top: 4.8em;
+}
+
+#pause-screen {
+    position: absolute;
+    margin: auto;
+    top: 25%;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    max-width: 40em;
+}
+
+
+/* Mobile Phone - Controller - Styles */
+
+
+.rotate-landscape {
+    transform-origin: center center;
+    transform: rotate(-90deg);
+}
+
+.button-pulse {
+    animation: colorPulseKeyframe 1s infinite;
+    border: none;
+    font-size: 2em;
+    background: black;
+}
+
+.bottom-flex {
+    align-self: flex-start !important;
+}
+
+
+/* Media Queries */
+
+
+/* Desktop */
+@media all and (max-width: 1920px) and (min-width: 1281px) {
+    .logo {
+        height: auto; 
+        width: auto;
+        max-width: 811px;
+        max-height: 256px;
+    }
+    
+    .animated-level-graphic {
+        width: 375px;
+        height: 375px;
+    }
+}
+
+/* Desktop */
+@media all and (max-width: 1280px) and (min-width: 768px) {
+    .logo {
+        height: auto; 
+        width: auto;
+        max-width: 640px;
+        max-height: 200px;
+    }
+    
+    .animated-level-graphic {
+        width: 350px;
+        height: 350px;
+    }
+}
+
+/* Desktop */
+@media all and (max-width: 767px) {
+    .logo {
+        height: auto; 
+        width: auto;
+        max-width: 525px;
+        max-height: 164px;
+    }
+    
+    .animated-level-graphic {
+        width: 300px;
+        height: 300px;
+    }
+}
+
+/* Desktop - input field too large, shrink */
+@media all and (max-width: 500px) {
+    .logo {
+        height: auto; 
+        width: auto;
+        max-width: 400px;
+        max-height: 125px;
+    }
+    
+    .animated-level-graphic {
+        width: 275px;
+        height: 275px;
+    }
+    
+    .phone {
+        width: 20em !important;
+    }
+    
+    input::-webkit-input-placeholder {
+        font-size: 14px !important;
+    }
+ 
+    input:-moz-placeholder {
+        font-size: 14px !important;
+    }
+
+    input::-moz-placeholder {
+        font-size: 14px !important; 
+    }
+
+    input:-ms-input-placeholder {
+        font-size: 14px !important; 
+    }
+}
