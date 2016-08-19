@@ -10,11 +10,11 @@ var camera = undefined,
     mazeDimension = 11,
     planeMesh = undefined,
     ballMesh = undefined,
-    ballRadius = 0.20,
-    collisionImpulseThreshold = 2.4,
     controllerAxis = [0, 0],
     gameState = undefined,
-    numberOfLevels = 4,
+    BALL_RADIUS = 0.20,
+    NUMBER_OF_LEVELS = 4,
+    COLLISION_IMPULSE_THRESHOLD = 1.3,
     currentLevel = 0,
     yellowColor = {
         r: 231,
@@ -53,7 +53,7 @@ b2World = Box2D.Dynamics.b2World,
     ACCEL_FACTOR = 10,
     ACCEL_THRESHOLD = 0.3,
     NUM_FILTER_POINTS = 4,
-    FORCE_MULTIPLIER = 7.0,
+    FORCE_MULTIPLIER = 4.5,
     newAccel = {
         x: 0.0,
         y: 0.0
@@ -104,7 +104,7 @@ var $mainMenu = undefined,
 
 
 // Preload textures
-for (var i = 1; i <= numberOfLevels; i++) {
+for (var i = 1; i <= NUMBER_OF_LEVELS; i++) {
     var tempAsset = {
         ball: THREE.ImageUtils.loadTexture('imgs/level_' + i + '/ball.png'),
         concrete: THREE.ImageUtils.loadTexture('imgs/level_' + i + '/concrete.png'),
@@ -127,7 +127,7 @@ function createPhysicsWorld() {
     fixDef.density = 1.0;
     fixDef.friction = 0.0;
     fixDef.restitution = 0.05;
-    fixDef.shape = new b2CircleShape(ballRadius);
+    fixDef.shape = new b2CircleShape(BALL_RADIUS);
     wBall.CreateFixture(fixDef);
 
     // Create the maze
@@ -153,7 +153,7 @@ function createPhysicsWorld() {
         }, 0);
 
         // Collision impulse threshold. Tweak as needed
-        if (impulseSum >= collisionImpulseThreshold) {
+        if (impulseSum >= COLLISION_IMPULSE_THRESHOLD) {
             // flash screen
             flash();
             wallCollisionList.push({impulse: impulseSum })
@@ -210,12 +210,12 @@ function createRenderWorld() {
     scene.add(light);
 
     // Add the ball
-    g = new THREE.SphereGeometry(ballRadius, 32, 16);
+    g = new THREE.SphereGeometry(BALL_RADIUS, 32, 16);
     m = new THREE.MeshPhongMaterial({
         map: assets[currentLevel].ball
     });
     ballMesh = new THREE.Mesh(g, m);
-    ballMesh.position.set(1, 1, ballRadius);
+    ballMesh.position.set(1, 1, BALL_RADIUS);
     scene.add(ballMesh);
 
     // Add the camera
@@ -258,7 +258,7 @@ function updatePhysicsWorld() {
     // a: time to pass in seconds
     // b: how strong to correct velocity
     // c: how strong to correct position
-    wWorld.Step(1 / 240, 1, 1);
+    wWorld.Step(1 / 120, 1, 1);
 }
 
 
@@ -271,11 +271,11 @@ function updateRenderWorld() {
 
     // Update ball rotation
     var tempMat = new THREE.Matrix4();
-    tempMat.makeRotationAxis(new THREE.Vector3(0, 1, 0), stepX / ballRadius);
+    tempMat.makeRotationAxis(new THREE.Vector3(0, 1, 0), stepX / BALL_RADIUS);
     tempMat.multiply(ballMesh.matrix);
     ballMesh.matrix = tempMat;
     tempMat = new THREE.Matrix4();
-    tempMat.makeRotationAxis(new THREE.Vector3(1, 0, 0), -stepY / ballRadius);
+    tempMat.makeRotationAxis(new THREE.Vector3(1, 0, 0), -stepY / BALL_RADIUS);
     tempMat.multiply(ballMesh.matrix);
     ballMesh.matrix = tempMat;
     ballMesh.rotation.setFromRotationMatrix(ballMesh.matrix);
