@@ -58,10 +58,12 @@ function isValidPhoneNumber(number) {
                 $numberField.resetKeyframe();
                 $numberField.css('border-color', 'rgb(115, 204, 220)');
                 $btnStart.playKeyframe(validTextKeyFrame);
+                $btnStart.text('CLICK HERE TO START');
             } else if (!isValid && validNumber) {
                 validNumber = false;
                 $numberField.playKeyframe(invalidBorderKeyFrame);
                 $btnStart.resetKeyframe();
+                $btnStart.text('SYNC PLAYER 1');
             }
         });
     });
